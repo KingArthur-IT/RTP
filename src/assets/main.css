@@ -1,5 +1,7 @@
 :root{
-  --primary-color: #C1C8C7;
+  --primary-color: #224386;
+  --secondary-color: #FECC00;
+  --notactive-color: #8CA7DD;
 }
 
 *,
@@ -37,6 +39,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.15;
 }
 
 .container {
