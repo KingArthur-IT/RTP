@@ -133,4 +133,12 @@ export default {
             transform: translate(1px, 1px)
             & path
                 transition: all .2s ease
+
+@media screen and (max-width: 1600px)
+    .services
+        min-width: 590px
+        &.shown
+            transform: translate(-25px, 15px)
+        &__item
+            font-size: 14px
 </style>
