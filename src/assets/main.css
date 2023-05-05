@@ -1,0 +1,64 @@
+:root{
+  --primary-color: #C1C8C7;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+ul {
+  list-style: none;
+}
+a, a:visited {
+  text-decoration: none;
+  color: #000;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, ul, li {
+  padding: 0;
+  margin: 0;
+}
+
+picture img {
+  width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'Ubuntu', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 30px;
+  max-width: 1600px;
+}
+
+button {
+  appearance: none;
+  border: none;
+  display: block;
+  cursor: pointer;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.d-none {
+  display: none !important
+}
+
+@media screen and (max-width: 425px) {
+  .container {
+    padding: 0 20px
+  }
+}
