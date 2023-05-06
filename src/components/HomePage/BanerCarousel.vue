@@ -1,12 +1,15 @@
 <template>
   <div class="carousel-wrapper">
         <Carousel :items-to-show="1" ref="banerSlider" :wrap-around="true" :snapAlign="'start'" :mouseDrag="true">
-            <slide v-for="(slide, index) in sliderList" :key="index">
+            <slide v-for="(slide, index) in systemList" :key="index">
                 <div class="slide">
-                    <img :src="getImageUrl(index + 1, 'bg')" :alt="slide.imgName" class="slide__bg">
+                    <img :src="getImageUrl('baner-bg', slide.name)" :alt="slide.name" class="slide__bg">
                     <div class="slide__hero">
-                        <img :src="getImageUrl(index + 1, 'logo')" :alt="slide.imgName" class="slide__logo">
-                        <h2 class="slide__title" v-html="slide.title"></h2>
+                        <div class="slide__label">
+                            <img :src="getImageUrl('logos', slide.name)" :alt="slide.name" class="slide__logo">
+                            <span>{{ slide.title }}</span>
+                        </div>
+                        <h2 class="slide__title">{{ doFirstLetterUppercase(slide.description) }}</h2>
                         <button class="slide__btn">Подробнее</button>
                     </div>
                 </div>
@@ -23,12 +26,14 @@
             </svg>
         </button>
         <div class="dots">
-            <div class="dot" v-for="(slide, index) in sliderList" :key="index" :class="{'active': index + 1 === slideIndex}"></div>
+            <div class="dot" v-for="(slide, index) in systemList" :key="index" :class="{'active': index + 1 === slideIndex}"></div>
         </div>
   </div>
 </template>
 
 <script>
+import { systemList } from '@/data/data.js'
+import { getImageUrl, doFirstLetterUppercase } from '@/use/helpers.js'
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 
@@ -39,31 +44,26 @@ export default {
     },
     data() {
         return {
+            systemList,
             slideIndex: 1,
-            sliderList: [
-                { title: 'Полипропиленовые <br> трубы и фитинги PP-R' },
-                { title: 'Полипропиленовые <br> трубы и фитинги PP-R' },
-                { title: 'Полипропиленовые <br> трубы и фитинги PP-R' },
-            ]
         }
     },
     methods: {
-        getImageUrl(index, imgName){
-            return new URL(`../../assets/baner/${index}/${imgName}.png`, import.meta.url).href
-        },
+        getImageUrl,
+        doFirstLetterUppercase,
         prevClick() {
             this.$refs.banerSlider.prev();
             this.$refs.banerSlider.updateSlideWidth();
             this.slideIndex --
             if (this.slideIndex < 1)
-                this.slideIndex = this.sliderList.length
+                this.slideIndex = this.systemList.length
         },
         nextClick(){
             this.$refs.banerSlider.next();
             this.$refs.banerSlider.updateSlideWidth();
             this.slideIndex ++
-            if (this.slideIndex > this.sliderList.length)
-                this.slideIndex = 0
+            if (this.slideIndex > this.systemList.length)
+                this.slideIndex = 1
         },
     }
 }
@@ -74,6 +74,7 @@ export default {
     width: 100%
 .slide
     width: 100%
+    height: 100%
     border-radius: 16px
     position: relative
     overflow: hidden
@@ -104,15 +105,28 @@ export default {
         display: flex
         flex-direction: column
         justify-content: flex-start
-    &__logo
-        width: 280px
+    &__label
+        width: fit-content
+        border-radius: 40px
+        padding: 12px 35px
+        background: #fff
+        display: flex
+        align-items: center
         margin-bottom: 40px
+        & span
+            text-transform: uppercase
+            font-size: 40px
+            font-weight: bold
+    &__logo
+        width: 55px
+        margin-right: 23px
     &__title
         font-weight: 700
         font-size: 55px
         color: #fff
         margin-bottom: 40px
         text-align: left
+        max-width: 620px
     &__btn
         width: fit-content
         border-radius: 3px
@@ -172,9 +186,12 @@ export default {
     .slide
         &__hero
             padding: 36px 80px 66px
-        &__logo
-            width: 170px
+        &__label
             margin-bottom: 20px
+            & span
+                font-size: 35px
+        &__logo
+            width: 32px
         &__title
             font-size: 35px
             margin-bottom: 30px
