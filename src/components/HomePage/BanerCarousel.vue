@@ -1,6 +1,13 @@
 <template>
   <div class="carousel-wrapper">
-        <Carousel :items-to-show="1" ref="banerSlider" :wrap-around="true" :snapAlign="'start'" :mouseDrag="true">
+        <Carousel
+            ref="banerSlider" 
+            :items-to-show="1" 
+            :wrap-around="true" 
+            :snapAlign="'start'" 
+            :mouseDrag="true"
+            @slide-start="onSlideChange"
+        >
             <slide v-for="(slide, index) in systemList" :key="index">
                 <div class="slide">
                     <img :src="getImageUrl('baner-bg', slide.name)" :alt="slide.name" class="slide__bg">
@@ -29,7 +36,12 @@
             </svg>
         </button>
         <div class="dots">
-            <div class="dot" v-for="(slide, index) in systemList" :key="index" :class="{'active': index + 1 === slideIndex}"></div>
+            <div 
+                v-for="(slide, index) in systemList" :key="index" 
+                class="dot" 
+                :class="{'active': index + 1 === slideIndex}"
+                @click="slideTo(index)"
+            ></div>
         </div>
   </div>
 </template>
@@ -39,7 +51,7 @@ import { systemList } from '@/data/data.js'
 import { getImageUrl, doFirstLetterUppercase } from '@/use/helpers.js'
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
-import CustomRectButton from '../UIKit/CustomRectButton.vue';
+import CustomRectButton from '../UIKit/LightRectButton.vue';
 
 export default {
     components: {
@@ -70,7 +82,18 @@ export default {
             if (this.slideIndex > this.systemList.length)
                 this.slideIndex = 1
         },
-    }
+        slideTo(index) {
+            this.$refs.banerSlider.slideTo(index)
+            this.slideIndex = index + 1
+        },
+        onSlideChange(data){
+            this.slideIndex = data.slidingToIndex + 1
+            if (this.slideIndex > this.systemList.length)
+                this.slideIndex =  1
+            if (this.slideIndex < 1)
+                this.slideIndex = this.systemList.length
+        }
+    },
 }
 </script>
 

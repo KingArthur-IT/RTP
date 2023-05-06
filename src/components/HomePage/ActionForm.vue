@@ -61,7 +61,7 @@
 
 <script>
 import CustomInput from '../UIKit/CustomInput.vue'
-import CustomRectButton from '../UIKit/CustomRectButton.vue';
+import CustomRectButton from '../UIKit/LightRectButton.vue';
 import CustomCheckbox from '../UIKit/CustomCheckbox.vue';
 
 export default {
