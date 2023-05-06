@@ -10,7 +10,10 @@
                             <span>{{ slide.title }}</span>
                         </div>
                         <h2 class="slide__title">{{ doFirstLetterUppercase(slide.description) }}</h2>
-                        <button class="slide__btn">Подробнее</button>
+                        <div class="slide__btn">
+                            <CustomRectButton :text="'Подробнее'" />
+                        </div>
+                        <button class="slide__btn"></button>
                     </div>
                 </div>
             </slide>
@@ -36,11 +39,13 @@ import { systemList } from '@/data/data.js'
 import { getImageUrl, doFirstLetterUppercase } from '@/use/helpers.js'
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
+import CustomRectButton from '../UIKit/CustomRectButton.vue';
 
 export default {
     components: {
         Carousel,
         Slide,
+        CustomRectButton
     },
     data() {
         return {
@@ -128,23 +133,7 @@ export default {
         text-align: left
         max-width: 620px
     &__btn
-        width: fit-content
-        border-radius: 3px
-        background: transparent
-        border: 2px solid #fff
-        color: #fff
-        font-size: 17px
-        font-weight: 700
-        display: flex
-        align-items: center
-        justify-content: center
-        padding: 12px 67px
-        transition: color .3s ease, background .3s ease, border .3s ease
-        &:hover
-            background: #F5F5F5
-            border-color: var(--primary-color)
-            color: var(--primary-color)
-            box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35)
+        max-width: 230px
 .controls
     &__btn
         position: absolute
@@ -196,9 +185,7 @@ export default {
             font-size: 35px
             margin-bottom: 30px
         &__btn
-            border: 1px solid #fff
-            font-size: 14px
-            padding: 6px 30px
+            max-width: 140px
     .controls
         &__btn
             width: 56px
