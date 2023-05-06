@@ -1,20 +1,28 @@
 <template>
-  <header class="header">
-      <div class="container">
-          <FullHeader v-if="isDesctop" />
-          <MobileHeader v-else />
-      </div>
-  </header>
+    <div class="header-wrapper">
+        <header class="header" :class="{'shadow': isMobileMenuShown}">
+            <div class="container">
+                <FullHeader v-if="isDesctop" />
+                <MobileHeader v-else />
+            </div>
+        </header>
+        <MobileMenu :isShown="isMobileMenuShown" />
+    </div>
+    <CatalogSection />
 </template>
 
 <script>
 import FullHeader from './FullHeader.vue'
 import MobileHeader from './MobileHeader.vue'
+import MobileMenu from './MobileMenu.vue'
+import CatalogSection from './CatalogSection.vue'
 
 export default {
     components: {
         FullHeader,
-        MobileHeader
+        MobileHeader,
+        MobileMenu,
+        CatalogSection
     },
     created() {
         window.addEventListener('resize', this.handleResize);
@@ -25,7 +33,8 @@ export default {
     },
     data() {
         return {
-            windowWidth: 0
+            windowWidth: 0,
+            isMobileMenuShown: false
         }
     },
     methods: {
@@ -43,10 +52,14 @@ export default {
 
 <style scoped lang="sass">
 .header
+    position: relative
     width: 100%
     background-color: var(--primary-color)
     border-radius: 92px
     padding: 22px 0 37px
+    z-index: 10
+    &.shadow
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 
 @media screen and (max-width: 1600px)
     .header

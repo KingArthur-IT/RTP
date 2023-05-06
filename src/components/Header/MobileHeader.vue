@@ -21,8 +21,11 @@
 </template>
 
 <script>
+
+
 export default {
     components: {
+
     },
     data() {
         return {
@@ -41,6 +44,7 @@ export default {
         display: flex
         justify-content: space-between
         align-items: center
+        z-index: 5
     // &__burger
     &__logo 
         & img

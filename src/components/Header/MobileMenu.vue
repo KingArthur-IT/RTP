@@ -1,15 +1,32 @@
 <template>
-  <div class="services" :class="{'shown': isShown}">
-      <div class="services__item" v-for="(item, index) in list" :key="index">
-          <div class="services__icon">
-              <svg width="22" height="22" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" :d="item.svgD" :fill="item.svgFillColor"/>
-              </svg>
-          </div>
-          <p class="services__text">
-              <span>{{ item.name }}</span> {{ item.description }}
-          </p>
-      </div>
+  <div ref="mobileMenu" class="menu" :class="{'shown': isShown}">
+    <nav class="menu__nav">
+        <div class="menu__nav-service">
+            <div class="menu__nav-name" :class="{'active': isListShown}" @click="servicesListShownToogle">
+                <span>Сервис</span>
+                <svg width="8" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 6.55671e-07L12.9952 7.5L0.00480872 7.5L6.5 6.55671e-07Z" fill="#8CA7DD"/>
+                </svg>
+            </div>
+            <div class="list-wrapper">
+                <div class="list" v-for="(item, index) in list" :key="index">
+                    <div class="list__icon">
+                        <svg width="22" height="22" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" :d="item.svgD" :fill="item.svgFillColor"/>
+                        </svg>
+                    </div>
+                    <p class="list__text">
+                        <span>{{ item.name }}</span> {{ item.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="menu__nav-item">Услуги</div>
+        <div class="menu__nav-item">Доставка и сервис</div>
+        <div class="menu__nav-item">Оплата</div>
+        <div class="menu__nav-item">О компании</div>
+        <div class="menu__nav-item">Контакты</div>
+    </nav>
   </div>
 </template>
 
@@ -72,50 +89,93 @@ export default {
                     name: 'Cистема GAMMA',
                     description: 'трубы ПНД и компрессионные фитинги'
                 },
-            ]
+            ],
+            isListShown: false
+        }
+    },
+    methods: {
+        servicesListShownToogle(e) {
+            this.isListShown = !this.isListShown
+            const listWrapper = this.$refs.mobileMenu.querySelector('.list-wrapper')
+            if (listWrapper.style.maxHeight) {
+                listWrapper.style.maxHeight = null;
+            } else {
+                listWrapper.style.maxHeight = listWrapper.scrollHeight + "px";
+            };
         }
     }
 }
 </script>
 
 <style scoped lang="sass">
-.services
+.menu
     position: absolute
-    top: 100%
-    left: 0
+    top: 0
+    left: 30px
+    right: 30px
     background-color: var(--primary-color)
-    padding: 7px 15px 5px
-    border-radius: 0px 0px 23px 23px
+    padding: 60px 0px 40px
+    border-radius: 0px 0px 20px 20px
     display: flex
     flex-direction: column
-    min-width: 660px
-    z-index: 15
-    transform: translate(-25px, 0px)
+    transform: translate(0px, -100%)
     pointer-events: none
     opacity: 0
     transition: opacity .3s ease, transform .3s ease
     &.shown
         pointer-events: all
         opacity: 1
-        transform: translate(-25px, 25px)
-    &__item
-        display: flex
-        align-items: center
-        padding: 10px
-        border-top: 1px solid #55769B
-        color: var(--notactive-color)
-        cursor: pointer
-        font-size: 16px
-        transition: color .3s ease
-        &:hover
-            color: #fff
-            & .services__icon::before
-                background-color: #fff
-        &:not(:hover)
-            & svg path
-                fill: var(--notactive-color)
+        transform: translate(0px, 20px)
+    &__nav
+        &-item   
+            padding: 13px 35px
+            border-top: 1px solid #55769B
+            color: var(--notactive-color)
+            cursor: pointer
+            font-size: 14px
+            transition: color .3s ease
+            &:hover
+                color: #fff
+        &-name
+            display: flex
+            align-items: center
+            margin-bottom: 4px
+            color: var(--notactive-color)
+            & span
+                margin-right: 4px
+            & svg
+                transform: translateY(2px)
+                transition: transform .3s ease
+                & path
+                    transition: all .3s ease
+            &:hover
+                & span
+                    color: #fff
+                & svg path
+                    fill: var(--secondary-color)
+            &.active
+                & span
+                    color: #fff
+                & svg 
+                    transform: translateY(2px) rotate(180deg)
+                    & path
+                        fill: var(--secondary-color)
+        &-service
+            padding: 13px 35px
+            font-size: 14px
+.list-wrapper
+    max-height: 0
+    overflow: hidden
+    transition: max-height 0.2s ease-out
+.list
+    padding: 8px 0
+    display: flex
+    align-items: center
+    color: var(--notactive-color)
+    transition: color .3s ease
     &__icon
         position: relative
+        margin-right: 6px
         &::before
             content: ''
             position: absolute
@@ -129,16 +189,16 @@ export default {
             border-radius: 50%
             transition: background-color .2s ease
         & svg
-            margin-right: 12px
             transform: translate(1px, 1px)
             & path
                 transition: all .2s ease
-
-@media screen and (max-width: 1600px)
-    .services
-        min-width: 590px
-        &.shown
-            transform: translate(-25px, 15px)
-        &__item
-            font-size: 14px
+    &:hover
+        color: #fff
+        & .list-text
+            color: #fff
+        & .list__icon::before
+            background-color: #fff
+    &:not(:hover)
+        & svg path
+            fill: var(--notactive-color)
 </style>
