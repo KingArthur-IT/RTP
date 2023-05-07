@@ -47,7 +47,6 @@ export default {
   align-items: center
 .checkbox-wrapper
   position: relative
-  transform: translateY(2px)
   width: 17px
   height: 17px
   & svg
@@ -78,6 +77,7 @@ export default {
   .checkbox-wrapper
     width: 10px
     height: 10px
+    transform: translateY(2px)
     & svg
       transform: translate(-1px, -1px)
       width: 8px

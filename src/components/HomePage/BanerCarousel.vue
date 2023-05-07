@@ -25,16 +25,8 @@
                 </div>
             </slide>
         </Carousel>
-        <button class="controls__btn arrow-left" @click="prevClick">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 6.03516L7 12.0352V7.03516H13V5.03516H7V0.0351562L0 6.03516Z" fill="#42474D"/>
-            </svg>
-        </button>
-        <button class="controls__btn arrow-right" @click="nextClick">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13 6.03516L6 0.0351562V5.03516H0V7.03516H6V12.0352L13 6.03516Z" fill="#42474D"/>
-            </svg>
-        </button>
+        <SliderControlBtn @click="prevClick" />
+        <SliderControlBtn :isLeftBtn="false" @click="nextClick" />
         <div class="dots">
             <div 
                 v-for="(slide, index) in systemList" :key="index" 
@@ -52,12 +44,14 @@ import { getImageUrl, doFirstLetterUppercase } from '@/use/helpers.js'
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
+import SliderControlBtn from '../UIKit/SliderControlBtn.vue';
 
 export default {
     components: {
         Carousel,
         Slide,
-        CustomRectButton
+        CustomRectButton,
+        SliderControlBtn
     },
     data() {
         return {
@@ -157,25 +151,6 @@ export default {
         max-width: 620px
     &__btn
         max-width: 230px
-.controls
-    &__btn
-        position: absolute
-        top: 50%
-        width: 92px
-        height: 92px
-        border-radius: 50%
-        border: 8px solid #fff
-        background: #F3F9FB
-        display: flex
-        align-items: center
-        justify-content: center
-
-.arrow-left
-    transform: translate(-50%, -50%)
-    left: 0
-.arrow-right
-    transform: translate(50%, -50%)
-    right: 0
 
 .dots
     position: absolute
@@ -209,10 +184,6 @@ export default {
             margin-bottom: 30px
         &__btn
             max-width: 140px
-    .controls
-        &__btn
-            width: 56px
-            height: 56px
     .dots
         left: 80px
         bottom: 25px

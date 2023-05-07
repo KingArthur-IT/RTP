@@ -26,6 +26,7 @@ export default {
         align-items: center
         justify-content: center
         padding: 13px
+        transition: box-shadow .3s ease
         &:hover
             box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35)
 

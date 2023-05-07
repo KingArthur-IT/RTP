@@ -1,18 +1,21 @@
 <template>
   <div class="card">
       <div class="card__hero">
-          <Carousel 
-            :items-to-show="1" 
-            :ref="`prodCard${id}`" 
-            :wrap-around="true" 
-            :snapAlign="'start'" 
-            :mouseDrag="true"
-            @slide-start="onSlideChange"
-          >
-            <slide v-for="(slide, index) in slideCount" :key="index">
-                <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
-            </slide>
-          </Carousel>
+          <div class="card__carousel">
+              <Carousel 
+                :items-to-show="1" 
+                :ref="`prodCard${id}`" 
+                :wrap-around="true" 
+                :snapAlign="'start'" 
+                :mouseDrag="true"
+                @slide-start="onSlideChange"
+              >
+                <slide v-for="(slide, index) in slideCount" :key="index">
+                    <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+                </slide>
+              </Carousel>
+              <div class="card__discount-label">-{{ discountPercent }}%</div>
+          </div>
           <div class="dots">
               <div class="dot" 
                 v-for="(slide, index) in slideCount" :key="index"
@@ -21,24 +24,24 @@
             ></div>
           </div>
           <p class="card__description">
-              Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.
+              {{ description }}
           </p>
           <div class="card__price">
-              <div class="current">189 ₽</div>
-              <div class="old">262 ₽</div>
+              <div class="current">{{ newPrice }} ₽</div>
+              <div class="old">{{ oldPrice }} ₽</div>
           </div>
           <div class="card__benefit">
-              Выгода <span>62</span> ₽
+              Выгода <span>{{ oldPrice - newPrice }}</span> ₽
           </div>
           <div class="card__controls">
               <div class="count-btns">
-                  <button>
+                  <button @click="decrementProductCount">
                     <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
                     </svg>
                   </button>
                   <span>{{ productCount }}</span>
-                  <button>
+                  <button @click="incrementProductCount">
                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
                     </svg>
@@ -67,13 +70,25 @@ export default {
         id: {
             type: Number,
             required: true
-        }
+        },
+        description: {
+            type: String,
+            default: ''
+        },
+        newPrice: {
+            type: Number,
+            required: true
+        },
+        oldPrice: {
+            type: Number,
+            required: true
+        },
     },
     data() {
         return {
             slideIndex: 1,
             slideCount: 6,
-            productCount: 999
+            productCount: 0
         }
     },
     methods: {
@@ -87,17 +102,45 @@ export default {
                 this.slideIndex =  1
             if (this.slideIndex < 1)
                 this.slideIndex = this.slideCount
+        },
+        decrementProductCount() {
+            if (this.productCount > 0)
+                this.productCount --
+        },
+        incrementProductCount() {
+            this.productCount ++
         }
     },
+    computed: {
+        discountPercent() {
+            return Math.round(100.0 - 100.0 * this.newPrice / this.oldPrice)
+        }
+    }
 }
 </script>
 
 <style scoped lang="sass">
 .card
-    filter: drop-shadow(0px 0px 22px rgba(0, 0, 0, 0.15))
+    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.15))
     padding: 16px 16px 19px 16px
-    width: 300px
+    width: 100%
     background: #fff
+    &__carousel
+        position: relative
+    &__discount-label
+        position: absolute
+        top: 0
+        right: 0
+        width: 63px
+        height: 65px
+        background: var(--primary-color)
+        border-radius: 0px 0px 0px 16px
+        color: #fff
+        font-weight: 700
+        font-size: 18px
+        display: flex
+        align-items: center
+        justify-content: center
     &__description
         font-weight: 700
         font-size: 16px
@@ -126,6 +169,7 @@ export default {
         color: #1DBE40
         padding: 12px 0
         border-bottom: 1px solid #EDEDED
+        text-align: left
     &__controls
         display: flex
         align-items: center
@@ -167,4 +211,47 @@ export default {
         color: #42474D
         padding: 0 8px
 
+@media screen and (max-width: 1600px)
+    .card
+        padding: 10px 10px 13px 10px
+        filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15))
+        &__discount-label
+            width: 41px
+            height: 43px
+            font-size: 14px
+        &__description
+            font-size: 12px
+            margin-bottom: 5px
+        &__price
+            padding-bottom: 7px
+            & .current
+                font-size: 16px
+                margin-right: 13px
+            & .old
+                font-size: 16px
+                transform: translateY(4px)
+        &__benefit
+            font-weight: 700
+            padding: 6px 0 8px
+        &__controls
+            margin-top: 13px
+        &__order
+            margin-left: 6px
+            height: 30px
+    .dots
+        padding: 14px 0
+        display: flex
+        justify-content: center
+        align-items: center
+
+    .count-btns
+        & button
+            width: 25px
+            height: 25px
+            & svg
+                width: 11px
+                height: 11px
+        & span
+            font-size: 10px
+            padding: 0 5px
 </style>
