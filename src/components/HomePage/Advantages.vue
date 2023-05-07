@@ -80,7 +80,7 @@ export default {
 <style scoped lang="sass">
 .advantages
     &__list
-        margin-top: 90px
+        margin-top: 72px
         width: calc( 100% + 32px )
         transform: translate(-16px)
         display: flex

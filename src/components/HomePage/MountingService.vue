@@ -35,12 +35,19 @@
               </div>
           </div>
       </div>
+      <div class="mounting__more-btn">
+          <LightRectButton :text="'Показать еще'" :isGrayBtn="true" />
+      </div>
   </div>
 </template>
 
 <script>
-export default {
+import LightRectButton from '../UIKit/LightRectButton.vue'
 
+export default {
+    components: {
+        LightRectButton
+    }
 }
 </script>
 
@@ -79,6 +86,10 @@ export default {
         & img
             width: 100%
             height: 100%
+    &__more-btn
+        max-width: 230px
+        margin: auto
+        margin-top: 77px
 
 @media screen and (max-width: 1600px)
     .mounting
@@ -89,4 +100,7 @@ export default {
             transform: translateX(-15px)
         &__item
             padding: 15px
+        &__more-btn
+            max-width: 140px
+            margin-top: 36px
 </style>

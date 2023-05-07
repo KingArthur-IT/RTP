@@ -63,7 +63,7 @@ export default {
 
 @media screen and (max-width: 1600px)
     .header
-        padding: 20px 0 25px
+        padding: 16px 0 25px
 
 @media screen and (max-width: 1155px)
     .header

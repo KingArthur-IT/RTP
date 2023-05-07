@@ -111,6 +111,12 @@ button {
   }
 } */
 
+@media screen and (max-width: 1600px) {
+  .section-title {
+    font-size: 20px;
+  }
+}
+
 @media screen and (max-width: 1155px) {
   .container {
     padding: 0 80px;

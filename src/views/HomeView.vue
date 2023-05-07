@@ -43,11 +43,11 @@ export default {
 .baner
   margin-bottom: 25px
 .action-form
-  margin: 80px 0 100px
+  margin: 92px 0
 .video-section
   margin: 66px 0 77px
 .mounting-service
-  margin: 125px 0 70px
+  margin: 100px 0 60px
 .geography-groving
   margin-bottom: 120px
 
@@ -55,7 +55,7 @@ export default {
   .action-form
     margin: 30px 0 60px
   .video-section
-    margin: 50px 0 60px
+    margin: 45px 0 60px
   .mounting-service
     margin: 52px 0 62px
   .geography-groving

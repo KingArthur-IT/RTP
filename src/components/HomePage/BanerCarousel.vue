@@ -65,16 +65,10 @@ export default {
         prevClick() {
             this.$refs.banerSlider.prev();
             this.$refs.banerSlider.updateSlideWidth();
-            this.slideIndex --
-            if (this.slideIndex < 1)
-                this.slideIndex = this.systemList.length
         },
         nextClick(){
             this.$refs.banerSlider.next();
             this.$refs.banerSlider.updateSlideWidth();
-            this.slideIndex ++
-            if (this.slideIndex > this.systemList.length)
-                this.slideIndex = 1
         },
         slideTo(index) {
             this.$refs.banerSlider.slideTo(index)

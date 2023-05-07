@@ -10,7 +10,7 @@
                 :mouseDrag="true"
                 @slide-start="onSlideChange"
               >
-                <slide v-for="(slide, index) in slideCount" :key="index">
+                <slide v-for="(slide, index) in slideCount" :key="index" class="card__slide">
                     <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
                 </slide>
               </Carousel>
@@ -127,6 +127,10 @@ export default {
     background: #fff
     &__carousel
         position: relative
+    &__slide
+        width: 100%
+    &__img
+        width: 100%
     &__discount-label
         position: absolute
         top: 0
@@ -145,7 +149,7 @@ export default {
         font-weight: 700
         font-size: 16px
         color: #A6ACB3
-        margin-bottom: 20px
+        margin-bottom: 14px
     &__price
         display: flex
         align-items: flex-end
@@ -167,14 +171,14 @@ export default {
         font-weight: 700
         font-size: 16px
         color: #1DBE40
-        padding: 12px 0
+        padding: 15px 0
         border-bottom: 1px solid #EDEDED
         text-align: left
     &__controls
         display: flex
         align-items: center
         justify-content: space-between
-        margin-top: 35px
+        margin-top: 20px
     &__order
         margin-left: 15px
         width: 100%
@@ -223,7 +227,7 @@ export default {
             font-size: 12px
             margin-bottom: 5px
         &__price
-            padding-bottom: 7px
+            padding-bottom: 5px
             & .current
                 font-size: 16px
                 margin-right: 13px
@@ -232,14 +236,14 @@ export default {
                 transform: translateY(4px)
         &__benefit
             font-weight: 700
-            padding: 6px 0 8px
+            padding: 6px 0 5px
         &__controls
             margin-top: 13px
         &__order
             margin-left: 6px
             height: 30px
     .dots
-        padding: 14px 0
+        padding: 14px 0 8px
         display: flex
         justify-content: center
         align-items: center

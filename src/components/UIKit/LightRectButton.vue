@@ -1,5 +1,9 @@
 <template>
-  <button class="rect-btn" @click="$emit('clickEvent')">{{ text }}</button>
+  <button 
+    class="rect-btn" 
+    :class="{'agree': isAgreeBtn, 'gray': isGrayBtn}"
+    @click="$emit('clickEvent')"
+  >{{ text }}</button>
 </template>
 
 <script>
@@ -8,6 +12,14 @@ export default {
         text: {
             type: String,
             default: ''
+        },
+        isAgreeBtn: {
+            type: Boolean,
+            default: false
+        },
+        isGrayBtn: {
+            type: Boolean,
+            default: false
         }
     }
 }
@@ -32,10 +44,22 @@ export default {
             border-color: var(--primary-color)
             color: var(--primary-color)
             box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35)
+        &.agree
+            border-color: #C3D3E5
+            color: #C3D3E5
+            &:hover
+                border-color: var(--primary-color)
+                color: var(--primary-color)
+        &.gray
+            border-color: #828D99
+            color: #828D99
+            &:hover
+                border-color: var(--primary-color)
+                color: var(--primary-color)
 
     @media screen and (max-width: 1600px)
         .rect-btn
-            border: 1px solid #fff
+            border-width: 1px
             font-size: 14px
             padding: 6px
 </style>

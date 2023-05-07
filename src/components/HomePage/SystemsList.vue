@@ -82,7 +82,7 @@ export default {
             padding: 13px
     .card
         padding: 20px 40px 20px 17px
-        min-height: 300px
+        min-height: 309px
         &__label
             padding: 5px 15px
             margin-bottom: 15px

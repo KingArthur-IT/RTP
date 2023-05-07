@@ -55,6 +55,7 @@ export default {
 
 @media screen and (max-width: 1600px)
     .head
+        padding: 20px 0 28px
         &__catalog
             margin-right: 65px
             padding: 9px 29px
@@ -62,4 +63,5 @@ export default {
                 font-size: 10px
         &__search
             margin-right: 34px
+            width: 49vw
 </style>

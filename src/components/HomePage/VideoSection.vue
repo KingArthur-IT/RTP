@@ -49,7 +49,7 @@ export default {
         font-size: 40px
         text-align: center
         color: #fff
-        margin-bottom: 100px
+        margin-bottom: 73px
         line-height: 1.3
     &__btn
         width: 230px

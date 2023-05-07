@@ -139,6 +139,7 @@ export default {
 
 @media screen and (max-width: 1600px)
     .action
+        padding: 17px 74px
         &__hero
             max-width: 520px
         &__title

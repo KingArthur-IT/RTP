@@ -162,7 +162,7 @@ export default {
         &__btn
             font-size: 10px
             margin-bottom: 18px
-            padding: 6px 13px
+            padding: 6px 9px
             border: 1px solid #fff
         &__mail
             font-size: 14px
