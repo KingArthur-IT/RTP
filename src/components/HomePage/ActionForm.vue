@@ -50,7 +50,7 @@
                         v-model="message"
                         :placeholder="'Введите текст'"
                         :isTextArea="true"
-                        :rowsCount="12"
+                        :rowsCount="7"
                       />
                   </div>
               </div>

@@ -1,11 +1,12 @@
 <template>
-    <div class="input-wrap">
-        <label v-if="label" class="label">{{ label }}<span v-if="isRequired">*</span> </label>
+    <div class="input-wrap" :class="{'light': isLight}">
+        <label v-if="label" class="label">{{ label }}<span v-if="isRequired">*</span></label>
         <input 
             v-if="!isTextArea"
             class="input" 
+            :class="{'error': !isValid}"
             :type="type" 
-            v-model="value"
+            v-model="inputValue"
             @input="onInput"
             :placeholder="placeholder"
         />
@@ -14,7 +15,8 @@
             cols="30" 
             :rows="rowsCount" 
             class="input textarea"
-            v-model="value"
+            :class="{'error': !isValid}"
+            v-model="inputValue"
             @input="onInput"
             :placeholder="placeholder"
         ></textarea>
@@ -24,7 +26,7 @@
 <script>
 export default {
     props: {
-        modelValue: {
+        value: {
             type: String,
             default: ''
         },
@@ -59,26 +61,30 @@ export default {
         rowsCount: {
             type: Number,
             default: 10
+        },
+        isLight: {
+            type: Boolean,
+            default: false
         }
     },
-    emits: ['update:modelValue' , 'saveEvent'],
+    emits: ['update:value' , 'saveEvent'],
     data() {
         return {
-            value: '',
+            inputValue: '',
         }
     },
     methods: {
         onInput(event) {
-            this.$emit('update:modelValue', event.target.value)
+            this.$emit('update:value', event.target.value)
         }
     },
     watch: {
-        modelValue() {
-            this.value = this.modelValue
-        },
         value() {
+            this.inputValue = this.value
+        },
+        inputValue() {
             if (this.isNumber) {
-                this.value = this.value.replace(/[^0-9+]/g, '').replace(/(\..*?)\..*/g, '$1')
+                this.inputValue = this.inputValue.replace(/[^0-9+]/g, '').replace(/(\..*?)\..*/g, '$1')
             }
         }
     }
@@ -108,10 +114,18 @@ export default {
         resize: none
         &::placeholder
             color: var(--primary-color)
+        &.error
+            border-color: #DC1818
     .textarea
         padding: 8px 11px
         font-size: 13px
         font-weight: 400
+    
+    .light
+        & .label
+            color: #A6ACB3
+        & .input
+            font-weight: 400
 
 @media screen and (max-width: 1600px)
     .label
@@ -121,5 +135,5 @@ export default {
         font-size: 12px
         padding: 10px 6px
     .textarea
-        max-height: 125px
+        max-height: 150px
 </style>

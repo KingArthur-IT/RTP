@@ -91,6 +91,7 @@ export default {
             margin-right: 20px  
             & svg
                 width: 18px
+                height: 18px
     .cards
         &__item
             margin: 0 15px

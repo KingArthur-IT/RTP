@@ -1,7 +1,7 @@
 <template>
   <button 
     class="rect-btn" 
-    :class="{'agree': isAgreeBtn, 'gray': isGrayBtn}"
+    :class="{'agree': isAgreeBtn, 'gray': isGrayBtn, 'white': isWhiteBtn}"
     @click="$emit('clickEvent')"
   >{{ text }}</button>
 </template>
@@ -18,6 +18,10 @@ export default {
             default: false
         },
         isGrayBtn: {
+            type: Boolean,
+            default: false
+        },
+        isWhiteBtn: {
             type: Boolean,
             default: false
         }
@@ -38,7 +42,7 @@ export default {
         align-items: center
         justify-content: center
         padding: 12px
-        transition: color .3s ease, background .3s ease, border .3s ease
+        transition: color .3s ease, background .3s ease, border .3s ease, box-shadow .3s ease
         &:hover
             background: #F5F5F5
             border-color: var(--primary-color)
@@ -56,6 +60,12 @@ export default {
             &:hover
                 border-color: var(--primary-color)
                 color: var(--primary-color)
+        &.white
+            border-color: var(--primary-color)
+            color: var(--primary-color)
+            &:hover
+                background: transparent
+                border-color: var(--primary-color)
 
     @media screen and (max-width: 1600px)
         .rect-btn
