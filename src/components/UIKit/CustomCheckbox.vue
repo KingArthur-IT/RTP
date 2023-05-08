@@ -44,7 +44,7 @@ export default {
 .wrapper
   display: flex
   cursor: pointer
-  align-items: center
+  align-items: flex-start
 .checkbox-wrapper
   position: relative
   width: 17px

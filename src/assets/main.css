@@ -106,26 +106,38 @@ button {
   color: var(--primary-color);
 }
 
+.stage-ul {
+  padding-left: 27px;
+}
+.stage-ul li {
+  position: relative;
+}
+.stage-ul li::before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  left: -17px;
+  top: 8px;
+  border-radius: 50%;
+}
+
 @media screen and (max-width: 1600px) {
   .container {
     padding: 0 130px;
     max-width: 1340px;
   }
-}
 
-
-/* @media screen and (max-width: 1400px) {
-  .container {
-    padding: 0 30px;
-    max-width: 995px;
+  .section-title-simple {
+    font-size: 30px;
   }
-} */
 
-@media screen and (max-width: 1600px) {
   .section-title {
     font-size: 20px;
   }
 }
+
 
 @media screen and (max-width: 1155px) {
   .container {
