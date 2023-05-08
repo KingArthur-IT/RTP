@@ -20,7 +20,7 @@
                 <div class="header__nav-item">Доставка и сервис</div>
                 <div class="header__nav-item">Оплата</div>
                 <div class="header__nav-item">О компании</div>
-                <div class="header__nav-item">Контакты</div>
+                <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}" @click="goToPage('contacts')">Контакты</div>
                 <ServicesList :isShown="isServicesHeaderListShown"/>
             </nav>
             <div class="header__call-info">
@@ -60,8 +60,14 @@ export default {
     methods: {
         servicesListShownToogle() {
             this.isServicesHeaderListShown = !this.isServicesHeaderListShown
+        },
+        isCurrentPage(name) {
+            return this.$route.name === name
+        },
+        goToPage(name) {
+            this.$router.push({ name })
         }
-    }
+    },
 }
 </script>
 

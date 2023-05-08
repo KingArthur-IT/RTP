@@ -25,16 +25,16 @@
         <div class="footer__title">Компания</div>
         <div class="nav-wrapper">
         <div class="nav">
-            <a href="#" class="nav__item">О компании</a>
-            <a href="#" class="nav__item">Каталог</a>
-            <a href="#" class="nav__item">Услуги</a>
-            <a href="#" class="nav__item">Оплата</a>
-            <a href="#" class="nav__item">Корзина</a>
+            <div class="nav__item">О компании</div>
+            <div class="nav__item">Каталог</div>
+            <div class="nav__item">Услуги</div>
+            <div class="nav__item">Оплата</div>
+            <div class="nav__item">Корзина</div>
         </div>
         <div class="nav">
-            <a href="#" class="nav__item">Доставка и сервис</a>
-            <a href="#" class="nav__item">Оформление заказа</a>
-            <a href="#" class="nav__item">Контакты</a>
+            <div class="nav__item">Доставка и сервис</div>
+            <div class="nav__item">Оформление заказа</div>
+            <div class="nav__item" @click="goToPage('contacts')">Контакты</div>
         </div>
         </div>
     </div>
@@ -43,7 +43,11 @@
 
 <script>
 export default {
-
+    methods: {
+        goToPage(name) {
+            this.$router.push({ name })
+        }
+    }
 }
 </script>
 
@@ -90,6 +94,7 @@ export default {
   &__item
     margin-bottom: 20px
     color: #fff
+    cursor: pointer
 
 @media screen and (max-width: 1600px)
     .footer
