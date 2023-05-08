@@ -2,8 +2,8 @@
     <div class="header-wrapper">
         <header class="header" :class="{'shadow': isMobileMenuShown}">
             <div class="container">
-                <FullHeader v-if="isDesctop" />
-                <MobileHeader v-else />
+                <FullHeader />
+                <!-- <MobileHeader /> -->
             </div>
         </header>
         <MobileMenu :isShown="isMobileMenuShown" />
@@ -30,29 +30,11 @@ export default {
         CatalogSection,
         Modal
     },
-    created() {
-        window.addEventListener('resize', this.handleResize);
-        this.handleResize();
-    },
-    destroyed() {
-        window.removeEventListener('resize', this.handleResize);
-    },
     data() {
         return {
-            windowWidth: 0,
             isMobileMenuShown: false
         }
     },
-    methods: {
-        handleResize() {
-            this.windowWidth = window.innerWidth;
-        }
-    },
-    computed: {
-        isDesctop() {
-            return this.windowWidth > 1155
-        }
-    }
 }
 </script>
 

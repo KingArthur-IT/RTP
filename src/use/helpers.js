@@ -1,5 +1,5 @@
 export const getImageUrl = (folderName, imgName) => {
-    return new window.URL(`../../src/assets/${folderName}/${imgName}.png`, import.meta.url).href
+    return `../../src/assets/${folderName}/${imgName}.png` //new URL(`../../src/assets/${folderName}/${imgName}.png`, import.meta.url).href
 }
 
 export const doFirstLetterUppercase = (str) => {

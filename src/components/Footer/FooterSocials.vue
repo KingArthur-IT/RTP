@@ -26,13 +26,13 @@
                       <img src="@/assets/cards/mir.png" alt="MIR">
                   </div>
                   <div class="cards__item">
-                      <img src="@/assets/cards/master card.png" alt="master card">
+                      <img src="@/assets/cards/master-card.png" alt="master card">
                   </div>
                   <div class="cards__item">
                       <img src="@/assets/cards/visa.png" alt="visa">
                   </div>
                   <div class="cards__item">
-                      <img src="@/assets/cards/union pay.png" alt="union pay">
+                      <img src="@/assets/cards/union-pay.png" alt="union pay">
                   </div>
               </div>
           </div>

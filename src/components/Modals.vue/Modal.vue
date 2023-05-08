@@ -52,12 +52,12 @@
                             ref="vueRecaptcha">
                     </vue-recaptcha>
                   </div>
-                  <CustomRectButton 
+                  <!-- <CustomRectButton 
                     class="modal__submit" 
                     :text="'Отправить'" 
                     :isWhiteBtn="true" 
                     @click="formSubmit"
-                  />
+                  /> -->
                   <div class="modal__logo">
                       <img src="@/assets/modal-logo.png" alt="RTP">
                   </div>
@@ -106,14 +106,14 @@
 import CustomInput from '../UIKit/CustomInput.vue'
 import DropDown from '../UIKit/DropDown.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
-import vueRecaptcha from 'vue3-recaptcha2';
+// import vueRecaptcha from 'vue3-recaptcha2';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
         DropDown,
-        vueRecaptcha
+        // vueRecaptcha
     },
     props: {
         title: {
