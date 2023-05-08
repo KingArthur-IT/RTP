@@ -3,7 +3,7 @@
     <div class="checkbox-wrapper">
       <input  type="checkbox"
               class="custom-checkbox"  
-              :class="{'checked': modelValue, 'error': isError && !modelValue}"
+              :class="{'checked': modelValue, 'error': !isValid}"
               :value="modelValue"
               @input="(event) => $emit('update:modelValue', event.target.checked)"
       >
@@ -23,9 +23,9 @@ export default {
       type: Boolean,
       default: true
     },
-    isError: {
+    isValid: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   setup(props, {emit}){

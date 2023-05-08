@@ -157,7 +157,7 @@ export default {
             this.$refs.vueRecaptcha.reset();
         },
         formSubmit() {
-            this.isNameValid = this.name ? true : false
+            this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 12
 

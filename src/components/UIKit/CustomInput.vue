@@ -15,7 +15,7 @@
             cols="30" 
             :rows="rowsCount" 
             class="input textarea"
-            :class="{'error': !isValid}"
+            :class="{'error': !isValid, 'main-form': additionalClass === 'main-form' }"
             v-model="inputValue"
             @input="onInput"
             :placeholder="placeholder"
@@ -65,6 +65,10 @@ export default {
         isLight: {
             type: Boolean,
             default: false
+        },
+        additionalClass: {
+            type: String,
+            default: ''
         }
     },
     emits: ['update:value' , 'saveEvent'],
@@ -120,6 +124,8 @@ export default {
         padding: 8px 11px
         font-size: 13px
         font-weight: 400
+        &.main-form
+            max-height: 204px
     
     .light
         & .label
@@ -136,4 +142,6 @@ export default {
         padding: 10px 6px
     .textarea
         max-height: 150px
+        &.main-form
+            max-height: 125px
 </style>

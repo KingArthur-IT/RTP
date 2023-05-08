@@ -15,8 +15,9 @@
                       <CustomInput 
                         :label="'Имя'"
                         :isRequired="true"
-                        v-model="name"
+                        v-model:value="name"
                         :placeholder="'Введите имя'"
+                        :isValid="isNameValid"
                       />
                   </div>
                   <div class="input-wrapper">
@@ -24,14 +25,15 @@
                         :label="'Телефон'"
                         :isRequired="true"
                         :isNumber="true"
-                        v-model="phone"
+                        v-model:value="phone"
                         :placeholder="'+7'"
+                        :isValid="isPhoneValid"
                       />
                   </div>
-                  <CustomCheckbox v-model="isConfirmed">
+                  <CustomCheckbox v-model="isConfirmed" :isValid="isConfirmedValid">
                     <span class="conditions-text">Согласие с политикой конфиденциальности</span>
                   </CustomCheckbox>
-                  <CustomRectButton class="action__submit" :text="'Отправить'" />
+                  <CustomRectButton class="action__submit" :text="'Отправить'" @click="sendForm"/>
               </div>
               <div class="action__right">
                 <div class="input-wrapper">
@@ -39,18 +41,20 @@
                         :label="'E-mail'"
                         :isRequired="true"
                         :type="'email'"
-                        v-model="email"
+                        v-model:value="email"
                         :placeholder="'Введите e-mail'"
+                        :isValid="isEmailValid"
                       />
                   </div>
                   <div>
                       <CustomInput 
                         class="action__textarea"
                         :label="'Сообщение'"
-                        v-model="message"
+                        v-model:value="message"
                         :placeholder="'Введите текст'"
                         :isTextArea="true"
-                        :rowsCount="7"
+                        :rowsCount="20"
+                        :additionalClass="'main-form'"
                       />
                   </div>
               </div>
@@ -63,6 +67,7 @@
 import CustomInput from '../UIKit/CustomInput.vue'
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import CustomCheckbox from '../UIKit/CustomCheckbox.vue';
+import { validateEmail } from '@/use/helpers.js'
 
 export default {
     components: {
@@ -76,7 +81,25 @@ export default {
             phone: '',
             email: '',
             message: '',
-            isConfirmed: false
+            isNameValid: true,
+            isPhoneValid: true,
+            isEmailValid: true,
+            isConfirmedValid: true,
+            isConfirmed: false,
+        }
+    },
+    methods: {
+        validateEmail,
+        sendForm() {
+            this.isNameValid = !!this.name
+            this.isEmailValid = this.validateEmail(this.email)
+            this.isPhoneValid = this.phone.length === 12
+            this.isConfirmedValid = this.isConfirmed
+
+            if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid || !this.isConfirmed)
+                return
+
+            //отправить данные
         }
     }
 }
