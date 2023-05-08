@@ -1,6 +1,6 @@
 <template>
     <div class="header__hero">
-        <div class="header__logo">
+        <div class="header__logo" @click="goToPage('home')">
             <img src="@/assets/logo.png" alt="RTP">
             <div class="header__logo-txt">
                 Производитель<br>
@@ -19,7 +19,7 @@
                 <div class="header__nav-item">Услуги</div>
                 <div class="header__nav-item">Доставка и сервис</div>
                 <div class="header__nav-item">Оплата</div>
-                <div class="header__nav-item">О компании</div>
+                <div class="header__nav-item" :class="{'active': isCurrentPage('company')}" @click="goToPage('company')">О компании</div>
                 <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}" @click="goToPage('contacts')">Контакты</div>
                 <ServicesList :isShown="isServicesHeaderListShown"/>
             </nav>
@@ -80,6 +80,7 @@ export default {
     &__logo 
         display: flex
         align-items: center
+        cursor: pointer
         & img
             width: 120px
             margin-right: 15px
