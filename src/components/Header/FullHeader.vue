@@ -31,21 +31,30 @@
             </div>
         </div>
         <div class="header__contacts">
-            <button class="header__btn">Заказать обратный звонок</button>
+            <button class="header__btn" @click="isModalShow = true">Заказать обратный звонок</button>
             <a href="mailto:sales@rtp.ru" class="header__mail">sales@rtp.ru</a>
         </div>
     </div>
+    <Modal 
+        v-model:open="isModalShow"
+        :title="'Обратный звонок'"
+        :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
+    />
 </template>
 
 <script>
 import ServicesList from './ServicesList.vue'
+import Modal from '../Modals.vue/Modal.vue'
+
 export default {
     components: {
-        ServicesList
+        ServicesList,
+        Modal
     },
     data() {
         return {
-            isServicesHeaderListShown: false
+            isServicesHeaderListShown: false,
+            isModalShow: false
         }
     },
     methods: {

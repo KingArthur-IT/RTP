@@ -9,10 +9,6 @@
         <MobileMenu :isShown="isMobileMenuShown" />
     </div>
     <CatalogSection />
-    <!-- <Modal 
-        :title="'Обратный звонок'"
-        :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
-    /> -->
 </template>
 
 <script>
@@ -20,7 +16,6 @@ import FullHeader from './FullHeader.vue'
 import MobileHeader from './MobileHeader.vue'
 import MobileMenu from './MobileMenu.vue'
 import CatalogSection from './CatalogSection.vue'
-import Modal from '../Modals.vue/Modal.vue'
 
 export default {
     components: {
@@ -28,7 +23,6 @@ export default {
         MobileHeader,
         MobileMenu,
         CatalogSection,
-        Modal
     },
     data() {
         return {

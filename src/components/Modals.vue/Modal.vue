@@ -1,10 +1,10 @@
 <template>
-  <div class="modal-wrapper">
+  <div class="modal-wrapper" :class="{'show': isShown, 'visible': isVisible}">
       <div class="modal">
           <div class="modal__head">
               <div class="modal__title">{{ title }}</div>
               <div class="modal__description" v-html="descriptionHtml"></div>
-              <div class="modal__close">
+              <div class="modal__close" @click="closeModal">
                   <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 20.5L10.5 13L3 20.5L0.499999 18L8 10.5L0.499999 3L3 0.500001L10.5 8L18 0.500001L20.5 3L13 10.5L20.5 18L18 20.5Z" fill="white"/>
                   </svg>
@@ -52,12 +52,12 @@
                             ref="vueRecaptcha">
                     </vue-recaptcha>
                   </div>
-                  <!-- <CustomRectButton 
+                  <CustomRectButton 
                     class="modal__submit" 
                     :text="'Отправить'" 
                     :isWhiteBtn="true" 
                     @click="formSubmit"
-                  /> -->
+                  />
                   <div class="modal__logo">
                       <img src="@/assets/modal-logo.png" alt="RTP">
                   </div>
@@ -106,14 +106,15 @@
 import CustomInput from '../UIKit/CustomInput.vue'
 import DropDown from '../UIKit/DropDown.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
-// import vueRecaptcha from 'vue3-recaptcha2';
+import { validateEmail } from '@/use/helpers.js'
+import vueRecaptcha from 'vue3-recaptcha2';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
         DropDown,
-        // vueRecaptcha
+        vueRecaptcha
     },
     props: {
         title: {
@@ -124,6 +125,10 @@ export default {
             type: String,
             required: true
         },
+        open: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -137,10 +142,13 @@ export default {
             isNameValid: true,
             isPhoneValid: true,
             isEmailValid: true,
-            isRecaptchaVerified: null
+            isRecaptchaVerified: null,
+            isShown: false,
+            isVisible: false
         }
     },
     methods: {
+        validateEmail,
         recaptchaVerified(response) {
             console.log(response);
             this.isRecaptchaVerified = response
@@ -149,8 +157,35 @@ export default {
             this.$refs.vueRecaptcha.reset();
         },
         formSubmit() {
-            
+            this.isNameValid = this.name ? true : false
+            this.isEmailValid = this.validateEmail(this.email)
+            this.isPhoneValid = this.phone.length === 12
+
+            if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
+                return
+
+            //отправить данные
+        },
+        closeModal() {
+            this.$emit('update:open', false)
         }
+    },
+    watch: {
+        open() {
+            if (this.open) {
+                document.body.classList.add('overflow-hidden')
+                this.isShown = true
+                setTimeout(() => {
+                    this.isVisible = true
+                }, 100);
+            } else {
+                document.body.classList.remove('overflow-hidden')
+                this.isVisible = false
+                setTimeout(() => {
+                    this.isShown = false
+                }, 300);
+            }
+        },
     }
 }
 </script>
@@ -169,6 +204,13 @@ export default {
     display: flex
     justify-content: center
     align-items: center
+    display: none
+    opacity: 0
+    transition: opacity .3s ease
+    &.show
+        display: flex
+    &.visible
+        opacity: 1
 .modal
     width: 1170px
     &__head

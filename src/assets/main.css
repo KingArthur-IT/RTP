@@ -60,6 +60,10 @@ button {
   display: none !important
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .section-title {
   font-weight: 700;
   font-size: 32px;
