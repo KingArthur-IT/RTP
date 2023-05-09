@@ -18,7 +18,7 @@
                         </div>
                         <h2 class="slide__title">{{ doFirstLetterUppercase(slide.description) }}</h2>
                         <div class="slide__btn">
-                            <CustomRectButton :text="'Подробнее'" />
+                            <CustomRectButton :text="'Подробнее'" @click="$router.push(slide.pageName)"/>
                         </div>
                         <button class="slide__btn"></button>
                     </div>
