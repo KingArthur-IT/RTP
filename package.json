@@ -8,7 +8,8 @@
     "serve": "NODE_ENV=production node ./src/server.js",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/main-server.js --outDir dist/server"
+    "build:server": "vite build --ssr src/main-server.js --outDir dist/server",
+    "build:vite": "vite build"
   },
   "dependencies": {
     "@unhead/vue": "^1.1.26",

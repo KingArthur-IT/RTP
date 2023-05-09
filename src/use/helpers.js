@@ -1,5 +1,5 @@
-export const getImageUrl = (folderName, imgName) => {
-    return `../../src/assets/${folderName}/${imgName}.png` //new URL(`../../src/assets/${folderName}/${imgName}.png`, import.meta.url).href
+export const getImageUrl = (folderName, imgName, extension = 'png') => {
+    return `../../src/assets/${folderName}/${imgName}.${extension}` //new URL(`../../src/assets/${folderName}/${imgName}.png`, import.meta.url).href
 }
 
 export const doFirstLetterUppercase = (str) => {
@@ -15,3 +15,5 @@ export const validateEmail = (email) => {
     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 };
+
+//new URL(`../assets/${folderName}/${imgName}.png`, import.meta.url).href

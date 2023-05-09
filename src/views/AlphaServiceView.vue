@@ -11,6 +11,10 @@
       </div>
     </div>
     <LearnCatalog />
+    <div class="container">
+      <SalesBenefits />
+      <ExamplesCarousel />
+    </div>
       <!-- <ActionForm class="action-form" /> -->
   </main>
 </template>
@@ -18,7 +22,9 @@
 <script>
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import BanerSystem from '../components/SystemPage/BanerSystem.vue'
+import ExamplesCarousel from '../components/SystemPage/ExamplesCarousel.vue'
 import LearnCatalog from '../components/SystemPage/LearnCatalog.vue'
+import SalesBenefits from '../components/SystemPage/SalesBenefits.vue'
 import SystemInfo from '../components/SystemPage/SystemInfo.vue'
 
 // import ActionForm from '../components/HomePage/ActionForm.vue'
@@ -29,7 +35,9 @@ export default {
     BreadCrumbs,
     BanerSystem,
     SystemInfo,
-    LearnCatalog
+    LearnCatalog,
+    SalesBenefits,
+    ExamplesCarousel
     // ActionForm,
     // MountingService,
   }

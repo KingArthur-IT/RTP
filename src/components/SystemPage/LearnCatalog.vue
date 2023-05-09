@@ -44,15 +44,17 @@ export default {
         top: 0
         min-width: 333px
         background: url('@/assets/alpha-info/logo.png') no-repeat
-        background-size: cover
+        background-size: contain
+        background-position-x: 100%
         opacity: 0.4
         z-index: 0
+        pointer-events: none
     &__img
         margin-left: 24px
         height: 100%
     &__hero
         color: #fff
-        padding: 46px 30px 70px 65px
+        padding: 46px 10px 70px 65px
     &__title
         font-weight: 700
         font-size: 45px
@@ -67,4 +69,24 @@ export default {
         align-self: center
         margin-left: auto
         margin-right: 200px
+
+@media screen and (max-width: 1650px)
+    .learn
+        &::after
+            right: 28px
+        &__img
+            margin-left: 30px
+            max-height: 176px
+        &__hero
+            padding: 25px 10px 40px 60px
+        &__title
+            font-size: 30px
+            margin-bottom: 15px
+        &__text
+            font-size: 17px
+        &__btn-wrap
+            min-width: 227px
+            max-height: 34px
+            margin-right: 133px
+
 </style>
