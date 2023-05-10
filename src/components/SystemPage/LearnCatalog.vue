@@ -5,19 +5,31 @@
         <div class="learn__title">Нет времени самостоятельно <br> изучать каталог? </div>
         <div class="learn__text">Менеджер соберет корзину по Вашему списку!</div>
       </div>
-      <div class="learn__btn-wrap">
+      <div class="learn__btn-wrap" @click="isModalShow = true">
         <DarkRectButton :text="'Соберите мне корзину'" />
       </div>
   </div>
+  <Modal 
+      v-model:open="isModalShow"
+      :title="'Посчитайте мой объект'"
+      :descriptionHtml="'Подбор оборудования, консультация и расчет сметы для Вас - БЕСПЛАТНО! <br> Пожалуйста, заполните обязательные поля, и мы с Вами свяжемся. '"
+  />
 </template>
 
 <script>
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
+import Modal from '../Modals.vue/Modal.vue'
 
 export default {
     components: {
-        DarkRectButton
-    }
+        DarkRectButton,
+        Modal
+    },
+    data() {
+        return {
+            isModalShow: false
+        }
+    },
 }
 </script>
 
@@ -65,7 +77,7 @@ export default {
         font-size: 25px
     &__btn-wrap
         min-width: 363px
-        max-height: 54px
+        min-height: 54px
         align-self: center
         margin-left: auto
         margin-right: 200px
@@ -86,7 +98,7 @@ export default {
             font-size: 17px
         &__btn-wrap
             min-width: 227px
-            max-height: 34px
+            min-height: 36px
             margin-right: 133px
 
 </style>
