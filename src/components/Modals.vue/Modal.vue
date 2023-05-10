@@ -32,7 +32,7 @@
                           :isRequired="true"
                           :isNumber="true"
                           v-model:value="phone"
-                          :placeholder="'+7'"
+                          :placeholder="''"
                           :isLight="true"
                           :isValid="isPhoneValid"
                       />
@@ -137,7 +137,7 @@ export default {
         return {
             name: '',
             surname: '',
-            phone: '',
+            phone: '+7 (',
             email: '',
             message: '',
             theme: '',

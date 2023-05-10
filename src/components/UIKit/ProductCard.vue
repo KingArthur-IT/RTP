@@ -1,7 +1,6 @@
 <template>
   <div class="card">
       <div class="card__hero">
-          <div class="card__discount-label">-{{ discountPercent }}%</div>
           <div class="card__carousel">
               <Carousel 
                 :items-to-show="1" 
@@ -16,6 +15,7 @@
                 </slide>
               </Carousel>
           </div>
+          <div class="card__discount-label">-{{ discountPercent }}%</div>
           <div class="dots">
               <div class="dot" 
                 v-for="(slide, index) in slideCount" :key="index"
@@ -149,6 +149,7 @@ export default {
         align-items: center
         justify-content: center
         z-index: 5
+        transform: translateZ(10px)
     &__description
         font-weight: 700
         font-size: 16px

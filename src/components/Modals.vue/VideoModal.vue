@@ -4,8 +4,8 @@
     :class="{'show': isShown, 'visible': isVisible}"
     @click="closeModal"
   >
-      <div class="modal" @click.stop>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/Br0Dh6VeTCI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div ref="modalHero" class="modal" @click.stop>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/_DLxACb4P7I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
   </div>
 </template>
@@ -38,6 +38,8 @@ export default {
                     this.isVisible = true
                 }, 100);
             } else {
+                const src = this.$refs.modalHero.querySelector('iframe').getAttribute('src')
+                this.$refs.modalHero.querySelector('iframe').setAttribute('src', src)
                 document.body.classList.remove('overflow-hidden')
                 this.isVisible = false
                 setTimeout(() => {
@@ -75,8 +77,12 @@ export default {
     & iframe
         display: block
         margin: 0 auto
+        width: 1254px
+        height: 642px
 
-// @media screen and (max-width: 1600px)
-//     .modal
-//         width: 740px
+@media screen and (max-width: 1600px)
+    .modal
+        & iframe
+            width: 1000px
+            height: 450px
 </style>

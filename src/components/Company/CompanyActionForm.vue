@@ -16,7 +16,7 @@
                 :isRequired="true"
                 :isNumber="true"
                 v-model:value="phone"
-                :placeholder="'+7'"
+                :placeholder="''"
                 :isValid="isPhoneValid"
             />
         </div>
@@ -66,7 +66,7 @@ export default {
     data() {
         return {
             name: '',
-            phone: '',
+            phone: '+7 (',
             email: '',
             message: '',
             isNameValid: true,

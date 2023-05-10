@@ -77,6 +77,9 @@ export default {
             inputValue: '',
         }
     },
+    mounted() {
+        this.inputValue = this.value
+    },
     methods: {
         onInput(event) {
             this.$emit('update:value', event.target.value)
@@ -88,7 +91,32 @@ export default {
         },
         inputValue() {
             if (this.isNumber) {
-                this.inputValue = this.inputValue.replace(/[^0-9+]/g, '').replace(/(\..*?)\..*/g, '$1')
+                const value = this.inputValue.replace(/\D+/g, "");
+                const numberLength = 11;
+
+                let result = '+';
+
+                for (let i = 0; i < value.length && i < numberLength; i++) {
+                    switch (i) {
+                    case 0:
+                        result += '7 ('
+                        continue;
+                    case 4:
+                        result += ") ";
+                        break;
+                    case 7:
+                        result += "-";
+                        break;
+                    case 9:
+                        result += "-";
+                        break;
+                    default:
+                        break;
+                    }
+                    result += value[i];
+                }
+
+                this.inputValue = result;
             }
         }
     }
