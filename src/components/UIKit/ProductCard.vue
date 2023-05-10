@@ -1,6 +1,7 @@
 <template>
   <div class="card">
       <div class="card__hero">
+          <div class="card__discount-label">-{{ discountPercent }}%</div>
           <div class="card__carousel">
               <Carousel 
                 :items-to-show="1" 
@@ -14,7 +15,6 @@
                     <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
                 </slide>
               </Carousel>
-              <div class="card__discount-label">-{{ discountPercent }}%</div>
           </div>
           <div class="dots">
               <div class="dot" 
@@ -40,7 +40,7 @@
                         <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
                     </svg>
                   </button>
-                  <span>{{ productCount }}</span>
+                  <input type="text" v-model="productCount" @input="onCountInput">
                   <button @click="incrementProductCount">
                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
@@ -96,7 +96,7 @@ export default {
             this.$refs[`prodCard${this.id}`].slideTo(index)
             this.slideIndex = index + 1
         },
-        onSlideChange(data){
+        onSlideChange(data) {
             this.slideIndex = data.slidingToIndex + 1
             if (this.slideIndex > this.slideCount)
                 this.slideIndex =  1
@@ -109,13 +109,16 @@ export default {
         },
         incrementProductCount() {
             this.productCount ++
+        },
+        onCountInput() {
+            this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
         }
     },
     computed: {
         discountPercent() {
             return Math.round(100.0 - 100.0 * this.newPrice / this.oldPrice)
         }
-    }
+    },
 }
 </script>
 
@@ -145,11 +148,13 @@ export default {
         display: flex
         align-items: center
         justify-content: center
+        z-index: 5
     &__description
         font-weight: 700
         font-size: 16px
         color: #A6ACB3
         margin-bottom: 14px
+        text-align: left
     &__price
         display: flex
         align-items: flex-end
@@ -209,11 +214,16 @@ export default {
         display: flex
         align-items: center
         justify-content: center
-    & span
+    & input
+        border: none
+        appearance: none
+        outline: none
         font-weight: 700
         font-size: 16px
         color: #42474D
         padding: 0 8px
+        width: 45px
+        text-align: center
 
 @media screen and (max-width: 1600px)
     .card
@@ -255,7 +265,8 @@ export default {
             & svg
                 width: 11px
                 height: 11px
-        & span
+        & input
             font-size: 10px
             padding: 0 5px
+            width: 30px
 </style>

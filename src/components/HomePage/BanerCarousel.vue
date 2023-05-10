@@ -16,7 +16,7 @@
                             <img :src="getImageUrl('logos', slide.name)" :alt="slide.name" class="slide__logo">
                             <span>{{ slide.title }}</span>
                         </div>
-                        <h2 class="slide__title">{{ doFirstLetterUppercase(slide.description) }}</h2>
+                        <h2 class="slide__title" v-html="doFirstLetterUppercase(slide.descriptionBanerHtml)"></h2>
                         <div class="slide__btn">
                             <CustomRectButton :text="'Подробнее'" @click="slideDetailClick(slide.name)"/>
                         </div>
@@ -162,7 +162,7 @@ export default {
         color: #fff
         margin-bottom: 40px
         text-align: left
-        max-width: 620px
+        // max-width: 620px
     &__btn
         max-width: 230px
 

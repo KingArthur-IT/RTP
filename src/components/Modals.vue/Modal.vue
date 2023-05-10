@@ -97,7 +97,7 @@
                     />
                   </div>
                   <div>
-                      <DropDown v-model:value="file" />
+                      <DropFileSection v-model:value="file" />
                   </div>
               </div>
           </div>
@@ -107,7 +107,7 @@
 
 <script>
 import CustomInput from '../UIKit/CustomInput.vue'
-import DropDown from '../UIKit/DropDown.vue';
+import DropFileSection from '../UIKit/DropFileSection.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import { validateEmail } from '@/use/helpers.js'
 import { VueRecaptcha } from 'vue-recaptcha';
@@ -116,7 +116,7 @@ export default {
     components: {
         CustomInput,
         CustomRectButton,
-        DropDown,
+        DropFileSection,
         VueRecaptcha
     },
     props: {
