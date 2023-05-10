@@ -47,13 +47,15 @@
                   </div>
                   <div class="input-wrapper">
                       <div class="input-label">Проверка*</div>
-                      <vue-recaptcha sitekey="key"
+                      <div>
+                        <vue-recaptcha sitekey="key"
                             size="normal" 
                             theme="light"
                             @verify="recaptchaVerified"
                             @expire="recaptchaExpired"
                             ref="vueRecaptcha">
-                    </vue-recaptcha>
+                        </vue-recaptcha>
+                      </div>
                   </div>
                   <CustomRectButton 
                     class="modal__submit" 
@@ -250,7 +252,7 @@ export default {
         padding: 0 25px
     &__submit
         margin-bottom: 50px
-        margin-top: 50px
+        margin-top: 22px
         width: 230px
     &__logo
         width: 115px
@@ -265,13 +267,13 @@ export default {
     margin-bottom: 12px
     font-weight: 500
     font-size: 16px
-    margin-top: 90px
+    margin-top: 70px
 
 @media screen and (max-width: 1600px)
     .input-label
         font-size: 10px
         margin-bottom: 4px
-        margin-top: 50px
+        margin-top: 30px
     .input-wrapper
         margin-bottom: 14px
     .modal
@@ -293,7 +295,7 @@ export default {
             padding: 0 16px
         &__submit
             margin-bottom: 34px
-            margin-top: 26px
+            margin-top: 12px
             width: 145px
         &__logo
             width: 72px

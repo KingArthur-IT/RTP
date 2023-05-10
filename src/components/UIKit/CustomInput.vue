@@ -152,6 +152,7 @@ export default {
         padding: 8px 11px
         font-size: 13px
         font-weight: 400
+        max-height: 243px
         &.main-form
             max-height: 204px
     
