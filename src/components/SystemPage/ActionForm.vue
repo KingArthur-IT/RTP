@@ -32,7 +32,9 @@
                       <CustomCheckbox class="input-checkbox" v-model="isConfirmed" :isValid="isConfirmedValid">
                         <span class="conditions-text">Согласие с политикой конфиденциальности</span>
                       </CustomCheckbox>
-                      <CustomRectButton class="action__submit" :text="'Отправить'" @click="sendForm"/>
+                      <div class="action__submit">
+                          <CustomRectButton :text="'Отправить'" @click="sendForm"/>
+                      </div>
                   </div>
                   <div class="action__right">
                     <div class="input-wrapper">
@@ -152,7 +154,7 @@ export default {
     &__submit
         margin-top: auto
         align-self: flex-end
-        max-width: 230px
+        width: 230px
         margin-right: auto
         margin-bottom: 8px
 
@@ -182,7 +184,7 @@ export default {
             max-width: 250px
             margin-right: 26px
         &__submit
-            max-width: 140px
+            width: 140px
             margin-bottom: 16px
     .input-wrapper
         margin-bottom: 11px
