@@ -127,14 +127,12 @@ export default {
     &.gamma::after
         background: linear-gradient(100deg, #224386 18.31%, rgba(34, 67, 134, 0.8) 42.96%, rgba(34, 67, 134, 0) 79.5%)
     &__bg
-        width: 100%
         position: absolute
         top: 0
         bottom: 0
-        left: 0
         right: 0
         height: 100%
-        width: 100%
+        object-fit: cover
     &__hero
         padding: 60px 135px 115px
         z-index: 12
