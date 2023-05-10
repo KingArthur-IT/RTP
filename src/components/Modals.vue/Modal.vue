@@ -47,14 +47,14 @@
                   </div>
                   <div class="input-wrapper">
                       <div class="input-label">Проверка*</div>
-                      <vue-recaptcha sitekey="key"
+                      <!-- <vue-recaptcha sitekey="key"
                             size="normal" 
                             theme="light"
                             hl="tr"
                             @verify="recaptchaVerified"
                             @expire="recaptchaExpired"
                             ref="vueRecaptcha">
-                    </vue-recaptcha>
+                    </vue-recaptcha> -->
                   </div>
                   <CustomRectButton 
                     class="modal__submit" 
@@ -111,14 +111,14 @@ import CustomInput from '../UIKit/CustomInput.vue'
 import DropDown from '../UIKit/DropDown.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import { validateEmail } from '@/use/helpers.js'
-import vueRecaptcha from 'vue3-recaptcha2';
+// import vueRecaptcha from 'vue3-recaptcha2';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
         DropDown,
-        vueRecaptcha
+        // vueRecaptcha
     },
     props: {
         title: {
@@ -133,6 +133,9 @@ export default {
             type: Boolean,
             default: false
         }
+    },
+    mounted() {
+        useRecaptchaProvider()
     },
     data() {
         return {
@@ -158,7 +161,7 @@ export default {
             this.isRecaptchaVerified = response
         },
         recaptchaExpired() {
-            this.$refs.vueRecaptcha.reset();
+            // this.$refs.vueRecaptcha.reset();
         },
         formSubmit() {
             this.isNameValid = !!this.name
