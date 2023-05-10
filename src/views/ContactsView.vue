@@ -58,7 +58,10 @@ export default {
     ContactCard,
     WhatsUpCard,
     MailCard
-  }
+  },
+  mounted(){
+    window.scrollTo(0, 0);
+  },
 }
 </script>
 

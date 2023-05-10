@@ -37,7 +37,10 @@ export default {
     Advantages,
     MountingService,
     GrovingGeography
-  }
+  },
+  mounted(){
+    window.scrollTo(0, 0);
+  },
 }
 </script>
 
