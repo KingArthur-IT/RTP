@@ -1,6 +1,10 @@
 <template>
     <div class="input-wrap" :class="{'light': isLight}">
-        <label v-if="label" class="label">{{ label }}<span v-if="isRequired">*</span></label>
+        <label 
+            v-if="label" 
+            class="label"
+            :class="{'blue': isLabelBlue}"
+        >{{ label }}<span v-if="isRequired">*</span></label>
         <input 
             v-if="!isTextArea"
             class="input" 
@@ -63,6 +67,10 @@ export default {
             default: 10
         },
         isLight: {
+            type: Boolean,
+            default: false
+        },
+        isLabelBlue: {
             type: Boolean,
             default: false
         },
@@ -129,6 +137,8 @@ export default {
         color: #fff
         margin-bottom: 12px
         font-weight: 500
+        &.blue
+            color: #8CA7DD
     .input-wrap
         width: 100%
         position: relative

@@ -1,9 +1,9 @@
 <template>
   <div class="geography">
-      <div class="section-title best__title">
+      <div v-if="showTitle" class="section-title best__title">
           <div class="section-title-text">География развития</div>
       </div>
-      <div class="geography__wrapper">
+      <div class="geography__wrapper" :class="{'no-mt': !showTitle}">
           <div class="geography__map">
               <img src="@/assets/map.png" alt="map">
           </div>
@@ -31,7 +31,12 @@
 
 <script>
 export default {
-
+    props: {
+        showTitle: {
+            type: Boolean,
+            default: true
+        }
+    }
 }
 </script>
 
@@ -42,6 +47,8 @@ export default {
         display: flex
         justify-content: space-between
         align-items: stretch
+        &.no-mt
+            margin-top: 0
     &__map
         width: 100%
         margin-right: 56px
@@ -94,6 +101,8 @@ export default {
     .geography
         &__wrapper
             margin-top: 60px
+            &.no-mt
+                margin-top: 0
         &__map
             margin-right: 25px
         &__list

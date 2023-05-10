@@ -8,6 +8,7 @@
                 v-model:value="name"
                 :placeholder="'Введите ФИО'"
                 :isValid="isNameValid"
+                :isLabelBlue="true"
             />
         </div>
         <div class="input-wrapper">
@@ -18,6 +19,7 @@
                 v-model:value="phone"
                 :placeholder="''"
                 :isValid="isPhoneValid"
+                :isLabelBlue="true"
             />
         </div>
         <div class="input-wrapper">
@@ -28,6 +30,7 @@
                 v-model:value="email"
                 :placeholder="'Введите e-mail'"
                 :isValid="isEmailValid"
+                :isLabelBlue="true"
             />
         </div>
         <div class="submit-wrapper">
@@ -47,6 +50,7 @@
                 :isTextArea="true"
                 :rowsCount="7"
                 :additionalClass="'main-form'"
+                :isLabelBlue="true"
             />
         </div>
     </form>
