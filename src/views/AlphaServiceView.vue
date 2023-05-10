@@ -30,7 +30,7 @@
         <MountingService class="mounting-service" />
       </div>
     </div>
-      <!-- <ActionForm class="action-form" /> -->
+      <ActionForm class="action-form" />
   </main>
 </template>
 
@@ -43,8 +43,7 @@ import LearnCatalog from '../components/SystemPage/LearnCatalog.vue'
 import SalesBenefits from '../components/SystemPage/SalesBenefits.vue'
 import SystemInfo from '../components/SystemPage/SystemInfo.vue'
 import MountingService from '../components/HomePage/MountingService.vue'
-
-// import ActionForm from '../components/HomePage/ActionForm.vue'
+import ActionForm from '../components/SystemPage/ActionForm.vue'
 
 export default {
   components: {
@@ -56,7 +55,7 @@ export default {
     ExamplesCarousel,
     CompareSystem,
     MountingService,
-    // ActionForm,
+    ActionForm,
   },
   mounted(){
     window.scrollTo(0, 0);

@@ -86,6 +86,11 @@
             <SliderControlBtn :isLeftBtn="false" @click="nextClick" />
       </div>
   </div>
+  <Modal 
+      v-model:open="isModalShow"
+      :title="'Посчитайте мой объект'"
+      :descriptionHtml="'Подбор оборудования, консультация и расчет сметы для Вас - БЕСПЛАТНО! <br> Пожалуйста, заполните обязательные поля, и мы с Вами свяжемся. '"
+  />
 </template>
 
 <script>
@@ -94,13 +99,15 @@ import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
 import SliderControlBtn from '../UIKit/SliderControlBtn.vue';
+import Modal from '../Modals.vue/Modal.vue'
 
 export default {
     components: {
         Carousel,
         Slide,
         DarkRectButton,
-        SliderControlBtn
+        SliderControlBtn,
+        Modal
     },
     data() {
         return {
@@ -129,7 +136,8 @@ export default {
                     term: '5 дней',
                     list: ['отопление', 'водоснабжение', 'водоотведение'] 
                 },
-            ]
+            ],
+            isModalShow: false
         }
     },
     methods: {
