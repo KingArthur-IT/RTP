@@ -1,5 +1,5 @@
 <template>
-    <div class="header__hero">
+    <div class="header__hero" @click="isServicesHeaderListShown = false">
         <div class="header__logo" @click="goToPage('home')">
             <img src="@/assets/logo.png" alt="RTP">
             <div class="header__logo-txt">
@@ -10,7 +10,7 @@
         </div>
         <div class="header__content">
             <nav class="header__nav">
-                <div class="header__nav-item" :class="{'active': isServicesHeaderListShown}" @click="servicesListShownToogle">
+                <div class="header__nav-item" :class="{'active': isServicesHeaderListShown}" @click.stop="servicesListShownToogle">
                     <span>Сервис</span>
                     <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6.5 6.55671e-07L12.9952 7.5L0.00480872 7.5L6.5 6.55671e-07Z" fill="#8CA7DD"/>
@@ -21,7 +21,7 @@
                 <div class="header__nav-item">Оплата</div>
                 <div class="header__nav-item" :class="{'active': isCurrentPage('company')}" @click="goToPage('company')">О компании</div>
                 <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}" @click="goToPage('contacts')">Контакты</div>
-                <ServicesList :isShown="isServicesHeaderListShown"/>
+                <ServicesList :isShown="isServicesHeaderListShown" @closeEvent="isServicesHeaderListShown = false"/>
             </nav>
             <div class="header__call-info">
                 <a href="tel:+84955405262" class="header__phone">8 (495) 540-52-62</a>

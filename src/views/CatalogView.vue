@@ -131,7 +131,7 @@ export default {
   transform: translateX(-10px)
   display: grid
   grid-template-columns: repeat(6, 1fr)
-  grid-template-rows: repeat(4, auto 1fr auto)
+  grid-template-rows: repeat(4, auto)
   grid-column-gap: 0px
   grid-row-gap: 0px
   &__card

@@ -9,7 +9,7 @@
             @slide-start="onSlideChange"
         >
             <slide v-for="(slide, index) in systemList" :key="index">
-                <div class="slide">
+                <div class="slide" :class="slide.name">
                     <img :src="getImageUrl('baner-bg', slide.name)" :alt="slide.name" class="slide__bg">
                     <div class="slide__hero">
                         <div class="slide__label">
@@ -108,9 +108,24 @@ export default {
         right: 0
         bottom: 0
         right: 0
-        background: linear-gradient(100deg, #2598D2 27.02%, rgba(148, 204, 232, 0.8) 54.87%, rgba(170, 214, 236, 0) 75.9%)
         z-index: 10
         pointer-events: none
+    &.alpha::after
+        background: linear-gradient(100deg, #2598D2 27.02%, rgba(148, 204, 232, 0.8) 54.87%, rgba(170, 214, 236, 0) 75.9%)
+    &.sigma::after
+        background: linear-gradient(100deg, #003C47 18.31%, rgba(0, 60, 71, 0.8) 45.93%, rgba(0, 60, 71, 0.138423) 83.43%, rgba(0, 60, 71, 0) 97.77%)
+    &.omega::after
+        background: linear-gradient(100deg, #B92F2C -0.54%, rgba(185, 47, 44, 0.8) 24.06%, rgba(185, 47, 44, 0) 82.68%)
+    &.beta-orange::after
+        background: linear-gradient(100deg, #EE741D 18.31%, rgba(238, 116, 29, 0.8) 50.6%, rgba(238, 116, 29, 0) 83.44%)
+    &.delta::after
+        background: linear-gradient(100deg, #00949F 18.31%, rgba(0, 148, 159, 0.8) 44.23%, rgba(0, 148, 159, 0) 83.44%)
+    &.beta::after
+        background: linear-gradient(100deg, #7E8E97 18.31%, rgba(126, 142, 151, 0.8) 47.63%, rgba(126, 142, 151, 0) 83.44%)
+    &.beta-elite::after
+        background: linear-gradient(100deg, #80C2EC 18.31%, rgba(128, 194, 236, 0.8) 53.15%, rgba(128, 194, 236, 0) 83.44%)
+    &.gamma::after
+        background: linear-gradient(100deg, #224386 18.31%, rgba(34, 67, 134, 0.8) 42.96%, rgba(34, 67, 134, 0) 79.5%)
     &__bg
         width: 100%
         position: absolute

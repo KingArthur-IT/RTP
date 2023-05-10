@@ -15,7 +15,7 @@
                     <div class="slide">
                         <div class="slide__card">
                             <div class="slide__img">
-                                <img :src="getImageUrl('/alpha-examples', slide.imgName, 'jpg')" alt="example">
+                                <img :src="getImageUrl('alpha-examples', slide.imgName, 'jpg')" alt="example">
                             </div>
                             <div class="slide__hero">
                                 <div class="slide__title">{{ slide.title }}</div>

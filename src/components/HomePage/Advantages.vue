@@ -95,18 +95,32 @@ export default {
         border-radius: 29px
         padding: 35px 35px 50px 35px
         height: 100%
+        transition: background .3s ease
+        &:hover
+            background: var(--primary-color)
+            & .advantages__title
+                color: #fff
+            & .advantages__text
+                color: #fff
+            & .advantages__icon svg path
+                stroke: #fff
+                fill: var(--primary-color)
     &__icon
         margin-bottom: 25px
+        & svg path
+            transition: all .3s ease
     &__title
         font-weight: 700
         font-size: 24px
         text-transform: uppercase
         color: var(--primary-color)
         margin-bottom: 10px
+        transition: color .3s ease
     &__text
         font-size: 17px
         line-height: 171%
         color: #6C7689
+        transition: color .3s ease
 
 @media screen and (max-width: 1600px)
     .advantages

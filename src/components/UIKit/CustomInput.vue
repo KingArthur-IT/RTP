@@ -119,7 +119,7 @@ export default {
         &::placeholder
             color: var(--primary-color)
         &.error
-            border-color: #DC1818
+            border-color: #F27272
     .textarea
         padding: 8px 11px
         font-size: 13px

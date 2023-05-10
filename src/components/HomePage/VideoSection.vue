@@ -1,7 +1,7 @@
 <template>
   <div class="video-section">
       <div class="video-section__hero">
-          <div class="video-section__icon">
+          <div class="video-section__icon" @click="isModalOpened = true">
               <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="52.5" cy="52.5" r="52.5" fill="white"/>
                 <path d="M43 69.3691V34L72.2034 52.8635L43 69.3691Z" fill="#224386" stroke="#224386" stroke-width="5"/>
@@ -9,19 +9,27 @@
           </div>
           <h3 class="video-section__title">Узнайте, как работает наш завод. <br> Это займет не более 10 минут.</h3>
           <div class="video-section__btn">
-              <LightRectButton :text="'Смотреть видео'" />
+              <LightRectButton :text="'Смотреть видео'" @click="isModalOpened = true"/>
           </div>
       </div>
       <img src="@/assets/video/RTP.png" alt="RTP" class="video-section__logo">
   </div>
+  <VideoModal v-model:open="isModalOpened" />
 </template>
 
 <script>
+import VideoModal from '../Modals.vue/VideoModal.vue'
 import LightRectButton from '../UIKit/LightRectButton.vue'
 
 export default {
     components: {
-        LightRectButton
+        LightRectButton,
+        VideoModal
+    },
+    data() {
+        return {
+            isModalOpened: false
+        }
     }
 }
 </script>

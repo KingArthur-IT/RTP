@@ -6,7 +6,9 @@
       <ActionForm class="action-form" />
       <BestSales />
     </div>
-    <VideoSection class="video-section" />
+    <div class="video-section-container">
+      <VideoSection />
+    </div>
     <div class="container">
       <Advantages />
       <MountingService class="mounting-service" />
@@ -44,7 +46,7 @@ export default {
   margin-bottom: 25px
 .action-form
   margin: 92px 0
-.video-section
+.video-section-container
   margin: 66px 0 77px
 .mounting-service
   margin: 100px 0 60px
@@ -54,7 +56,7 @@ export default {
 @media screen and (max-width: 1600px)
   .action-form
     margin: 30px 0 60px
-  .video-section
+  .video-section-container
     margin: 45px 0 60px
   .mounting-service
     margin: 52px 0 62px

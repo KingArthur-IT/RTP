@@ -2,7 +2,7 @@
   <div class="services" :class="{'shown': isShown}">
       <div 
         v-for="(item, index) in list" :key="index"
-        @click="$router.push(item.pageName)"
+        @click="itemClick(item.pageName)"
         class="services__item" 
       >
           <div class="services__icon">
@@ -85,6 +85,14 @@ export default {
                     pageName: ''
                 },
             ]
+        }
+    },
+    methods: {
+        itemClick(name) {
+            this.$emit('closeEvent')
+            if (name === '')
+                this.$router.push({ name: 'catalog' })
+            else this.$router.push({ name: name })
         }
     }
 }

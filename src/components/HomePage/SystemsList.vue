@@ -1,7 +1,7 @@
 <template>
   <div class="list">
       <div class="list__item" v-for="(item, index) in systemList" :key="index">
-          <div class="card" @click="goToPage(item.name)">
+          <div class="card" @click="goToPage(item.name)" :class="item.name">
               <img :src="getImageUrl('systems-bg', item.name)" :alt="item.name" class="card__bg">
               <div class="card__label">
                   <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo">
@@ -49,6 +49,54 @@ export default {
     padding: 35px 30px
     min-height: 510px
     cursor: pointer
+    border-radius: 23px
+    overflow: hidden
+    &::after
+        content: ''
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        z-index: 0
+        pointer-events: none
+        opacity: 0
+        transition: opacity .3s ease
+    &:hover
+        & .card__description
+            color: #fff
+    &.alpha:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #2598D2 13.97%, rgba(37, 152, 210, 0.8) 46.47%, rgba(37, 152, 210, 0) 76.93%)
+    &.sigma:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #003C47 24.51%, rgba(0, 60, 71, 0.8) 50.89%, rgba(0, 60, 71, 0) 76.93%)
+    &.omega:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #B92F2C 24.51%, rgba(185, 47, 44, 0.8) 50.89%, rgba(185, 47, 44, 0) 76.93%)
+    &.beta-orange:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #EE741D 13.97%, rgba(238, 116, 29, 0.8) 46.47%, rgba(238, 116, 29, 0) 76.93%)
+    &.delta:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #00949F 13.97%, rgba(0, 148, 159, 0.8) 46.47%, rgba(0, 148, 159, 0) 76.93%)
+    &.beta:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #7E8E97 13.97%, rgba(126, 142, 151, 0.8) 46.47%, rgba(126, 142, 151, 0) 76.93%)
+    &.beta-elite:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #80C2EC 13.97%, rgba(128, 194, 236, 0.8) 46.47%, rgba(128, 194, 236, 0) 76.93%)
+    &.gamma:hover
+        &::after
+            opacity: 1
+            background: linear-gradient(178.5deg, #224386 13.97%, rgba(34, 67, 134, 0.8) 46.47%, rgba(34, 67, 134, 0) 76.93%)
     &__bg
         position: absolute
         top: 0
@@ -65,6 +113,7 @@ export default {
         border-radius: 39px
         margin-bottom: 24px
         width: fit-content
+        z-index: 2
         & span
             text-transform: uppercase
             color: #333333
@@ -79,6 +128,8 @@ export default {
         font-size: 32px
         color: #333333
         line-height: 1.21
+        z-index: 2
+        transition: color .3s ease
 
 @media screen and (max-width: 1600px)
     .list

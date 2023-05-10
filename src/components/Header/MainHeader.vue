@@ -39,7 +39,7 @@ export default {
     background-color: var(--primary-color)
     border-radius: 92px
     padding: 22px 0 37px
-    z-index: 10
+    z-index: 20
     &.shadow
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 
