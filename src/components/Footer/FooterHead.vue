@@ -25,8 +25,8 @@
         <div class="footer__title">Компания</div>
         <div class="nav-wrapper">
         <div class="nav">
-            <div class="nav__item">О компании</div>
-            <div class="nav__item">Каталог</div>
+            <div class="nav__item" @click="goToPage('company')">О компании</div>
+            <div class="nav__item" @click="goToPage('catalog')">Каталог</div>
             <div class="nav__item">Услуги</div>
             <div class="nav__item">Оплата</div>
             <div class="nav__item">Корзина</div>
