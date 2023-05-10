@@ -117,7 +117,10 @@ export default {
         { name: 'Труба армированная', count: 17 },
       ],
     }
-  }
+  },
+  mounted(){
+    window.scrollTo(0, 0);
+  },
 }
 </script>
 

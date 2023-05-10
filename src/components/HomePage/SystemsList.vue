@@ -1,7 +1,7 @@
 <template>
   <div class="list">
       <div class="list__item" v-for="(item, index) in systemList" :key="index">
-          <div class="card">
+          <div class="card" @click="goToPage(item.name)">
               <img :src="getImageUrl('systems-bg', item.name)" :alt="item.name" class="card__bg">
               <div class="card__label">
                   <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo">
@@ -25,6 +25,11 @@ export default {
     },
     methods: {
         getImageUrl,
+        goToPage(name) {
+            if (name === 'alpha')
+                this.$router.push({ name: 'alpha-system' })
+            else this.$router.push({ name: 'catalog' })
+        }
     }
 }
 </script>
@@ -43,6 +48,7 @@ export default {
     position: relative
     padding: 35px 30px
     min-height: 510px
+    cursor: pointer
     &__bg
         position: absolute
         top: 0

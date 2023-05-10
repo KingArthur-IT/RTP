@@ -40,7 +40,10 @@ export default {
     ExamplesCarousel
     // ActionForm,
     // MountingService,
-  }
+  },
+  mounted(){
+    window.scrollTo(0, 0);
+  },
 }
 </script>
 

@@ -18,7 +18,7 @@
                         </div>
                         <h2 class="slide__title">{{ doFirstLetterUppercase(slide.description) }}</h2>
                         <div class="slide__btn">
-                            <CustomRectButton :text="'Подробнее'" @click="$router.push(slide.pageName)"/>
+                            <CustomRectButton :text="'Подробнее'" @click="slideDetailClick(slide.name)"/>
                         </div>
                         <button class="slide__btn"></button>
                     </div>
@@ -80,6 +80,11 @@ export default {
                 this.slideIndex =  1
             if (this.slideIndex < 1)
                 this.slideIndex = this.systemList.length
+        },
+        slideDetailClick(name) {
+            if (name === 'alpha')
+                this.$router.push({ name: 'alpha-system' })
+            else this.$router.push({ name: 'catalog' })
         }
     },
 }
