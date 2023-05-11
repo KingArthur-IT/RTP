@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-      <div class="card__head">
+      <div class="card__head" @click="$router.push({ name: 'catalog-system', params: { name: pageName } })">
           <p>{{ title }}</p>
           <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
@@ -25,6 +25,10 @@ export default {
         data: {
             type: Array,
             default: []
+        },
+        pageName: {
+            type: String,
+            required: true
         }
     }
 }
@@ -47,10 +51,9 @@ export default {
         font-size: 20px
         color: #42474D
         padding: 16px 15px 16px 30px
+        cursor: pointer
         & p
             padding-right: 20px
-        & svg
-            cursor: pointer
     &__body
         padding: 23px 30px
         background: #fff

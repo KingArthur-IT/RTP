@@ -6,48 +6,56 @@
           <GeneralCatalogCard
             :title="'Система ALPHA - Полипропиленовые трубы и фитинги PP-R'"
             :data="alphaData"
+            :pageName="'alpha'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система SIGMA - Запорная арматура и латунные резьбовые фитинги'"
             :data="sigmaData"
+            :pageName="'sigma'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система DELTA - Трубы PE-Xa / EVOH и аксиальные фитинги'"
             :data="deltaData"
+            :pageName="'delta'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система OMEGA - Трубы и комплектующие для теплого пола PE-RT и PE-Xa'"
             :data="omegaData"
+            :pageName="'omega'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система BETA ELITE - Малошумная канализация'"
             :data="betaEliteData"
+            :pageName="'beta-elite'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система BETA ORANGE - Наружная канализация'"
             :data="betaOrangeData"
+            :pageName="'beta-orange'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система BETA - Внутренняя канализация'"
             :data="betaData"
+            :pageName="'beta'"
           />
         </div>
         <div class="catalog__card">
           <GeneralCatalogCard
             :title="'Система GAMMA - Трубы ПНД и компрессионные фитинги'"
             :data="gammaData"
+            :pageName="'gamma'"
           />
         </div>
       </div>
