@@ -7,7 +7,7 @@
           <SystemFilters />
         </div>
         <div class="catalog-system__hero">
-          Hero
+          <SystemCatalogHero />
         </div>
       </div>
     </div>
@@ -16,12 +16,14 @@
 
 <script>
 import BreadCrumbsSecondLevel from '../components/BreadCrumbs/BreadCrumbsSecondLevel.vue';
+import SystemCatalogHero from '../components/SystemCatalog/SystemCatalogHero.vue';
 import SystemFilters from '../components/SystemCatalog/SystemFilters.vue';
 
 export default {
   components: {
     BreadCrumbsSecondLevel,
-    SystemFilters
+    SystemFilters,
+    SystemCatalogHero
   },
   data() {
     return {
