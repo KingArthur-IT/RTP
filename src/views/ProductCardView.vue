@@ -6,7 +6,7 @@
             <div class="product-head__head">
                 <h1 class="product-head__title">Труба из полипропилена PN SDR 11 для холодной воды, 4 метра - 20*1.9мм.</h1>
                 <div class="product-head__icons">
-                    <div class="product-head__icon">
+                    <div class="product-head__icon" @click="copyCurrentLink">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4.8018 20.1937C5.26567 20.6583 5.81676 21.0266 6.42341 21.2775C7.03006 21.5284 7.68031 21.6569 8.3368 21.6557C8.99342 21.6569 9.64381 21.5283 10.2506 21.2774C10.8574 21.0265 11.4087 20.6583 11.8728 20.1937L14.7008 17.3647L13.2868 15.9507L10.4588 18.7797C9.89527 19.3407 9.13247 19.6557 8.3373 19.6557C7.54212 19.6557 6.77933 19.3407 6.2158 18.7797C5.6543 18.2165 5.339 17.4536 5.339 16.6582C5.339 15.8629 5.6543 15.1 6.2158 14.5367L9.0448 11.7087L7.6308 10.2947L4.8018 13.1227C3.8656 14.0612 3.33984 15.3327 3.33984 16.6582C3.33984 17.9838 3.8656 19.2553 4.8018 20.1937ZM20.3578 11.7087C21.2935 10.77 21.8189 9.49865 21.8189 8.17323C21.8189 6.84782 21.2935 5.57645 20.3578 4.63773C19.4193 3.70154 18.1479 3.17578 16.8223 3.17578C15.4967 3.17578 14.2253 3.70154 13.2868 4.63773L10.4588 7.46673L11.8728 8.88073L14.7008 6.05173C15.2643 5.49072 16.0271 5.17576 16.8223 5.17576C17.6175 5.17576 18.3803 5.49072 18.9438 6.05173C19.5053 6.61501 19.8206 7.3779 19.8206 8.17323C19.8206 8.96857 19.5053 9.73146 18.9438 10.2947L16.1148 13.1227L17.5288 14.5367L20.3578 11.7087Z" fill="#828D99"/>
                             <path d="M9.04391 17.3648L7.62891 15.9508L16.1159 7.46484L17.5299 8.87984L9.04391 17.3648Z" fill="#828D99"/>
@@ -40,8 +40,8 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="subhead__item">19 отзывов</div>
-                    <div class="subhead__item">23 вопроса</div>
+                    <!-- <div class="subhead__item">19 отзывов</div>
+                    <div class="subhead__item">23 вопроса</div> -->
                     <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
                 </div>
                 <div class="subhead__info">
@@ -221,6 +221,9 @@ export default {
         printDoc() {
             window.print()
         },
+        copyCurrentLink() {
+            navigator.clipboard.writeText(window.location.href);
+        }
     }
 }
 </script>
@@ -246,6 +249,11 @@ export default {
         margin-left: 12px
         margin-top: 8px
         cursor: pointer
+        & svg path
+            transition: all .3s ease
+        &:hover
+            & svg path
+                fill: var(--primary-color)
     & .subhead
         display: flex
         align-items: center
