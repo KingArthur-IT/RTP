@@ -15,7 +15,7 @@
                 </slide>
               </Carousel>
           </div>
-          <div class="card__discount-label">-{{ discountPercent }}%</div>
+          <div v-if="isBenefitShown" class="card__discount-label">-{{ discountPercent }}%</div>
           <div class="dots">
               <div class="dot" 
                 v-for="(slide, index) in slideCount" :key="index"
@@ -23,17 +23,17 @@
                 @click="slideTo(index)"
             ></div>
           </div>
-          <p class="card__description">
+          <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
               {{ description }}
           </p>
           <div class="card__price">
               <div class="current">{{ newPrice }} ₽</div>
               <div class="old">{{ oldPrice }} ₽</div>
           </div>
-          <div class="card__benefit">
+          <div v-if="isBenefitShown" class="card__benefit">
               Выгода <span>{{ oldPrice - newPrice }}</span> ₽
           </div>
-          <div class="card__controls">
+          <div class="card__controls" :class="{'no-benefit': !isBenefitShown}">
               <div class="count-btns">
                   <button @click="decrementProductCount">
                     <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,6 +83,10 @@ export default {
             type: Number,
             required: true
         },
+        isBenefitShown: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
@@ -156,11 +160,12 @@ export default {
         color: #A6ACB3
         margin-bottom: 14px
         text-align: left
+        &.no-benefit
+            margin-bottom: 41px
     &__price
         display: flex
         align-items: flex-end
         padding-bottom: 12px
-        border-bottom: 1px solid #EDEDED
         & .current
             font-weight: 700
             font-size: 24px
@@ -179,12 +184,15 @@ export default {
         color: #1DBE40
         padding: 15px 0
         border-bottom: 1px solid #EDEDED
+        border-top: 1px solid #EDEDED
         text-align: left
     &__controls
         display: flex
         align-items: center
         justify-content: space-between
         margin-top: 20px
+        &.no-benefit
+            margin-top: 45px
     &__order
         margin-left: 15px
         width: 100%
@@ -237,6 +245,8 @@ export default {
         &__description
             font-size: 12px
             margin-bottom: 5px
+            &.no-benefit
+                margin-bottom: 24px
         &__price
             padding-bottom: 5px
             & .current
@@ -250,6 +260,8 @@ export default {
             padding: 6px 0 5px
         &__controls
             margin-top: 13px
+            &.no-benefit
+                margin-top: 30px
         &__order
             margin-left: 6px
             height: 30px

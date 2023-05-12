@@ -5,6 +5,7 @@ import CompanyView from '../views/CompanyView.vue'
 import CatalogView from '../views/CatalogView.vue'
 import AlphaServiceView from '../views/AlphaServiceView.vue'
 import CatalogSystemView from '../views/CatalogSystemView.vue'
+import ProductCardView from '../views/ProductCardView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -43,7 +44,12 @@ const router = createRouter({
     {
       path: '/catalog-system/:name',
       name: 'catalog-system',
-      component: CatalogSystemView
+      component: CatalogSystemView,
+    },
+    {
+      path: '/card/:name',
+      name: 'card',
+      component: ProductCardView
     },
   ]
 })

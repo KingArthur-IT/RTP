@@ -21,14 +21,14 @@
                 ></div>
             </div>
         </div>
-        <div class="card__hero">
+        <div class="card__hero" @click="goToCard">
             <div class="card__title">{{ title }}</div>
             <p class="card__description">{{ description }}</p>
             <div class="card__content">
                 <div class="card__details">
                     <div v-for="(item, index) in infoList" :key="index" class="card__info">{{ item.description }}:<span>{{ item.value }}</span></div>
                 </div>
-                <div class="card__controls">
+                <div class="card__controls" @click.stop>
                     <div class="card__price">{{ price }} ₽</div>
                     <div class="count-btns">
                         <button @click="decrementProductCount">
@@ -113,6 +113,9 @@ export default {
         },
         onCountInput() {
             this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+        },
+        goToCard() {
+            this.$router.push({ name: 'card', params: this.$route.params })
         }
     },
 }
@@ -137,6 +140,7 @@ export default {
         width: 100%
         display: flex
         flex-direction: column
+        cursor: pointer
     &__title
         font-weight: 700
         font-size: 18px
