@@ -212,6 +212,7 @@ export default {
                 position: absolute
                 left: 0
                 top: 0
+                margin-left: 0px
             & h3
                 font-size: 13px
                 flex-basis: 100%
