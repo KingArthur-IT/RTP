@@ -2,15 +2,15 @@
   <div class="price-card">
       <div class="price-card__text">Цена за упаковку</div>
       <div class="price-card__price">{{ numberWithSpaces(price) }} ₽</div>
-      <div class="price-card__count">х{{ productCount }}</div>
-      <div class="price-card__total">{{ numberWithSpaces(price * productCount) }} ₽</div>
+      <div class="price-card__count">х{{ count }}</div>
+      <div class="price-card__total">{{ numberWithSpaces(price * count) }} ₽</div>
       <div class="count-btns">
         <button @click="decrementProductCount">
             <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
             </svg>
         </button>
-        <input type="text" v-model="productCount" @input="onCountInput">
+        <input type="text" v-model="count" @input="onCountInput">
         <button @click="incrementProductCount">
             <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
@@ -18,7 +18,7 @@
         </button>
       </div>
       <div class="price-card__btn">
-          <DarkRectButton :text="'В корзину'" />
+          <DarkRectButton :text="'В корзину'" @click="$router.push({ name: 'basket' })" />
       </div>
       <div class="gather-basket">
           <div class="gather-basket__head">
@@ -31,40 +31,67 @@
             </p>
           </div>
           <div class="gather-basket__btn">
-            <DarkRectButton :text="'Заказать обратный звонок'" />
+            <DarkRectButton :text="'Заказать обратный звонок'" @click="isModalShow = true" />
           </div>
       </div>
   </div>
+  <Modal 
+    v-model:open="isModalShow"
+    :title="'Обратный звонок'"
+    :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
+  />
 </template>
 
 <script>
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
+import Modal from '../Modals.vue/Modal.vue'
 
 export default {
     components: {
-        DarkRectButton
+        DarkRectButton,
+        Modal
+    },
+    props: {
+        price: {
+            type: Number,
+            required: true
+        },
+        productCount: {
+            type: Number,
+            default: 1
+        },
     },
     data() {
         return {
-            price: 2885,
-            productCount: 4
+            count: 0,
+            isModalShow: false
         }
+    },
+    mounted() {
+        this.count = this.productCount
     },
     methods: {
         decrementProductCount() {
-            if (this.productCount > 0)
-                this.productCount --
+            if (this.count > 0)
+                this.count --
         },
         incrementProductCount() {
-            this.productCount ++
+            this.count ++
         },
         onCountInput() {
-            this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+            this.count = this.count.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+            // this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+            // this.$emit('update:productCount', )
         },
         numberWithSpaces(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         }
     },
+    watch: {
+        count() {
+            this.$emit('update:productCount', this.count)
+        }
+    }
 }
 </script>
 

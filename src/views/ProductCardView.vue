@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="container">
+    <div class="container smooth-scroll">
         <BreadCrumbsSecondLevel :thirdLevel="'Труба из полипропилена PN SDR 11'" />
         <div class="product-head">
             <div class="product-head__head">
@@ -71,11 +71,11 @@
                 <div class="product-hero__characteristics mobile">
                     <div class="product-hero__title">Характеристики:</div>
                     <ProductCharacteristics :list="characteristics" />
-                    <div class="product-hero__go-to-details">Перейти к описанию</div>
+                    <a href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
                 </div>
             </div>
             <div class="product-hero__card">
-                <PriceCard />
+                <PriceCard :price="2885" v-model:productCount="productCount" />
             </div>
         </div>
         <div class="often-buy">
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="description">
+        <div id="description" class="description">
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>
             </div>
@@ -195,6 +195,7 @@ export default {
                 { name: 'Макс. раб. температура 0С', value: '60' },
                 { name: 'Цвет', value: 'Белый' },
             ],
+            productCount: 1
         }
     },
     methods: {
@@ -213,6 +214,8 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.product-card
+    scroll-behavior: smooth
 .product-head
     margin-top: 40px
     &__head
@@ -343,6 +346,7 @@ export default {
             margin-bottom: 9px
         &__detail
             flex-basis: 50%
+            margin-top: 18px
         &__characteristics
             padding: 26px 42px 0 50px
             flex-basis: 100%

@@ -1,10 +1,15 @@
 <template>
   <div class="preview">
       <div class="preview__sidebar">
-          <div v-for="i in 4" :key="i" class="preview__small" :class="{'active': currentActiveImage === i}" @click="currentActiveImage = i">
-              <img src="@/assets/product-card/preview-icon.png" alt="preview">
+          <div 
+            v-for="(img, index) in imagesList" :key="index" 
+            class="preview__small" 
+            :class="{'active': currentActiveImage === index}" 
+            @click="smallPreviewClick(index)"
+          >
+              <img :src="getImageUrl('product-card', img, 'jpg')" alt="img">
           </div>
-          <div class="preview__small">
+          <div class="preview__small" @click="isPreviewImage = false">
               <img src="@/assets/product-card/preview-icon.png" alt="preview">
               <div class="video-wrap">
                   <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,16 +25,33 @@
                 </svg>
                 <span>Распродажа</span>
           </div>
-          <img src="@/assets/product-card/preview.png" alt="preview">
+          <img v-if="isPreviewImage" :src="getImageUrl('product-card', previewImgName, 'jpg')" alt="preview">
+          <video v-else src="@/assets/product-card/video.mp4" controls></video>
       </div>
   </div>
 </template>
 
 <script>
+import { getImageUrl } from '@/use/helpers.js'
 export default {
     data() {
         return {
-            currentActiveImage: 1
+            isPreviewImage: true,
+            currentActiveImage: 0,
+            activeSrc: '',
+            imagesList: ['1', '2', '3'],
+            previewImgName: '1'
+        }
+    },
+    mounted() {
+
+    },
+    methods: {
+        getImageUrl,
+        smallPreviewClick(index) {
+            this.isPreviewImage = true
+            this.currentActiveImage = index
+            this.previewImgName = this.imagesList[index]
         }
     }
 }
@@ -65,9 +87,14 @@ export default {
         border-radius: 2px
         position: relative
         overflow: hidden
+        width: 100%
         & img
             width: 100%
             height: 100%
+        & video
+            height: 100%
+            width: 100%
+            transform: scale(1.01)
     &__sale
         position: absolute
         top: 12px

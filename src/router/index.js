@@ -6,6 +6,7 @@ import CatalogView from '../views/CatalogView.vue'
 import AlphaServiceView from '../views/AlphaServiceView.vue'
 import CatalogSystemView from '../views/CatalogSystemView.vue'
 import ProductCardView from '../views/ProductCardView.vue'
+import BasketView from '../views/BasketView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/card/:name',
       name: 'card',
       component: ProductCardView
+    },
+    {
+      path: '/basket',
+      name: 'basket',
+      component: BasketView
     },
   ]
 })
