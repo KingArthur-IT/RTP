@@ -48,7 +48,7 @@
                   </button>
               </div>
               <div class="card__order">
-                  <DarkRectButton :text="'В корзину'" @click="goToBasket" />
+                  <DarkRectButton :text="'В корзину'" />
               </div>
           </div>
       </div>
@@ -117,9 +117,6 @@ export default {
         onCountInput() {
             this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
         },
-        goToBasket(){
-            this.$router.push({ name: 'basket' })
-        }
     },
     computed: {
         discountPercent() {
