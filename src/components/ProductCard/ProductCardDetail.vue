@@ -1,27 +1,28 @@
 <template>
   <div class="product-detail">
-      <div class="product-detail__title">Диаметр/толщина стенок, мм:</div>
-      <div class="product-detail__list">
-          <div v-for="(item, index) in diametrList" :key="index" class="product-detail__item-wrap">
-              <div class="product-detail__item">{{ item }}</div>
-          </div>
-      </div>
-      <div class="product-detail__title">Количество в упаковке, м/шт:</div>
-      <div class="product-detail__list">
-          <div v-for="(item, index) in counts" :key="index" class="product-detail__item-wrap">
-              <div class="product-detail__item">{{ item }}</div>
+      <div v-for="(item, index) in list" :key="index">
+          <div class="product-detail__title">{{ item.title }}:</div>
+          <div class="product-detail__list">
+              <div v-for="(val, i) in item.values" :key="i" class="product-detail__item-wrap">
+                  <div 
+                    class="product-detail__item" 
+                    :class="{'active': i === item.selectedValueIndex}"
+                    @click="$emit('updateSelectedIndex', { arrIndex: index, newSelected: i })"
+                  >{{ val }}</div>
+              </div>
           </div>
       </div>
       <div class="product-detail__title-wrap">
           <div class="product-detail__title">Цвет:</div>
-          <span>Белый</span>
+          <span>{{ selectedColor }}</span>
       </div>
       <div class="product-detail__list">
-          <div class="product-detail__item-wrap">
-              <div class="product-detail__color white"></div>
-          </div>
-          <div class="product-detail__item-wrap">
-              <div class="product-detail__color grey"></div>
+          <div v-for="(color, index) in colors" :key="index" class="product-detail__item-wrap">
+              <div 
+                class="product-detail__color" 
+                :style="`background: ${color.color}`"
+                @click="$emit('updateSelectedColor', color.value)"
+              ></div>
           </div>
       </div>
   </div>
@@ -29,10 +30,25 @@
 
 <script>
 export default {
+    props: {
+        list: {
+            type: Array, //[{ title, values[], selectedValueIndex }]
+            default: []
+        },
+        colors: {
+            type: Array, //[{ value, isSelected, color }]
+            default: []
+        }
+    },
     data() {
         return {
             diametrList: ['20/1,9', '25/2,3', '32/2,9', '40/3,7', '50/4,5', '63/5,8', '75/6,8', '90/8,2', '110/10', '125/11,4', '140/12,7', '160/14,6'],
             counts: ['100/25', '50/25']
+        }
+    },
+    computed: {
+        selectedColor() {
+            return this.colors.find(c => c.isSelected).value
         }
     }
 }
@@ -80,9 +96,9 @@ export default {
         height: 48px
         cursor: pointer
         border-radius: 4px
+        border: 1px solid #C3D3E5
         &.white
             background: #fff
-            border: 1px solid #C3D3E5
         &.grey
             background: #C3D3E5
 

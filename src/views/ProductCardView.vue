@@ -56,10 +56,15 @@
                     <ProductCardPreview />
                 </div>
                 <div class="product-hero__detail">
-                    <ProductCardDetail />
+                    <ProductCardDetail 
+                        :list="description" 
+                        :colors="colors" 
+                        @updateSelectedIndex="updateSelectedInDetails"
+                        @updateSelectedColor="updateSelectedColor"
+                    />
                     <div class="product-hero__characteristics desctop">
                         <div class="product-hero__title">Характеристики:</div>
-                        <ProductCharacteristics :list="characteristics" />
+                        <ProductCharacteristics :list="characteristics"/>
                         <div class="product-hero__go-to-details">Перейти к описанию</div>
                     </div>
                 </div>
@@ -163,6 +168,22 @@ export default {
     data() {
         return {
             starsCount: 4,
+            description: [
+                { 
+                    title: 'Диаметр/толщина стенок, мм',
+                    values: ['20/1,9', '25/2,3', '32/2,9', '40/3,7', '50/4,5', '63/5,8', '75/6,8', '90/8,2', '110/10', '125/11,4', '140/12,7', '160/14,6'],
+                    selectedValueIndex: 0
+                },
+                { 
+                    title: 'Количество в упаковке, м/шт',
+                    values: ['100/25', '50/25'],
+                    selectedValueIndex: 0
+                },
+            ],
+            colors: [
+                { value: 'Белый', isSelected: true, color: '#fff' },
+                { value: 'Серый', isSelected: false, color: '#C3D3E5' },
+            ],
             characteristics: [
                 { name: 'Тип', value: 'Труба из полипропилена' },
                 { name: 'Материал', value: 'Полипропилен' },
@@ -174,6 +195,18 @@ export default {
                 { name: 'Макс. раб. температура 0С', value: '60' },
                 { name: 'Цвет', value: 'Белый' },
             ],
+        }
+    },
+    methods: {
+        updateSelectedInDetails(data) {
+            this.description[data.arrIndex].selectedValueIndex = data.newSelected
+        },
+        updateSelectedColor(val) {
+            this.colors.forEach(c => {
+                if (c.value !== val)
+                    c.isSelected = false
+                else c.isSelected = true
+            })
         }
     }
 }
@@ -197,6 +230,7 @@ export default {
     &__icon
         margin-left: 12px
         margin-top: 8px
+        cursor: pointer
     & .subhead
         display: flex
         align-items: center
