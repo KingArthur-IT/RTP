@@ -48,7 +48,7 @@
                   </button>
               </div>
               <div class="card__order">
-                  <DarkRectButton :text="'В корзину'" />
+                  <DarkRectButton :text="'В корзину'" @click="goToBasket" />
               </div>
           </div>
       </div>
@@ -116,6 +116,9 @@ export default {
         },
         onCountInput() {
             this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+        },
+        goToBasket(){
+            this.$router.push({ name: 'basket' })
         }
     },
     computed: {
@@ -161,7 +164,7 @@ export default {
         margin-bottom: 14px
         text-align: left
         &.no-benefit
-            margin-bottom: 41px
+            margin-bottom: 38px
     &__price
         display: flex
         align-items: flex-end
@@ -192,11 +195,11 @@ export default {
         justify-content: space-between
         margin-top: 20px
         &.no-benefit
-            margin-top: 45px
+            margin-top: 32px
     &__order
         margin-left: 15px
         width: 100%
-        height: 45px
+        height: 41px
 .dots
     padding: 14px 0
     display: flex

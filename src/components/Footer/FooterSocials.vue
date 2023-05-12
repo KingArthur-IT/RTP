@@ -55,8 +55,8 @@ export default {
         align-items: center
         justify-content: space-between
     &__item
-        flex-basis: 33.33%
-        width: 33.33%
+        flex-basis: 40.33%
+        width: 40.33%
         font-size: 14px
         color: #C3D3E5
         &:last-child
@@ -65,7 +65,7 @@ export default {
 .socials
     display: flex
     align-items: center
-    margin-bottom: 70px
+    margin-bottom: 56px
     &__item
         margin-right: 30px
         & svg path

@@ -63,11 +63,11 @@ export default {
   color: #fff
   font-size: 16px
   &__hero
-    padding: 43px
+    padding: 43px 0px 43px 7px
   
 @media screen and (max-width: 1600px)
   .footer
     font-size: 14px
     &__hero
-      padding: 31px 40px 25px
+      padding: 31px 0px 25px
 </style>

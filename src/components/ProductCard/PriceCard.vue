@@ -169,6 +169,7 @@ export default {
         & img
             width: 78px
             margin-right: 28px
+            margin-left: 11px
         & h3
             font-weight: 700
             font-size: 21px

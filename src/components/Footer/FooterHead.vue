@@ -60,7 +60,7 @@ export default {
         margin-right: 200px
     &__logo
         width: 190px
-        margin-bottom: 66px
+        margin-bottom: 63px
         & img
             width: 100%
     &__title
@@ -68,12 +68,12 @@ export default {
         font-size: 18px
         padding-bottom: 8px
         border-bottom: 1px solid #828D99
-        margin-bottom: 26px
+        margin-bottom: 28px
     &__contacts
         display: flex
         align-items: center
         justify-content: space-between
-        margin-bottom: 16px
+        margin-bottom: 21px
     &__contact-item
         display: flex
         align-items: center

@@ -97,11 +97,11 @@ export default {
             transform: scale(1.01)
     &__sale
         position: absolute
-        top: 12px
-        right: 22px
+        top: 10px
+        right: 19px
         display: flex
         align-items: center
-        padding: 4px 10px
+        padding: 7px 8px
         background: #DC1818
         border-radius: 6px
         color: #fff

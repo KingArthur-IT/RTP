@@ -60,6 +60,7 @@ export default {
     &__title-wrap
         display: flex
         align-items: flex-start
+        margin-top: 16px
         & span
             font-size: 20px
             color: #42474D
@@ -68,14 +69,14 @@ export default {
         font-size: 20px
         text-decoration-line: underline
         color: #A6ACB3
-        margin-bottom: 12px
+        margin-bottom: 9px
     &__list
         display: flex
         align-items: center
         flex-wrap: wrap
         width: calc( 100% + 12px )
         transform: translateX(-6px)
-        margin-bottom: 8px
+        margin-bottom: 2px
     &__item-wrap
         padding: 6px
     &__item
