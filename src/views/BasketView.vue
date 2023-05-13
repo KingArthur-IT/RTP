@@ -6,8 +6,21 @@
         <!-- form -->
         <form class="basket__form">
           <div class="basket__callme">
-            <button @click.prevent="isModalShow = true">Не хочу ничего заполнять, перезвоните мне</button>
+            <button @click.prevent="callMeEvent">Не хочу ничего заполнять, перезвоните мне</button>
           </div>
+          <!-- phone -->
+          <div class="basket__input-wrapper">
+            <input type="text" v-model="callMePhone" placeholder="Номер телефона*">
+            <div v-if="!isCallMePhoneValid" class="basket-error">
+              <div class="basket-error__icon">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.125 10H7.5V7.5H6.875M7.5 5H7.50625M13.125 7.5C13.125 8.23869 12.9795 8.97014 12.6968 9.65259C12.4141 10.3351 11.9998 10.9551 11.4775 11.4775C10.9551 11.9998 10.3351 12.4141 9.65259 12.6968C8.97014 12.9795 8.23869 13.125 7.5 13.125C6.76131 13.125 6.02986 12.9795 5.34741 12.6968C4.66495 12.4141 4.04485 11.9998 3.52252 11.4775C3.00019 10.9551 2.58586 10.3351 2.30318 9.65259C2.02049 8.97014 1.875 8.23869 1.875 7.5C1.875 6.00816 2.46763 4.57742 3.52252 3.52252C4.57742 2.46763 6.00816 1.875 7.5 1.875C8.99184 1.875 10.4226 2.46763 11.4775 3.52252C12.5324 4.57742 13.125 6.00816 13.125 7.5Z" stroke="#F27272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="basket-error__text">Проверьте номер телефона</div>
+            </div>
+          </div>
+          <div class="basket__my-data-text">Ваши данные</div>
           <!-- name -->
           <div class="basket__input-wrapper">
             <input type="text" v-model="name" placeholder="Ваше имя*">
@@ -32,6 +45,7 @@
               <div class="basket-error__text">Проверьте номер телефона</div>
             </div>
           </div>
+          <!-- email -->
           <div class="basket__input-wrapper">
             <input type="email" v-model="email" placeholder="Электронная почта*">
             <div v-if="!isEmailValid" class="basket-error">
@@ -80,7 +94,7 @@
           </div>
 
           <div class="basket__input-wrapper">
-            <textarea cols="30" rows="10" placeholder="Комментарий курьеру"></textarea>
+            <textarea v-model="message" cols="30" rows="10" placeholder="Комментарий курьеру"></textarea>
           </div>
 
           <div class="basket__info">
@@ -97,75 +111,45 @@
           </div>
         </form>
         <!-- estimate -->
-        <div class="estimate">
-          <div v-for="prod in basketList" :key="prod.id" class="estimate__card">
-            <BasketCard 
-              :title="prod.title"
-              :description="prod.description"
-              :price="prod.price"
-              v-model:count="prod.count"
-              @delete="deleteCard(prod.id)"
-            />
-          </div>
-          <div class="resume">
-            <div class="resume__head">
-              <div class="resume__title">Ваша корзина</div>
-              <div class="resume__allcount">{{ totalProductsCount }} товаров</div>
-            </div>
-            <div class="resume__row">
-              <div class="resume__row-txt">Товары ({{ totalProductsCount }})</div>
-              <div class="resume__row-txt">{{ productsTotalCost }} ₽</div>
-            </div>
-            <div class="resume__row">
-              <div class="resume__row-txt">НДС (20%):</div>
-              <div class="resume__row-txt">{{ productsTotalCost / 5 }} ₽</div>
-            </div>
-            <div class="resume__row resume__delivery">
-              <div class="resume__row-txt">Доставка:</div>
-              <div class="resume__row-txt">{{ deliveryCost }} ₽</div>
-            </div>
-            <div class="resume__row resume__total">
-              <div class="resume__row-txt">Всего к оплате:</div>
-              <div class="resume__row-txt">{{ productsTotalCost * 1.2 + deliveryCost }} ₽</div>
-            </div>
-            <div class="resume__btn">
-              <button>Скачать смету</button>
-            </div>
-          </div>
+        <div class="estimate-wrapper">
+          <BasketProductsList 
+            :basketList="basketList" 
+            @deleteCard="deleteCard" 
+            :deliveryCost="deliveryCost"
+          />
         </div>
       </div>
     </div>
+    <AcceptOrderModal v-model:open="isModalShown" />
   </main>
-  <Modal 
-      v-model:open="isModalShow"
-      :title="'Обратный звонок'"
-      :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
-  />
 </template>
 
 <script>
-import BasketCard from '../components/Basket/BasketCard.vue'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import DarkRectButton from '../components/UIKit/DarkRectButton.vue'
 import { validateEmail, getMonthName } from '@/use/helpers.js'
-import Modal from '../components/Modals/Modal.vue'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import BasketProductsList from '../components/Basket/BasketProductsList.vue';
+import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
 
 export default {
   components: {
     BreadCrumbs,
     DarkRectButton,
-    BasketCard,
-    Modal,
     VueDatePicker,
+    BasketProductsList,
+    AcceptOrderModal
   },
   data() {
     return {
-      isModalShow: false,
+      isModalShown: false,
+      callMePhone: '',
+      isCallMePhoneValid: true,
       name: '',
       phone: '',
       email: '',
+      message: '',
       date: new Date(),
       adress: '',
       isAdressEditing: false,
@@ -226,22 +210,21 @@ export default {
       this.basketList = this.basketList.filter(p => p.id !== id)
     },
     submitBasket() {
-      console.log(this.name.length);
       this.isNameValid = !!this.name.length
       this.isEmailValid = this.validateEmail(this.email)
       this.isPhoneValid = this.phone.length === 18
     },
+    callMeEvent() {
+      this.isCallMePhoneValid = this.callMePhone.length === 18
+
+      if (this.isCallMePhoneValid)
+        this.isModalShown = true
+    }
   },
   computed: {
-    productsTotalCost() {
-      return this.basketList.reduce((acc, el) => acc += el.price * el.count, 0)
-    },
     selectedDate() {
       return this.date.getDate() + ' ' + this.getMonthName(this.date.getMonth())
     },
-    totalProductsCount() {
-      return this.basketList.reduce((acc, el) => acc += el.count, 0)
-    }
   },
   watch: {
     phone() {
@@ -271,6 +254,34 @@ export default {
       }
 
       this.phone = result;
+    },
+    callMePhone() {
+      const value = this.callMePhone.replace(/\D+/g, "");
+      const numberLength = 11;
+
+      let result = '+';
+
+      for (let i = 0; i < value.length && i < numberLength; i++) {
+          switch (i) {
+          case 0:
+              result += '7 ('
+              continue;
+          case 4:
+              result += ") ";
+              break;
+          case 7:
+              result += "-";
+              break;
+          case 9:
+              result += "-";
+              break;
+          default:
+              break;
+          }
+          result += value[i];
+      }
+
+      this.callMePhone = result;
     }
   }
 }
@@ -280,7 +291,7 @@ export default {
 .w-100
   width: 100%
 .basket
-  margin-top: 126px
+  margin-top: 132px
   margin-bottom: 46px
   display: flex
   justify-content: space-between
@@ -295,7 +306,7 @@ export default {
       font-weight: 500
       font-size: 16px
       color: var(--primary-color)
-      padding: 12px
+      padding: 10px
       display: flex
       justify-content: center
       align-items: center
@@ -307,6 +318,11 @@ export default {
         box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35)
         background: var(--primary-color)
         color: #fff
+  &__my-data-text
+    font-weight: 500
+    font-size: 32px
+    color: var(--primary-color)
+    margin: 52px 0 29px
   &__input-wrapper
     margin-bottom: 24px
     width: 100%
@@ -362,16 +378,16 @@ export default {
     margin-bottom: 31px
   &__date-wrapper
     max-width: 474px
-    margin-bottom: 32px
+    margin-bottom: 22px
   &__info
     border-top: 2px solid #42474D
     border-bottom: 2px solid #42474D
-    padding: 15px 25px 19px
+    padding: 15px 25px 16px
     font-weight: 700
     font-size: 20px
     line-height: 132%
     color: #42474D
-    margin: 45px 0 36px
+    margin: 42px 0 36px
   &__btn
     width: 100%
     height: 42px
@@ -416,9 +432,6 @@ export default {
     bottom: 0
     left: 0
     right: 0
-    // opacity: 0
-    // pointer-events: none
-    // position: absolute
   & svg
     position: absolute
     right: 24px
@@ -428,7 +441,7 @@ export default {
   flex-wrap: wrap
   align-items: center
   font-size: 23px
-  margin-bottom: 44px
+  margin-bottom: 33px
   line-height: 2
   &__text
     color: #42474D
@@ -456,67 +469,9 @@ export default {
     margin-left: 30px
     width: 18px
 
-.estimate
+.estimate-wrapper
   margin-left: 80px
   flex-basis: 50%
-  &__card
-    margin-bottom: 15px
-
-.resume
-  margin-top: 35px
-  background: #F4F7FD
-  border-radius: 8px
-  padding: 20px
-  width: 100%
-  &__head
-    display: flex
-    align-items: center
-    justify-content: space-between
-    margin-bottom: 35px
-  &__title
-    font-weight: 700
-    font-size: 20px
-    color: #42474D
-  &__allcount
-    font-weight: 700
-    font-size: 14px
-    text-align: right
-    color: #828D99
-  &__row
-    display: flex
-    align-items: center
-    justify-content: space-between
-    margin-bottom: 12px
-  &__row-txt
-    font-weight: 700
-    font-size: 16px
-    color: #42474D
-  &__delivery
-    margin: 32px 0
-  &__total
-    padding: 0
-    padding: 32px 0 27px
-    border-top: 1px solid #42474D
-    & .resume__row-txt
-      font-size: 20px
-      color: var(--primary-color)
-  &__btn
-    width: 100%
-    margin-bottom: 92px
-    & button
-      width: 100%
-      background: #828D99
-      border-radius: 4px
-      padding: 12px
-      display: flex
-      align-items: center
-      justify-content: center
-      font-weight: 500
-      font-size: 16px
-      color: #F2F4F7
-      transition: box-shadow .3s ease
-      &:hover
-          box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35)
 
 @media screen and (max-width: 1600px)
   .basket
@@ -529,6 +484,9 @@ export default {
       & button
         font-size: 14px
         padding: 12px
+    &__my-data-text
+      font-size: 28px
+      margin: 40px 0 29px
     &__input-wrapper
       margin-bottom: 18px
       & input
@@ -576,7 +534,7 @@ export default {
 
   .delivery-adress
     font-size: 18px
-    margin-bottom: 40px
+    margin-bottom: 30px
     &__text
       color: #42474D
       font-weight: 500
@@ -588,27 +546,7 @@ export default {
       margin-left: 30px
       width: 18px
 
-  .estimate
+  .estimate-wrapper
     margin-left: 20px
     flex-basis: 60%
-
-  .resume
-    &__head
-      margin-bottom: 32px
-    &__title
-      font-size: 18px
-    &__allcount
-      font-size: 13px
-    &__row-txt
-      font-size: 16px
-    &__delivery
-      margin: 28px 0
-    &__total
-      margin-bottom: 0
-      & .resume__row-txt
-        font-size: 18px
-    &__btn
-      margin-bottom: 32px
-      & button
-        font-size: 14px
 </style>

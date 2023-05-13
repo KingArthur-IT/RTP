@@ -99,7 +99,7 @@ export default {
         font-weight: 700
         font-size: 18px
         color: #42474D
-        max-width: 290px
+        max-width: 293px
         margin-bottom: 12px
     &__text
         font-size: 12px
