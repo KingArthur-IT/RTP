@@ -164,7 +164,7 @@ export default {
         formSubmit() {
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
-            this.isPhoneValid = this.phone.length === 12
+            this.isPhoneValid = this.phone.length === 18
 
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
                 return
