@@ -6,7 +6,7 @@
         <!-- form -->
         <form class="basket__form">
           <div class="basket__callme">
-            <button @click.prevent>Не хочу ничего заполнять, перезвоните мне</button>
+            <button @click.prevent="isModalShow = true">Не хочу ничего заполнять, перезвоните мне</button>
           </div>
           <!-- name -->
           <div class="basket__input-wrapper">
@@ -127,6 +127,11 @@
       </div>
     </div>
   </main>
+  <Modal 
+      v-model:open="isModalShow"
+      :title="'Обратный звонок'"
+      :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
+  />
 </template>
 
 <script>
@@ -134,15 +139,18 @@ import BasketCard from '../components/Basket/BasketCard.vue'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import DarkRectButton from '../components/UIKit/DarkRectButton.vue'
 import { validateEmail, getMonthName } from '@/use/helpers.js'
+import Modal from '../components/Modals/Modal.vue'
 
 export default {
   components: {
     BreadCrumbs,
     DarkRectButton,
-    BasketCard
+    BasketCard,
+    Modal
   },
   data() {
     return {
+      isModalShow: false,
       name: '',
       phone: '',
       email: '',

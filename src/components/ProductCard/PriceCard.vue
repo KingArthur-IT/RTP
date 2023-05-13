@@ -44,7 +44,7 @@
 
 <script>
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
-import Modal from '../Modals.vue/Modal.vue'
+import Modal from '../Modals/Modal.vue'
 import { numberWithSpaces } from '@/use/helpers.js'
 
 export default {

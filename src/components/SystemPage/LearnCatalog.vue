@@ -18,7 +18,7 @@
 
 <script>
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
-import Modal from '../Modals.vue/Modal.vue'
+import Modal from '../Modals/Modal.vue'
 
 export default {
     components: {

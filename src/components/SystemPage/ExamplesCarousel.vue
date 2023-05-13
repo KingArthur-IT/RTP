@@ -99,7 +99,7 @@ import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
 import SliderControlBtn from '../UIKit/SliderControlBtn.vue';
-import Modal from '../Modals.vue/Modal.vue'
+import Modal from '../Modals/Modal.vue'
 
 export default {
     components: {

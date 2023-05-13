@@ -24,6 +24,7 @@
                           :placeholder="'Введите имя'"
                           :isLight="true"
                           :isValid="isNameValid"
+                          :noValidText="'Это поле обязательно для заполнения'"
                       />
                   </div>
                   <div class="input-wrapper">
@@ -35,6 +36,7 @@
                           :placeholder="''"
                           :isLight="true"
                           :isValid="isPhoneValid"
+                          :noValidText="'Проверьте номер телефона'"
                       />
                   </div>
                   <div class="input-wrapper">
@@ -85,6 +87,7 @@
                           :placeholder="'Введите e-mail'"
                           :isLight="true"
                           :isValid="isEmailValid"
+                          :noValidText="'Не верный e-mail'"
                       />
                   </div>
                   <div class="input-wrapper textarea">

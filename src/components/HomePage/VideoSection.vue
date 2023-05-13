@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import VideoModal from '../Modals.vue/VideoModal.vue'
+import VideoModal from '../Modals/VideoModal.vue'
 import LightRectButton from '../UIKit/LightRectButton.vue'
 
 export default {

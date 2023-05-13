@@ -44,7 +44,7 @@
 
 <script>
 import ServicesList from './ServicesList.vue'
-import Modal from '../Modals.vue/Modal.vue'
+import Modal from '../Modals/Modal.vue'
 
 export default {
     components: {
