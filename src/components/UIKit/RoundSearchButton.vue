@@ -1,7 +1,7 @@
 <template>
   <div class="search">
-      <input type="text" class="search__input" placeholder="Поиск">
-      <svg class="search__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <input v-model="search" type="text" class="search__input" placeholder="Поиск" @keyup.enter="searchEvent">
+      <svg @click="searchEvent" class="search__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6 12C7.33123 11.9997 8.6241 11.5541 9.67275 10.734L12.9697 14.031L14.0303 12.9705L10.7333 9.6735C11.5538 8.62475 11.9997 7.33158 12 6C12 2.69175 9.30825 0 6 0C2.69175 0 0 2.69175 0 6C0 9.30825 2.69175 12 6 12ZM6 1.5C8.48175 1.5 10.5 3.51825 10.5 6C10.5 8.48175 8.48175 10.5 6 10.5C3.51825 10.5 1.5 8.48175 1.5 6C1.5 3.51825 3.51825 1.5 6 1.5Z" fill="#224386"/>
       </svg>
   </div>
@@ -11,7 +11,12 @@
 export default {
     data() {
         return {
-
+            search: ''
+        }
+    },
+    methods: {
+        searchEvent() {
+            this.$router.push({ name: 'search', query: { search: this.search } })
         }
     }
 }
@@ -40,6 +45,7 @@ export default {
         top: 50%
         right: 35px
         transform: translateY(-50%)
+        cursor: pointer
 
 @media screen and (max-width: 1600px)
     .search

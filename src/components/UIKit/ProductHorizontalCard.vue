@@ -26,7 +26,7 @@
             <p class="card__description">{{ description }}</p>
             <div class="card__content">
                 <div class="card__details">
-                    <div v-for="(item, index) in infoList" :key="index" class="card__info">{{ item.description }}:<span>{{ item.value }}</span></div>
+                    <div v-for="(item, index) in infoList" :key="index" class="card__info">{{ item.description }}: <span>{{ item.value }}</span></div>
                 </div>
                 <div class="card__controls" @click.stop>
                     <div class="card__price">{{ price }} ₽</div>
@@ -36,7 +36,7 @@
                                 <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
                             </svg>
                         </button>
-                        <input type="number" v-model="productCount" @input="onCountInput">
+                        <input type="text" v-model="productCount" @input="onCountInput">
                         <button @click="incrementProductCount">
                             <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
@@ -80,7 +80,7 @@ export default {
             type: Number,
             required: true
         },
-        infoList: {
+        infoList: { //[{ description, value }]
             type: Array,
             default: []
         }
@@ -134,8 +134,10 @@ export default {
         margin-right: 30px
     &__slide
         width: 100%
+        max-height: 216px
     &__img
         width: 100%
+        height: 100%
     &__hero
         width: 100%
         display: flex
@@ -167,7 +169,7 @@ export default {
         align-self: end
     &__price
         text-align: right
-        padding-bottom: 22px
+        padding-bottom: 16px
         font-weight: 700
         font-size: 24px
         color: #42474D
@@ -192,7 +194,7 @@ export default {
 .count-btns
     display: flex
     align-items: center
-    margin-bottom: 10px
+    margin-bottom: 16px
     & button
         width: 35px
         height: 35px
@@ -214,35 +216,8 @@ export default {
 
 @media screen and (max-width: 1600px)
     .card
-        padding: 10px 10px 13px 10px
-        filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15))
-        &__description
-            font-size: 12px
-            margin-bottom: 5px
-        &__price
-            padding-bottom: 5px
-            font-size: 16px
-            margin-right: 13px
-        &__controls
-            margin-top: 13px
-        &__order
-            margin-left: 6px
-            height: 30px
-    .dots
-        padding: 14px 0 8px
-        display: flex
-        justify-content: center
-        align-items: center
-
-    .count-btns
-        & button
-            width: 25px
-            height: 25px
-            & svg
-                width: 11px
-                height: 11px
-        & input
-            font-size: 10px
-            padding: 0 5px
-            width: 30px
+        &__slide
+            max-height: 200px
+        &__carousel
+            margin-right: 18px
 </style>
