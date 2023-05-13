@@ -125,6 +125,10 @@ button {
   border-radius: 50%;
 }
 
+.dp__input_wrap {
+  opacity: 0;
+}
+
 @media screen and (max-width: 1600px) {
   .container {
     padding: 0 130px;

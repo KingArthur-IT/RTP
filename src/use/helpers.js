@@ -24,40 +24,40 @@ export const getMonthName = (val) => {
     let month = ''
 
     switch (val) {
-        case '01':
+        case 0:
           month = 'января'
           break;
-        case '02':
+        case 1:
           month = 'февраля'
           break;
-        case '03':
+        case 2:
           month = 'марта'
           break;
-        case '04':
+        case 3:
           month = 'апреля'
           break;
-        case '05':
+        case 4:
           month = 'мая'
           break;
-        case '06':
+        case 5:
           month = 'июня'
           break;
-        case '07':
+        case 6:
           month = 'июля'
           break;
-        case '08':
+        case 7:
           month = 'августа'
           break;
-        case '09':
+        case 8:
           month = 'сентября'
           break;
-        case '10':
+        case 9:
           month = 'октября'
           break;
-        case '11':
+        case 10:
           month = 'ноября'
           break;
-        case '12':
+        case 11:
           month = 'декабря'
           break;
         default:

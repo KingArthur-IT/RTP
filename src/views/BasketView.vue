@@ -51,9 +51,17 @@
 
           <div class="basket__date-title">Желаемая дата получения заказа</div>
           <div class="basket__input-wrapper basket__date-wrapper">
-            <div class="date-picker" @click="callDataPicker">
+            <div class="date-picker">
               <div class="date-picker__text">{{ selectedDate }}</div>
-              <input v-model="date" ref="datePicker" type="date">
+              <div class="date-picker__input">
+                <VueDatePicker 
+                  :enable-time-picker="false"
+                  locale="ru" 
+                  v-model="date"
+                  select-text="Выбрать"
+                  cancel-text="Отмена"
+                ></VueDatePicker>
+              </div>
               <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20.4444 2.4H19.1667V0H16.6111V2.4H6.38889V0H3.83333V2.4H2.55556C1.13722 2.4 0.0127778 3.48 0.0127778 4.8L0 21.6C0 22.2365 0.269245 22.847 0.748505 23.2971C1.22776 23.7471 1.87778 24 2.55556 24H20.4444C21.85 24 23 22.92 23 21.6V4.8C23 3.48 21.85 2.4 20.4444 2.4ZM20.4444 21.6H2.55556V9.6H20.4444V21.6ZM7.66667 14.4H5.11111V12H7.66667V14.4ZM12.7778 14.4H10.2222V12H12.7778V14.4ZM17.8889 14.4H15.3333V12H17.8889V14.4ZM7.66667 19.2H5.11111V16.8H7.66667V19.2ZM12.7778 19.2H10.2222V16.8H12.7778V19.2ZM17.8889 19.2H15.3333V16.8H17.8889V19.2Z" fill="#EBEBEB"/>
               </svg>
@@ -62,9 +70,10 @@
 
           <div class="delivery-adress">
             <div class="delivery-adress__text">Доставка по адресу: </div>
-            <div class="delivery-adress__content">
-              <div class="delivery-adress__adress">Коломна, ул. Ленина, 35А</div>
-              <svg class="delivery-adress__icon" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="delivery-adress__content" :class="{'w-100': isAdressEditing}">
+              <input v-if="isAdressEditing" v-model="adress" type="text" class="delivery-adress__adress">
+              <div v-else class="delivery-adress__adress">{{ adress }}</div>
+              <svg @click="isAdressEditing = !isAdressEditing" class="delivery-adress__icon" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.3 6.175L12.05 1.975L13.45 0.575C13.8333 0.191667 14.3043 0 14.863 0C15.4217 0 15.8923 0.191667 16.275 0.575L17.675 1.975C18.0583 2.35833 18.2583 2.821 18.275 3.363C18.2917 3.905 18.1083 4.36733 17.725 4.75L16.3 6.175ZM14.85 7.65L4.25 18.25H0V14L10.6 3.4L14.85 7.65Z" fill="#BDBDBD"/>
               </svg>
             </div>
@@ -101,10 +110,10 @@
           <div class="resume">
             <div class="resume__head">
               <div class="resume__title">Ваша корзина</div>
-              <div class="resume__allcount">{{ basketList.length }} товаров</div>
+              <div class="resume__allcount">{{ totalProductsCount }} товаров</div>
             </div>
             <div class="resume__row">
-              <div class="resume__row-txt">Товары ({{ basketList.length }})</div>
+              <div class="resume__row-txt">Товары ({{ totalProductsCount }})</div>
               <div class="resume__row-txt">{{ productsTotalCost }} ₽</div>
             </div>
             <div class="resume__row">
@@ -140,13 +149,16 @@ import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import DarkRectButton from '../components/UIKit/DarkRectButton.vue'
 import { validateEmail, getMonthName } from '@/use/helpers.js'
 import Modal from '../components/Modals/Modal.vue'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   components: {
     BreadCrumbs,
     DarkRectButton,
     BasketCard,
-    Modal
+    Modal,
+    VueDatePicker,
   },
   data() {
     return {
@@ -154,7 +166,9 @@ export default {
       name: '',
       phone: '',
       email: '',
-      date: '',
+      date: new Date(),
+      adress: '',
+      isAdressEditing: false,
       isNameValid: true,
       isPhoneValid: true,
       isEmailValid: true,
@@ -217,16 +231,16 @@ export default {
       this.isEmailValid = this.validateEmail(this.email)
       this.isPhoneValid = this.phone.length === 18
     },
-    callDataPicker() {
-      this.$refs.datePicker.showPicker()
-    }
   },
   computed: {
     productsTotalCost() {
-      return this.basketList.reduce((acc, el) => acc += el.price, 0)
+      return this.basketList.reduce((acc, el) => acc += el.price * el.count, 0)
     },
     selectedDate() {
-      return this.date.substring(10, 8) + ' ' + this.getMonthName(this.date.substring(7, 5))
+      return this.date.getDate() + ' ' + this.getMonthName(this.date.getMonth())
+    },
+    totalProductsCount() {
+      return this.basketList.reduce((acc, el) => acc += el.count, 0)
     }
   },
   watch: {
@@ -263,6 +277,8 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.w-100
+  width: 100%
 .basket
   margin-top: 126px
   margin-bottom: 46px
@@ -393,13 +409,20 @@ export default {
   border-radius: 11px
   padding: 23px 24px 20px
   cursor: pointer
-  & input
-    opacity: 0
-    pointer-events: none
+  &__input
+    width: 100%
     position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    // opacity: 0
+    // pointer-events: none
+    // position: absolute
   & svg
     position: absolute
     right: 24px
+
 .delivery-adress
   display: flex
   flex-wrap: wrap
@@ -410,13 +433,24 @@ export default {
   &__text
     color: #42474D
     font-weight: 500
-    margin-right: 3px
+    margin-right: 5px
   &__content
     display: flex
     align-items: center
   &__adress
     font-weight: 700
     color: #224386
+  & input
+    margin-top: 5px
+    width: 100%
+    font-size: 16px
+    font-family: 'Ubuntu'
+    height: 44px
+    background: #FFFFFF
+    border: 1px solid #BDBDBD
+    border-radius: 11px
+    padding: 12px 14px 11px
+    outline: none
   &__icon
     cursor: pointer
     margin-left: 30px
