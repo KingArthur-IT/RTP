@@ -55,7 +55,8 @@ const router = createRouter({
     {
       path: '/basket',
       name: 'basket',
-      component: BasketView
+      component: BasketView,
+      meta: { name: 'Корзина' }
     },
   ]
 })

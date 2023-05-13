@@ -33,6 +33,7 @@
 
 <script>
 import { getImageUrl } from '@/use/helpers.js'
+
 export default {
     data() {
         return {

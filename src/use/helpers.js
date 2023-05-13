@@ -16,4 +16,8 @@ export const validateEmail = (email) => {
     return re.test(email);
 };
 
+export const numberWithSpaces = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 //new URL(`../assets/${folderName}/${imgName}.${extension}`, import.meta.url).href

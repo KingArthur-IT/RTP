@@ -45,6 +45,7 @@
 <script>
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
 import Modal from '../Modals.vue/Modal.vue'
+import { numberWithSpaces } from '@/use/helpers.js'
 
 export default {
     components: {
@@ -71,6 +72,7 @@ export default {
         this.count = this.productCount
     },
     methods: {
+        numberWithSpaces,
         decrementProductCount() {
             if (this.count > 0)
                 this.count --
@@ -83,9 +85,6 @@ export default {
             // this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
             // this.$emit('update:productCount', )
         },
-        numberWithSpaces(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        }
     },
     watch: {
         count() {
