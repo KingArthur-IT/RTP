@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect, watch, reactive } from "vue";
 
 const { min, max, step, minValue, maxValue } = defineProps({
   min: {
@@ -25,7 +25,7 @@ const { min, max, step, minValue, maxValue } = defineProps({
 });
 
 // define emits for the slider component
-const emit = defineEmits(["update:minValue", "update:maxValue"]);
+const emit = defineEmits(["update:minValue", "update:maxValue", "clearFilter"]);
 
 // define refs for the slider element and the slider values
 const slider = ref(null);
@@ -36,6 +36,14 @@ const sliderMaxValue = ref(maxValue);
 const getPercent = (value, min, max) => {
   return ((value - min) / (max - min)) * 100;
 };
+
+const clearFilters = () => {
+  sliderMinValue.value = 0
+  sliderMaxValue.value = max / 2
+  emit("update:minValue", sliderMinValue.value);
+  emit("update:maxValue", sliderMaxValue.value);
+  emit("clearFilter")
+}
 
 // function to get the difference between the min and max values
 const sliderDifference = computed(() => {
@@ -75,6 +83,10 @@ watchEffect(() => {
 </script>
 
 <template>
+    <div class="filters__head">
+      <p>Фильтры</p>
+      <div @click="clearFilters" class="filters__clear">очистить</div>
+    </div>
     <div class="filters__inputs">
         <input type="number" :step="step" v-model="sliderMinValue" placeholder="от"/>
         <div class="filters__dash">
@@ -109,6 +121,24 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+.filters__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.filters__head p {
+  font-weight: 700;
+  font-size: 18px;
+  color: #42474D;
+}
+.filters__clear {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 171%;
+  color: #A6ACB3;
+  margin-right: 56px;
+}
 .filters__inputs {
     display: flex;
     align-items: center;
@@ -130,6 +160,11 @@ watchEffect(() => {
     font-size: 16px;
     color: #42474D;
 }
+.filters__dash {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+}
 .custom-slider {
   --trackHeight: 0.5rem;
   --thumbRadius: 1rem;
@@ -140,7 +175,6 @@ watchEffect(() => {
   position: relative;
   appearance: none;
   background: none;
-  /* pointer-events: none; */
   border-radius: 999px;
   z-index: 0;
 }
@@ -153,7 +187,6 @@ watchEffect(() => {
   width: var(--ProgressPercent, 100%);
   height: 100%;
   background: var(--primary-color);
-  /* z-index: -1; */
   pointer-events: none;
   border-radius: 999px;
 }
@@ -176,9 +209,6 @@ watchEffect(() => {
 
 .custom-slider input[type="range"]::-webkit-slider-thumb {
   position: relative;
-  /* top: 50%; 
-  transform: translate(0, -50%);
-  */
   width: var(--thumbRadius);
   height: var(--thumbRadius);
   margin-top: calc((var(--trackHeight) - var(--thumbRadius)) / 2);
@@ -187,6 +217,7 @@ watchEffect(() => {
   pointer-events: all;
   appearance: none;
   z-index: 1;
+  cursor: pointer;
 }
 
 .custom-slider.minmax {
@@ -218,4 +249,12 @@ watchEffect(() => {
   display: none;
 }
 
+@media screen and (max-width: 1600px) {
+  .filters__inputs input {
+    width: 94px;
+  }
+  .filters__clear {
+    margin-right: 0;
+  }
+}
 </style>

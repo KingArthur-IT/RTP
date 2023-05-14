@@ -46,4 +46,10 @@ export default {
       margin-right: 44px
     &__hero
       flex-grow: 1
+
+@media screen and (max-width: 1600px)
+  .catalog-system
+      &__filters
+        width: 220px
+        margin-right: 30px
 </style>

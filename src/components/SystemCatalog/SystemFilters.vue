@@ -1,26 +1,22 @@
 <template>
   <div class="filters">
-      <div class="filters__head">
-          <p>Фильтры</p>
-          <div class="filters__clear">очистить</div>
-      </div>
       <div class="filters__range">
           <PriceRange
-            :max="10000"
+            ref="filterPriceRange"
+            :max="rangeMaximum"
             :step="100"
-            v-model:min-value="rangeMin"
-            v-model:max-value="rangeMax"
+            v-model:min-value="rangeMinValue"
+            v-model:max-value="rangeMaxValue"
+            @clearFilter="clearFilters"
           />
       </div>
       <div class="filters__categories">
-          <div class="filters__cat-item">ФИТИНГИ</div>
-          <div class="filters__cat-item">Запорная арматура </div>
-          <div class="filters__cat-item">Коллекторы</div>
-          <div class="filters__cat-item">Труба армированная </div>
-          <div class="filters__cat-item">Труба не армированная </div>
-          <div class="filters__cat-item">Оборудование для монтажа </div>
-          <div class="filters__cat-item">Материалы для монтажа </div>
-          <div class="filters__cat-item">Другое </div>
+          <div 
+            v-for="(cat, index) in categoriesList" :key="index" 
+            class="filters__cat-item"
+            :class="{'active': cat.isSelected}"
+            @click="cat.isSelected = !cat.isSelected"
+          >{{ cat.name }}</div>
       </div>
       <div class="filters__accordeon">
           <FilterCategoryAccordeon :id="'1'" :dataList="fiting" />
@@ -62,6 +58,16 @@ export default {
     },
     data() {
         return {
+            categoriesList: [
+                { name: 'фитинги', isSelected: false },
+                { name: 'Запорная арматура', isSelected: false },
+                { name: 'Коллекторы', isSelected: false },
+                { name: 'Труба армированная', isSelected: false },
+                { name: 'Труба не армированная', isSelected: false },
+                { name: 'Оборудование для монтажа', isSelected: false },
+                { name: 'Материалы для монтажа', isSelected: false },
+                { name: 'Другое', isSelected: false },
+            ],
             fiting: [
                 { isChecked: true, name: 'Муфта', count: 21 },
                 { isChecked: true, name: 'Отводы и угольники', count: 60 },
@@ -112,48 +118,56 @@ export default {
                 { isChecked: true, name: 'Серый', count: 60 },
                 { isChecked: true, name: 'Зелёный', count: 1 },
             ],
-            rangeMin: 0,
-            rangeMax: 5000,
+            rangeMinValue: 0,
+            rangeMaxValue: 5000,
+            rangeMaximum: 10000,
         }
     },
+    methods: {
+        clearFilters() {
+            this.categoriesList.forEach(c => c.isSelected = false)
+            this.fiting.forEach(c => c.isChecked = true)
+            this.fitingTypes.forEach(c => c.isChecked = true)
+            this.connectionTypes.forEach(c => c.isChecked = true)
+            this.threadTypes.forEach(c => c.isChecked = true)
+            this.threadSize.forEach(c => c.isChecked = true)
+            this.diametr.forEach(c => c.isChecked = true)
+            this.color.forEach(c => c.isChecked = true)
+        }
+    }
 }
 </script>
 
 <style scoped lang="sass">
 .filters
     width: 100%
-    &__head
-        display: flex
-        align-items: flex-end
-        justify-content: space-between
-        margin-bottom: 20px
-        & p
-            font-weight: 700
-            font-size: 18px
-            color: #42474D
-    &__clear
-        cursor: pointer
-        font-size: 14px
-        line-height: 171%
-        color: #A6ACB3
-        margin-right: 56px
-    &__dash
-        padding: 0 8px
-        display: flex
-        align-items: center
     &__range
         margin-bottom: 22px
     &__categories
         margin-bottom: 33px
     &__cat-item
+        width: fit-content
         font-weight: 700
         font-size: 14px
         text-transform: uppercase
         color: #42474D
-        margin-bottom: 18px
+        margin-bottom: 4px
+        cursor: pointer
+        padding: 7px 10px
+        border-radius: 20px
+        background: transparent
+        transition: color .3s ease, background .3s ease
+        &.active
+            background: var(--primary-color)
+            color: #fff
     &__accordeon
         margin-bottom: 34px
     &__btn
         width: 100%
         height: 41px
+
+@media screen and (max-width: 1600px)
+    .filters
+        &__cat-item
+            font-size: 12px
 </style>
