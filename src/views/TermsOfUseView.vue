@@ -51,7 +51,7 @@ export default {
     width: 100%
     background: url('@/assets/terms-of-use/baner.jpg') no-repeat
     background-size: cover
-    background-position-x: 100%
+    background-position-x: center
     margin-top: 42px
     margin-bottom: 55px
     &__hero
@@ -73,30 +73,19 @@ export default {
     color: #828D99
     margin-bottom: 87px
 
-@media screen and (max-width: 1600px)
+@media screen and (max-width: 1200px)
     .terms-baner
-        width: 100%
-        background: url('@/assets/terms-of-use/baner.jpg') no-repeat
-        background-size: cover
-        background-position-x: 100%
-        margin-top: 42px
-        margin-bottom: 55px
+        margin-top: 32px
+        margin-bottom: 20px
         &__hero
-            padding: 63px 0 86px
-            color: #fff
+            padding: 30px 0
         &__title
-            font-weight: 700
-            font-size: 40px
-            line-height: 121%
-            margin-bottom: 32px
+            font-size: 20px
+            margin-bottom: 14px
         &__text
-            font-weight: 500
-            font-size: 16px
-            line-height: 1.5
-            max-width: 650px
+            font-size: 9px
+            max-width: 375px
     .terms-text
-        font-size: 16px
-        line-height: 1.56
-        color: #828D99
-        margin-bottom: 87px
+        font-size: 9px
+        margin-bottom: 34px
 </style>

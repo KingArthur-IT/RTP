@@ -5,7 +5,7 @@
               <div class="cookies__text">
                   Мы используем файлы cookie для вашего удобства пользования сайтом и повышения качества рекомендаций.
               </div>
-              <a href="#" class="cookies__details">Подробнее</a>
+              <div @click="$router.push({ name: 'confidence' })" class="cookies__details">Подробнее</div>
               <div class="cookies__btn" @click="acceptCookies">
                   <LightRectButton :isAgreeBtn="true" :text="'Я согласен'" />
               </div>
@@ -58,6 +58,7 @@ export default {
         font-size: 14px
         color: #2598D2
         margin: 0 27px 0 16px
+        cursor: pointer
     &__btn
         min-width: 154px
         height: 34px

@@ -15,6 +15,7 @@ export default {
 
 <style scoped lang="sass">
     .rect-btn
+        appearance: none
         width: 100%
         height: 100%
         border-radius: 4px

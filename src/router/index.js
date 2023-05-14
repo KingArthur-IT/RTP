@@ -10,6 +10,8 @@ import BasketView from '../views/BasketView.vue'
 import SearchView from '../views/SearchView.vue'
 import DeliveryRulesView from '../views/DeliveryRulesView.vue'
 import TermsOfUseView from '../views/TermsOfUseView.vue'
+import ConfidenceView from '../views/ConfidenceView.vue'
+import NotFoundView from '../views/NotFoundView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -78,6 +80,17 @@ const router = createRouter({
       name: 'terms-of-use',
       component: TermsOfUseView,
       meta: { name: 'Пользовательское соглашение' }
+    },
+    {
+      path: '/confidence',
+      name: 'confidence',
+      component: ConfidenceView,
+      meta: { name: 'Политика конфиденциальности' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView,
+      meta: { name: '404' }
     },
   ]
 })

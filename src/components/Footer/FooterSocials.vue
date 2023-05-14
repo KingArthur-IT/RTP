@@ -36,7 +36,7 @@
                   </div>
               </div>
           </div>
-          <div class="hero__item terms" @click="$router.push({ name: 'terms-of-use' })">Политика конфеденциальности</div>
+          <div class="hero__item terms" @click="$router.push({ name: 'confidence' })">Политика конфеденциальности</div>
       </div>
   </div>
 </template>
