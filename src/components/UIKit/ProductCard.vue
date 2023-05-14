@@ -23,15 +23,17 @@
                 @click="slideTo(index)"
             ></div>
           </div>
-          <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
-              {{ description }}
-          </p>
-          <div class="card__price">
-              <div class="current">{{ newPrice }} ₽</div>
-              <div class="old">{{ oldPrice }} ₽</div>
-          </div>
-          <div v-if="isBenefitShown" class="card__benefit">
-              Выгода <span>{{ oldPrice - newPrice }}</span> ₽
+          <div class="card__content" @click="goToCard">
+              <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
+                  {{ description }}
+              </p>
+              <div class="card__price">
+                  <div class="current">{{ newPrice }} ₽</div>
+                  <div class="old">{{ oldPrice }} ₽</div>
+              </div>
+              <div v-if="isBenefitShown" class="card__benefit">
+                  Выгода <span>{{ oldPrice - newPrice }}</span> ₽
+              </div>
           </div>
           <div class="card__controls" :class="{'no-benefit': !isBenefitShown}">
               <div class="count-btns">
@@ -117,6 +119,9 @@ export default {
         onCountInput() {
             this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
         },
+        goToCard() {
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
+        }
     },
     computed: {
         discountPercent() {
@@ -154,6 +159,8 @@ export default {
         justify-content: center
         z-index: 5
         transform: translateZ(10px)
+    &__content
+        cursor: pointer
     &__description
         font-weight: 700
         font-size: 16px

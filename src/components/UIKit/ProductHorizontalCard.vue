@@ -115,7 +115,7 @@ export default {
             this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
         },
         goToCard() {
-            this.$router.push({ name: 'card', params: this.$route.params })
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
         }
     },
 }
