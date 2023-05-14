@@ -305,11 +305,16 @@ export default {
         margin-bottom: 30px
         &__label
             margin-bottom: 24px
+            padding: 9px 22px
+            & span
+                font-size: 24px
+        &__logo
+            width: 30px
         &__title
-            font-size: 40px
+            font-size: 32px
             margin-bottom: 24px
         &__text
-            font-size: 16px
+            font-size: 14px
             max-width: 540px
     .often-buy
         margin-bottom: 5px

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-      <div class="card__head" @click="$router.push({ name: 'catalog-system', params: { name: pageName } })">
+      <div class="card__head" :class="{'min-h': pageName === 'delta'}" @click="$router.push({ name: 'catalog-system', params: { name: pageName } })">
           <p>{{ title }}</p>
           <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
@@ -75,6 +75,8 @@ export default {
         &__head
             font-size: 16px
             min-height: 70px
+            &.min-h
+                min-height: 87px
         &__body
             padding: 30px
         &__name
