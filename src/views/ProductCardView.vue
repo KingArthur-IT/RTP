@@ -207,6 +207,9 @@ export default {
             productCount: 1
         }
     },
+    mounted(){
+        window.scrollTo(0, 0);
+    },
     methods: {
         updateSelectedInDetails(data) {
             this.description[data.arrIndex].selectedValueIndex = data.newSelected
