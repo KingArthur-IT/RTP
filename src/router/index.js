@@ -8,6 +8,7 @@ import CatalogSystemView from '../views/CatalogSystemView.vue'
 import ProductCardView from '../views/ProductCardView.vue'
 import BasketView from '../views/BasketView.vue'
 import SearchView from '../views/SearchView.vue'
+import DeliveryRulesView from '../views/DeliveryRulesView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -64,6 +65,12 @@ const router = createRouter({
       name: 'search',
       component: SearchView,
       meta: { name: 'Результаты поиска' }
+    },
+    {
+      path: '/delivery-rules',
+      name: 'delivery-rules',
+      component: DeliveryRulesView,
+      meta: { name: 'Доставка и сервис' }
     },
   ]
 })

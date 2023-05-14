@@ -203,6 +203,9 @@ export default {
       deliveryCost: 1000
     }
   },
+  mounted(){
+    window.scrollTo(0, 0);
+  },
   methods: {
     validateEmail,
     getMonthName,

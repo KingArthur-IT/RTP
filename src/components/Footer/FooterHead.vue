@@ -29,10 +29,10 @@
             <div class="nav__item" @click="goToPage('catalog')">Каталог</div>
             <div class="nav__item">Услуги</div>
             <div class="nav__item">Оплата</div>
-            <div class="nav__item">Корзина</div>
+            <div class="nav__item" @click="goToPage('basket')">Корзина</div>
         </div>
         <div class="nav">
-            <div class="nav__item">Доставка и сервис</div>
+            <div class="nav__item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
             <div class="nav__item">Оформление заказа</div>
             <div class="nav__item" @click="goToPage('contacts')">Контакты</div>
         </div>

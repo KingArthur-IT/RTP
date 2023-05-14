@@ -36,7 +36,7 @@
                   </div>
               </div>
           </div>
-          <a href="#" class="hero__item">Политика конфеденциальности</a>
+          <div class="hero__item">Политика конфеденциальности</div>
       </div>
   </div>
 </template>
