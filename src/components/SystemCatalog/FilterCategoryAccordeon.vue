@@ -92,6 +92,7 @@ export default {
         display: flex
         align-items: center
         justify-content: space-between
+        margin-bottom: 11px
     &__title
         font-size: 14px
         color: var(--primary-color)

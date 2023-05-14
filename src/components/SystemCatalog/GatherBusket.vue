@@ -3,10 +3,10 @@
       <img src="@/assets/cart_icon.png" alt="busket" class="gather-basket__img">
       <div class="gather-basket__content">
           <div class="gather-basket__title">Соберите мне корзину</div>
-          <div class="gather-basket__text">Доверти покупки профессионалам, загрузите или <br> заполните список и наш менеджер соберет вам корзину </div>
+          <div class="gather-basket__text">Доверти покупки профессионалам, загрузите или заполните список и наш менеджер соберет вам корзину </div>
       </div>
       <div class="gather-basket__btn">
-          <DarkRectButtonVue :text="'Заказать обратный звонок'" />
+          <DarkRectButtonVue @click="$emit('showModal')" :text="'Заказать обратный звонок'" />
       </div>
   </div>
 </template>
@@ -16,8 +16,8 @@ import DarkRectButtonVue from '../UIKit/DarkRectButton.vue'
 
 export default {
     components: {
-        DarkRectButtonVue
-    }
+        DarkRectButtonVue,
+    },
 }
 </script>
 
@@ -43,10 +43,30 @@ export default {
         font-size: 20px
         line-height: 125%
         color: #FFFFFF
+        max-width: 535px
     &__btn
         width: 282px
         height: 43px
         align-self: center
         margin-left: auto
         margin-right: 17px
+
+@media screen and (max-width: 1600px)
+    .gather-basket
+        max-height: 168px
+        &__img
+            width: 175px
+            margin-right: 26px
+        &__content
+            margin-top: 26px
+        &__title
+            font-size: 22px
+            margin-bottom: 7px
+        &__text
+            font-size: 12px
+            max-width: 350px
+        &__btn
+            width: 200px
+            height: 43px
+            margin-right: 17px
 </style>

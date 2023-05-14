@@ -141,17 +141,18 @@ export default {
 <style scoped lang="sass">
 .filters
     width: 100%
+    margin-top: 15px
     &__range
         margin-bottom: 22px
     &__categories
-        margin-bottom: 33px
+        margin-bottom: 45px
     &__cat-item
         width: fit-content
         font-weight: 700
         font-size: 14px
         text-transform: uppercase
         color: #42474D
-        margin-bottom: 4px
+        margin-bottom: 8px
         cursor: pointer
         padding: 7px 10px
         border-radius: 20px

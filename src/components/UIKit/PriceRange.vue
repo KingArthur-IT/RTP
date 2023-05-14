@@ -84,7 +84,7 @@ watchEffect(() => {
 
 <template>
     <div class="filters__head">
-      <p>Фильтры</p>
+      <p>Фильтр</p>
       <div @click="clearFilters" class="filters__clear">очистить</div>
     </div>
     <div class="filters__inputs">
@@ -143,7 +143,7 @@ watchEffect(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 .filters__inputs input {
     background: rgba(166, 172, 179, 0.17);
@@ -151,10 +151,10 @@ watchEffect(() => {
     border-radius: 4px;
     font-size: 16px;
     color: #42474D;
-    padding: 10px 7px;
+    padding: 9px 7px;
     caret-color: #42474D;
     outline-color: rgba(166, 172, 179, 0.17);
-    width: 145px;
+    width: 144px;
 }
 .filters__inputs input::placeholder {
     font-size: 16px;

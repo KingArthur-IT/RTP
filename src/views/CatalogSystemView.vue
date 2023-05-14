@@ -1,7 +1,9 @@
 <template>
   <main>
     <div class="container">
-      <BreadCrumbsSecondLevel />
+      <div class="breadcrumbs">
+        <BreadCrumbsSecondLevel />
+      </div>
       <div class="catalog-system">
         <div class="catalog-system__filters">
           <SystemFilters />
@@ -37,10 +39,13 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.breadcrumbs
+  margin-top: 10px
 .catalog-system
     margin-top: 50px
     display: flex
     justify-content: space-between
+    margin-bottom: 114px
     &__filters
       width: 320px
       margin-right: 44px

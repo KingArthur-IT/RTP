@@ -41,7 +41,6 @@ export default {
   cursor: pointer
   align-items: center
   padding: 7px 0
-  margin-top: 6px
 .checkbox-wrapper
   position: relative
   width: 16px
