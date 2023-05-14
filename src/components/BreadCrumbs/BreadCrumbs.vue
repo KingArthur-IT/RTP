@@ -32,7 +32,7 @@ export default {
             cursor: pointer
             color: #A6ACB3
     &__icon
-        padding: 0 12px
+        padding: 0 10px
 
 @media screen and (max-width: 1600px)
     .breadcrumbs
