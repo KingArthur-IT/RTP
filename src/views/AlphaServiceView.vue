@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="container">
+    <div class="container breadcrumbs">
       <BreadCrumbs />
     </div>
 
@@ -64,6 +64,8 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.breadcrumbs
+  margin-top: 10px
 .info-wrapper
   position: relative
   &::before
@@ -78,7 +80,7 @@ export default {
     pointer-events: none
     z-index: 0
 .system-baner
-  margin-top: 46px
+  margin-top: 47px
 .benefits-wrapper
   position: relative
   &::before
@@ -91,9 +93,9 @@ export default {
     bottom: 0
     pointer-events: none
 .system-benefits
-  padding: 87px 0 72px
+  padding: 87px 0 61px
 .system-mounting
-  margin-top: -224px
+  margin-top: -254px
   margin-bottom: 200px
 
 @media screen and (max-width: 1600px)

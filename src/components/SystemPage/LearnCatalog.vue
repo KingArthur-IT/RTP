@@ -66,21 +66,21 @@ export default {
         height: 100%
     &__hero
         color: #fff
-        padding: 46px 10px 70px 65px
+        padding: 46px 10px 70px 62px
     &__title
         font-weight: 700
         font-size: 45px
         line-height: 122%
-        margin-bottom: 18px
+        margin-bottom: 26px
     &__text
         font-weight: 500
         font-size: 25px
     &__btn-wrap
         min-width: 363px
-        min-height: 54px
+        height: 54px
         align-self: center
         margin-left: auto
-        margin-right: 200px
+        margin-right: 193px
 
 @media screen and (max-width: 1650px)
     .learn
@@ -98,7 +98,7 @@ export default {
             font-size: 17px
         &__btn-wrap
             min-width: 227px
-            min-height: 36px
+            height: 36px
             margin-right: 133px
 
 </style>

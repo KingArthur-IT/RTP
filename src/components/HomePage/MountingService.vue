@@ -64,7 +64,7 @@ export default {
 <style scoped lang="sass">
 .mounting
     &__images
-        margin-top: 90px
+        margin-top: 66px
         width: calc( 100% + 48px )
         transform: translateX(-24px)
     &__img-wrapper
@@ -73,7 +73,7 @@ export default {
         grid-row-gap: 0px
         &.six
             grid-template-columns: repeat(3, 1fr)
-            grid-template-rows: repeat(5, 1fr)
+            grid-template-rows: repeat(5, auto)
             & .mounting__item
                 &:nth-child(1)
                     grid-area: 1 / 1 / 3 / 2

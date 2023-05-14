@@ -6,7 +6,7 @@
                   <img src="@/assets/alpha-info/1.png" alt="1">
               </div>
               <p class="card__text">
-                  Все материалы для монтажа в одном месте
+                  Все материалы <br> для монтажа <br> в одном месте
               </p>
           </div>
           <div class="card">
@@ -22,7 +22,7 @@
                   <img src="@/assets/alpha-info/3.png" alt="1">
               </div>
               <p class="card__text">
-                  Долговечные полипропиленовые трубы
+                  Долговечные полипропиленовые <br> трубы
               </p>
           </div>
           <div class="card">
@@ -30,7 +30,7 @@
                   <img src="@/assets/alpha-info/4.png" alt="1">
               </div>
               <p class="card__text">
-                  Все инструменты для пайки в комплекте
+                  Все инструменты <br> для пайки <br> в комплекте
               </p>
           </div>
       </div>
@@ -54,7 +54,7 @@ export default {
 
 <style scoped lang="sass">
 .info
-    padding: 74px 0 125px
+    padding: 74px 0 131px
     &__card
         background: #FFFFFF
         box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.15)
@@ -79,20 +79,34 @@ export default {
 .cards__wrapper
     display: flex
     justify-content: space-between
-    margin-bottom: 100px
+    margin-bottom: 78px
 .card
     max-width: 286px
     &__img
-        border-radius: 20px
         overflow: hidden
         & img
-            width: 100%
+            border-radius: 20px
+            width: 74%
+    &:nth-child(2) 
+        & .card__img
+            transform: translateX(10px)
+        & .card__text
+            margin-left: -30px
+    &:nth-child(3) 
+        & .card__img
+            transform: translateX(14px)
+        & .card__text
+            margin-left: -30px
+    &:nth-child(4) 
+        & .card__text
+            margin-left: -45px
     &__text
         font-weight: 700
         font-size: 27px
         line-height: 139%
         text-align: center
         color: var(--primary-color)
+        margin-left: -64px
 
 @media screen and (max-width: 1600px)
     .info

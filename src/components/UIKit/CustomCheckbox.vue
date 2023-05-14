@@ -68,7 +68,7 @@ export default {
   border-radius: 3px
   transition: border .3s ease
   &.error
-    border: 2px solid #ff0000
+    border: 2px solid #F27272
   &.checked
     background-color: var(--primary-color)
     border-color: var(--primary-color)

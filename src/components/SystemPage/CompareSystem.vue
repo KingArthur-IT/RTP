@@ -95,22 +95,24 @@ export default {
         z-index: 1
         pointer-events: none
     &__container
-        padding-top: 141px
+        padding-top: 118px
         padding-bottom: 300px
         background: url('@/assets/alpha-compare/bg.png') no-repeat
         background-size: 100% auto
         background-position-x: center
         background-position-y: center
     &__title
-        margin-bottom: 110px
+        margin-bottom: 136px
     &__item
         display: flex
         align-items: flex-end
         margin-bottom: 55px
         &:nth-child(1)
-            padding-left: 480px
+            padding-left: 471px
         &:nth-child(2)
-            padding-left: 240px
+            padding-left: 259px
+            & .compare__hero
+                margin-top: 19px
         &:nth-child(3)
             padding-left: 60px
     &__num

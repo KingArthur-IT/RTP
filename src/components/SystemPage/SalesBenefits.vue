@@ -191,7 +191,7 @@ export default {
     box-shadow: 0px 0px 34px rgba(0, 0, 0, 0.15)
     border-radius: 9px
     background: #FFFFFF
-    padding: 35px 43px 10px 50px
+    padding: 35px 43px 17px 50px
     height: 100%
     &::before
         position: absolute
@@ -228,12 +228,12 @@ export default {
         -webkit-text-fill-color: transparent
         background-clip: text
         text-fill-color: transparent
-        margin-bottom: 31px
+        margin-bottom: 38px
         transition: background .3s ease
     &__item
         display: flex
-        align-items: center
-        padding-bottom: 35px
+        align-items: flex-start
+        padding-bottom: 33px
     &__list-mark
         margin-right: 17px
         width: 25px
