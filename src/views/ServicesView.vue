@@ -47,26 +47,26 @@
       <div class="container">
           <div class="our-services">
             <div class="section-title our-services__title">
-                <div class="section-title-text">Наши услуги</div>
+                <div class="section-title-text">Наши услуги{{isModalShow}}</div>
             </div>
             <div class="our-services__hero">
-                <div class="our-services__item">
+                <div class="our-services__item" @click="isModalShow = true">
                     <img src="@/assets/our-services/1.jpg" alt="1">
                     <div class="our-services__label"><span>/</span>Монтаж систем отопления</div>
                 </div>
-                <div class="our-services__item">
+                <div class="our-services__item" @click="isModalShow = true">
                     <img src="@/assets/our-services/2.jpg" alt="1">
                     <div class="our-services__label"><span>/</span>Монтаж водоснабжения</div>
                 </div>
-                <div class="our-services__item">
+                <div class="our-services__item" @click="isModalShow = true">
                     <img src="@/assets/our-services/3.jpg" alt="1">
                     <div class="our-services__label"><span>/</span>Монтаж котельного оборудования</div>
                 </div>
-                <div class="our-services__item">
+                <div class="our-services__item" @click="isModalShow = true">
                     <img src="@/assets/our-services/4.jpg" alt="1">
                     <div class="our-services__label"><span>/</span>Монтаж канализации</div>
                 </div>
-                <div class="our-services__item">
+                <div class="our-services__item" @click="isModalShow = true">
                     <img src="@/assets/our-services/5.jpg" alt="1">
                     <div class="our-services__label"><span>/</span>Монтаж теплых полов</div>
                 </div>
@@ -98,6 +98,11 @@
       <div class="questions">
           <ServicesQuiestions />
       </div>
+      <Modal 
+        v-model:open="isModalShow"
+        :title="'Консультация по монтажу'"
+        :descriptionHtml="'Подбор оборудования, консультация и расчет сметы для Вас - БЕСПЛАТНО! <br> Пожалуйста, заполните обязательные поля, и мы с Вами свяжемся. '"
+      />
   </main>
 </template>
 
@@ -105,6 +110,7 @@
 import BreadCrumbsVue from '../components/BreadCrumbs/BreadCrumbs.vue';
 import MountingService from '../components/HomePage/MountingService.vue';
 import VideoSection from '../components/HomePage/VideoSection.vue';
+import Modal from '../components/Modals/Modal.vue';
 import ServicesBaner from '../components/Services/ServicesBaner.vue';
 import ServiceSertificates from '../components/Services/ServiceSertificates.vue';
 import ServicesHowWeWork from '../components/Services/ServicesHowWeWork.vue';
@@ -118,10 +124,16 @@ export default {
         VideoSection,
         ServiceSertificates,
         ServicesHowWeWork,
-        ServicesQuiestions
+        ServicesQuiestions,
+        Modal
     }, 
     mounted(){
         window.scrollTo(0, 0);
+    },
+    data() {
+        return {
+            isModalShow: false,
+        }
     },
 }
 </script>
@@ -191,13 +203,14 @@ export default {
     &__hero
         display: grid
         grid-template-columns: repeat(3, 1fr)
-        grid-template-rows: repeat(4, 1fr)
+        grid-template-rows: repeat(4, 188px)
         grid-column-gap: 41px
         grid-row-gap: 31px
     &__item
         position: relative
         border-radius: 8px
         overflow: hidden
+        cursor: pointer
         &:nth-child(1)
             grid-area: 1 / 1 / 5 / 2
             & img
@@ -284,29 +297,24 @@ export default {
         &__title
             margin-bottom: 50px
         &__hero
-            grid-template-columns: repeat(3, auto)
-            grid-template-rows: repeat(4, auto)
-            grid-column-gap: 25px
-            grid-row-gap: 19px
+            display: grid
+            grid-template-columns: repeat(3, 1fr)
+            grid-template-rows: repeat(2, 240px)
+            grid-column-gap: 20px
+            grid-row-gap: 18px
         &__item
             &:nth-child(1)
-                grid-area: 1 / 1 / 5 / 2
-                & img
-                    width: 100%
+                grid-area: 1 / 1 / 3 / 2
             &:nth-child(2)
-                grid-area: 1 / 2 / 3 / 3
-                & img
-                    width: 100%
+                grid-area: 1 / 2 / 2 / 3
             &:nth-child(3)
-                grid-area: 1 / 3 / 3 / 4
+                grid-area: 2 / 2 / 3 / 3
             &:nth-child(4)
-                grid-area: 3 / 2 / 5 / 3
+                grid-area: 1 / 3 / 2 / 4
             &:nth-child(5)
-                grid-area: 3 / 3 / 5 / 4
-                & img
-                    width: 100%
+                grid-area: 2 / 3 / 3 / 4
             & img
-                height: 100%
+                width: 100%
         &__label
             padding: 10px 16px
             min-height: 68px

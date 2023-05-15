@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="services-baner__btn">
+                    <div class="services-baner__btn" @click="isModalShow = true">
                         <LightRectButton :text="'Рассчитать стоимость'" />
                     </div>
                     <div class="services-baner__info">
@@ -74,15 +74,27 @@
             </div>
         </div>
     </div>
+    <Modal 
+        v-model:open="isModalShow"
+        :title="'Обратный звонок'"
+        :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
+      />
 </template>
 
 <script>
+import Modal from '../Modals/Modal.vue'
 import LightRectButton from '../UIKit/LightRectButton.vue'
 
 export default {
     components: {
-        LightRectButton
+        LightRectButton,
+        Modal
     },
+    data() {
+        return {
+            isModalShow: false
+        }
+    }
 }
 </script>
 

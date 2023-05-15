@@ -7,29 +7,36 @@
           <div class="questions-sect__text">
               Менеджер перезвонит вам, чтобы уточнить детали по вашему вопросу
           </div>
-          <form class="questions-sect__form">
+          <form @click.prevent class="questions-sect__form">
               <div class="questions-sect__row">
                   <div class="input-wrapper">
                       <CustomInput 
+                        v-model:value="name"
                         :label="'Имя'"
                         :isRequired="true"
                         :placeholder="'Введите имя'"
                         :isLight="true"
+                        :isValid="isNameValid"
+                        :noValidText="'Это поле обязательно для заполнения'"
                       />
                   </div>
                   <div class="input-wrapper">
                       <CustomInput 
+                        v-model:value="phone"
                         :label="'Телефон'"
                         :isRequired="true"
                         :placeholder="'+7'"
                         :isLight="true"
                         :isNumber="true"
+                        :isValid="isPhoneValid"
+                        :noValidText="'Проверьте номер телефона'"
                       />
                   </div>
               </div>
               <div class="questions-sect__row">
                   <div class="input-wrapper">
                       <CustomInput 
+                        v-model:value="message"
                         :label="'Сообщение'"
                         :placeholder="'Иван'"
                         :isLight="true"
@@ -39,15 +46,18 @@
                   </div>
                   <div class="input-wrapper">
                       <CustomInput 
+                        v-model:value="email"
                         :label="'E-mail'"
                         :isRequired="true"
                         :placeholder="'vanivan@mail.ru'"
                         :isLight="true"
                         :type="'email'"
+                        :isValid="isEmailValid"
+                        :noValidText="'Не верный e-mail'"
                       />
                   </div>
               </div>
-              <div class="questions-sect__btn">
+              <div class="questions-sect__btn" @click="formSubmit">
                   <LightRectButton :text="'Отправить'" :isWhiteBtn="true" />
               </div>
           </form>
@@ -58,12 +68,37 @@
 <script>
 import CustomInput from '../UIKit/CustomInput.vue'
 import LightRectButton from '../UIKit/LightRectButton.vue'
+import { validateEmail } from '@/use/helpers.js'
 
 export default {
     components: {
         CustomInput,
         LightRectButton
     },
+    data() {
+        return {
+            name: '',
+            phone: '+7 (',
+            email: '',
+            message: '',
+            isNameValid: true,
+            isPhoneValid: true,
+            isEmailValid: true,
+        }
+    },
+    methods: {
+        validateEmail,
+        formSubmit() {
+            this.isNameValid = !!this.name
+            this.isEmailValid = this.validateEmail(this.email)
+            this.isPhoneValid = this.phone.length === 18
+
+            if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
+                return
+
+            //отправить данные
+        },
+    }
 }
 </script>
 
