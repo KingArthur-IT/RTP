@@ -14,6 +14,7 @@ import ConfidenceView from '../views/ConfidenceView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import ServicesView from '../views/ServicesView.vue'
 import PaymentMethodsView from '../views/PaymentMethodsView.vue'
+import OrderingView from '../views/OrderingView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -100,6 +101,12 @@ const router = createRouter({
       name: 'payment-methods',
       component: PaymentMethodsView,
       meta: { name: 'Оплата' }
+    },
+    {
+      path: '/ordering',
+      name: 'ordering',
+      component: OrderingView,
+      meta: { name: 'Оформление заказа' }
     },
     {
       path: '/:pathMatch(.*)*',

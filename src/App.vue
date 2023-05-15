@@ -27,4 +27,12 @@ export default {
 <style scoped lang="sass">
 .services
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+.catalog
+  background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+.catalog-system
+  background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+.basket
+  background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+.card
+  background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 74.36%)
 </style>
