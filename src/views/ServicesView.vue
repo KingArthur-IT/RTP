@@ -36,6 +36,9 @@
               </div>
           </div>
       </div>
+      <div class="bg-logo">
+          <img src="@/assets/RTP.png">
+      </div>
       <div class="container">
           <div class="our-services">
             <div class="section-title our-services__title">
@@ -117,6 +120,17 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.baner
+    margin-top: -14px
+.bg-logo
+    position: relative
+    & img
+        position: absolute
+        left: 0
+        right: 0
+        top: 0
+        width: 100%
+
 .features-list
     padding: 88px 0 66px
     &__wrap
@@ -132,7 +146,7 @@ export default {
         position: relative
         background: #EDEDED
         border-radius: 8px
-        padding: 18px 39px 50px 27px
+        padding: 18px 39px 25px 27px
         color: var(--primary-color)
         overflow: hidden
         height: 100%
@@ -160,8 +174,9 @@ export default {
 
 .our-services
     margin-bottom: 147px
+    padding-top: 59px
     &__title
-        margin-bottom: 74px
+        margin-bottom: 86px
     &__hero
         display: grid
         grid-template-columns: repeat(3, 1fr)

@@ -93,11 +93,11 @@ export default {
     background-size: cover
     background-position-x: center
     &__hero
-        padding: 35px 0
+        padding: 68px 0 43px 0
         display: flex
         justify-content: space-between
     &__content
-        max-width: 1020px
+        max-width: 1106px
     &__title
         display: flex
         align-items: center
@@ -107,6 +107,7 @@ export default {
             font-size: 55px
             line-height: 132%
             color: #FFFFFF
+            max-width: 873px
             & span
                 position: relative
                 z-index: 4
@@ -129,7 +130,7 @@ export default {
             margin-right: 50px
         & .icon
             width: 71px
-            margin-bottom: 18px
+            margin-bottom: 15px
             & img
                 width: 100%
                 height: 100%
@@ -143,9 +144,9 @@ export default {
                 font-weight: 700
                 color: #FECC00
     &__btn
-        width: 288px
+        width: 291px
         height: 42px
-        margin-bottom: 60px
+        margin-bottom: 65px
     &__info
         font-size: 14px
         color: #fff
@@ -155,7 +156,8 @@ export default {
     flex-direction: column
     justify-content: space-between
     max-width: 250px
-    padding-left: 50px
+    padding-left: 56px
+    margin-top: -31px
     &__item
         position: relative
         &:last-child
@@ -188,4 +190,5 @@ export default {
         font-size: 18px
         line-height: 146%
         color: #fff
+        width: 102%
 </style>

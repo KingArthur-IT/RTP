@@ -1,8 +1,8 @@
 <template>
     <div class="how-we-work">
         <div class="container">
-            <div class="section-title how-we-work__title">
-            <div class="section-title-text">Как мы работаем</div>
+            <div class="section-title">
+                <div class="section-title-text">Как мы работаем</div>
             </div>
             <div class="how-we-work__list">
                 <div class="how-we-work__item">
@@ -116,12 +116,12 @@ export default {
 <style scoped lang="sass">
 .how-we-work
     padding-top: 95px
-    padding-bottom: 75px
+    padding-bottom: 47px
     background: url('@/assets/how-we-work.png') no-repeat
     background-size: cover
     background-position-x: center
-    &__title
-        margin-bottom: 91px
+    & .section-title
+        margin-bottom: 106px
     &__list
         display: flex
         justify-content: space-between
@@ -132,7 +132,7 @@ export default {
     &__item
         flex-basis: 33.33%
         padding: 0 15px
-        margin-bottom: 100px
+        margin-bottom: 141px
     &__card
         & ul
             padding-left: 16px
@@ -140,6 +140,7 @@ export default {
             position: relative
             color: #828D99
             line-height: 1.55
+            font-size: 21px
             &:before
                 content: ''
                 position: absolute
@@ -151,9 +152,9 @@ export default {
                 border-radius: 50%
     &__num
         font-weight: 700
-        font-size: 48px
+        font-size: 50px
         color: var(--primary-color)
-        margin-bottom: 26px
+        margin-bottom: 18px
         position: relative
         width: fit-content
         &::before

@@ -57,10 +57,11 @@ export default {
 <style scoped lang="sass">
 .sertificates
     &__title
-        margin-bottom: 45px
+        margin-bottom: 59px
     &__hero
         display: flex
         justify-content: space-between
+        margin-bottom: 68px
     &__content
         flex-basis: 50%
     &__subtitle
@@ -81,10 +82,12 @@ export default {
         align-items: center
     &__alpha
         max-width: 315px
+        padding-left: 35px
         & img
             width: 100%
     &__iso
         max-width: 424px
+        transform: translateX(73px)
         & img
             width: 100%
     &__cards
