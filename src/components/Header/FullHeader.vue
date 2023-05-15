@@ -16,9 +16,9 @@
                         <path d="M6.5 6.55671e-07L12.9952 7.5L0.00480872 7.5L6.5 6.55671e-07Z" fill="#8CA7DD"/>
                     </svg>
                 </div>
-                <div class="header__nav-item">Услуги</div>
+                <div class="header__nav-item" @click="goToPage('services')">Услуги</div>
                 <div class="header__nav-item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
-                <div class="header__nav-item">Оплата</div>
+                <div class="header__nav-item" @click="goToPage('payment-methods')">Оплата</div>
                 <div class="header__nav-item" :class="{'active': isCurrentPage('company')}" @click="goToPage('company')">О компании</div>
                 <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}" @click="goToPage('contacts')">Контакты</div>
                 <ServicesList :isShown="isServicesHeaderListShown" @closeEvent="isServicesHeaderListShown = false"/>

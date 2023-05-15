@@ -12,6 +12,8 @@ import DeliveryRulesView from '../views/DeliveryRulesView.vue'
 import TermsOfUseView from '../views/TermsOfUseView.vue'
 import ConfidenceView from '../views/ConfidenceView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
+import ServicesView from '../views/ServicesView.vue'
+import PaymentMethodsView from '../views/PaymentMethodsView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -86,6 +88,17 @@ const router = createRouter({
       name: 'confidence',
       component: ConfidenceView,
       meta: { name: 'Политика конфиденциальности' }
+    },
+    {
+      path: '/services',
+      name: 'services',
+      component: ServicesView,
+    },
+    {
+      path: '/payment-methods',
+      name: 'payment-methods',
+      component: PaymentMethodsView,
+      meta: { name: 'Оплата' }
     },
     {
       path: '/:pathMatch(.*)*',
