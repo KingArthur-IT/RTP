@@ -1,5 +1,10 @@
 <template>
   <main>
+      <div class="container">
+          <div class="breadcrumbs">
+              <BreadCrumbsVue />
+          </div>
+      </div>
       <div class="baner">
           <ServicesBaner />
       </div>
@@ -55,11 +60,11 @@
                 </div>
                 <div class="our-services__item">
                     <img src="@/assets/our-services/3.jpg" alt="1">
-                    <div class="our-services__label"><span>/</span>Монтаж канализации</div>
+                    <div class="our-services__label"><span>/</span>Монтаж котельного оборудования</div>
                 </div>
                 <div class="our-services__item">
                     <img src="@/assets/our-services/4.jpg" alt="1">
-                    <div class="our-services__label"><span>/</span>Монтаж котельного оборудования</div>
+                    <div class="our-services__label"><span>/</span>Монтаж канализации</div>
                 </div>
                 <div class="our-services__item">
                     <img src="@/assets/our-services/5.jpg" alt="1">
@@ -97,6 +102,7 @@
 </template>
 
 <script>
+import BreadCrumbsVue from '../components/BreadCrumbs/BreadCrumbs.vue';
 import MountingService from '../components/HomePage/MountingService.vue';
 import VideoSection from '../components/HomePage/VideoSection.vue';
 import ServicesBaner from '../components/Services/ServicesBaner.vue';
@@ -106,6 +112,7 @@ import ServicesQuiestions from '../components/Services/ServicesQuiestions.vue';
 
 export default {
     components: {
+        BreadCrumbsVue,
         ServicesBaner,
         MountingService,
         VideoSection,
@@ -121,7 +128,7 @@ export default {
 
 <style scoped lang="sass">
 .baner
-    margin-top: -14px
+    margin-top: 24px
 .bg-logo
     position: relative
     & img
@@ -147,18 +154,19 @@ export default {
         background: #EDEDED
         border-radius: 8px
         padding: 18px 39px 25px 27px
-        color: var(--primary-color)
         overflow: hidden
         height: 100%
-        transition: color .3s ease, background .3s ease
+        transition: background .3s ease
         & h3
             font-weight: 700
             font-size: 22px
             margin-bottom: 27px
+            color: var(--primary-color)
         & p
             font-weight: 500
             font-size: 17px
             line-height: 146%
+            color: #828D99
         & img
             position: absolute
             bottom: 13px
@@ -168,9 +176,12 @@ export default {
             transition: opacity .3s ease
         &:hover
             background: var(--primary-color)
-            color: #fff
             & img
                 opacity: 1
+            & h3
+                color: #fff
+            & p
+                color: #fff
 
 .our-services
     margin-bottom: 147px
@@ -244,4 +255,81 @@ export default {
 
 .sertificates
     margin-top: 140px
+
+.questions
+    margin-top: 83px
+
+@media screen and (max-width: 1600px)
+    .features-list
+        padding: 51px 0 61px
+        &__wrap
+            width: calc( 100% + 22px )
+            transform: translateX(-11px)
+        &__item
+            padding: 0 11px
+        &__card
+            padding: 14px 14px 12px 16px
+            & h3
+                font-size: 16px
+                margin-bottom: 22px
+            & p
+                font-size: 15px
+            & img
+                bottom: 9px
+                width: 90px
+
+    .our-services
+        margin-bottom: 64px
+        padding-top: 18px
+        &__title
+            margin-bottom: 50px
+        &__hero
+            grid-template-columns: repeat(3, auto)
+            grid-template-rows: repeat(4, auto)
+            grid-column-gap: 25px
+            grid-row-gap: 19px
+        &__item
+            &:nth-child(1)
+                grid-area: 1 / 1 / 5 / 2
+                & img
+                    width: 100%
+            &:nth-child(2)
+                grid-area: 1 / 2 / 3 / 3
+                & img
+                    width: 100%
+            &:nth-child(3)
+                grid-area: 1 / 3 / 3 / 4
+            &:nth-child(4)
+                grid-area: 3 / 2 / 5 / 3
+            &:nth-child(5)
+                grid-area: 3 / 3 / 5 / 4
+                & img
+                    width: 100%
+            & img
+                height: 100%
+        &__label
+            padding: 10px 16px
+            min-height: 68px
+            font-size: 18px
+            & span
+                margin-right: 4px
+
+    .advantages
+        &__list
+            padding: 23px 0px
+            width: calc( 100% + 32px )
+            transform: translateX(-16px)
+        &__item
+            padding: 16px 27px
+            font-size: 18px
+
+    .examples
+        margin-top: 50px
+        margin-bottom: 40px
+
+    .sertificates
+        margin-top: 69px
+
+    .questions
+        margin-top: 63px
 </style>

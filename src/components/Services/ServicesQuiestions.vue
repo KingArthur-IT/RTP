@@ -94,4 +94,26 @@ export default {
 .input-wrapper
     width: 480px
     margin-right: 32px
+
+@media screen and (max-width: 1600px)
+    .questions-sect
+        padding-bottom: 45px
+        background-size: contain
+        background-position-x: 100%
+        &__title
+            margin-bottom: 33px
+        &__text
+            font-size: 14px
+            max-width: 360px
+            margin-bottom: 22px
+        &__row
+            margin-bottom: 8px
+        &__btn
+            width: 161px
+            height: 31px
+            margin-top: 31px
+        
+    .input-wrapper
+        width: 250px
+        margin-right: 16px
 </style>

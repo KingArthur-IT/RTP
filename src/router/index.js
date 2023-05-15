@@ -93,6 +93,7 @@ const router = createRouter({
       path: '/services',
       name: 'services',
       component: ServicesView,
+      meta: { name: 'Услуги' }
     },
     {
       path: '/payment-methods',

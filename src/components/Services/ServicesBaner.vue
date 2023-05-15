@@ -191,4 +191,61 @@ export default {
         line-height: 146%
         color: #fff
         width: 102%
+
+@media screen and (max-width: 1600px)
+    .services-baner
+        &__hero
+            padding: 40px 0 13px 0
+        &__title
+            margin-bottom: 30px
+            & h1
+                font-size: 35px
+                max-width: 580px
+                & span
+                    & svg
+                        width: 210px
+            & img
+                width: 98px
+        &__list
+            margin-bottom: 18px
+        &__card
+            margin-right: 35px
+            &.last
+                margin-right: 10px
+            & .icon
+                width: 44px
+                margin-bottom: 11px
+            & p
+                font-size: 14px
+        &__btn
+            width: 188px
+            height: 35px
+            margin-bottom: 44px
+        &__info
+            font-size: 10px
+
+    .baner-list
+        max-width: 250px
+        padding-left: 56px
+        margin-top: -20px
+        &__item
+            &::after
+                width: 12px
+                height: 12px
+                left: -30px
+                top: 13px
+            &::before
+                height: 160%
+                left: -25px
+                top: 13px
+            &:last-child
+                & .baner-list__text
+                    width: 125%
+        &__num
+            font-size: 35px
+            & span
+                font-size: 35px
+        &__text
+            font-size: 14px
+            width: 102%
 </style>

@@ -179,4 +179,45 @@ export default {
         font-size: 27px
         color: var(--primary-color)
         margin-bottom: 47px
+
+@media screen and (max-width: 1600px)
+    .how-we-work
+        padding-top: 40px
+        padding-bottom: 47px
+        & .section-title
+            margin-bottom: 55px
+        &__list
+            width: calc(100% + 20px)
+            transform: translateX(-10px)
+        &__item
+            padding: 0 10px
+            margin-bottom: 40px
+        &__card
+            & ul
+                padding-left: 12px
+            & li
+                font-size: 15px
+                &:before
+                    left: -10px
+                    top: 9px
+                    width: 4px
+                    height: 4px
+        &__num
+            font-size: 35px
+            margin-bottom: 16px
+            &::before
+                width: 7px
+                height: 7px
+                right: -12px
+                bottom: 7px
+            & svg
+                bottom: 2px
+                left: 59px
+                width: 260px
+        &__time
+            font-size: 14px
+            margin-bottom: 9px
+        &__title
+            font-size: 20px
+            margin-bottom: 28px
 </style>

@@ -134,4 +134,48 @@ export default {
                     left: 4px
                 &:last-child
                     border: none
+
+@media screen and (max-width: 1600px)
+    .sertificates
+        &__title
+            margin-bottom: 34px
+        &__hero
+            margin-bottom: 60px
+        &__subtitle
+            font-size: 16px
+            margin-bottom: 16px
+            max-width: 500px
+        &__text
+            font-size: 14px
+            max-width: 410px
+        &__images
+            justify-content: flex-end
+        &__alpha
+            max-width: 185px
+            padding-left: 35px
+        &__iso
+            max-width: 182px
+            transform: translateX(40px)
+        &__cards
+            width: calc(100% + 20px)
+            transform: translateX(-10px)
+        &__item
+            padding: 0 10px
+        &__card
+            padding: 29px 14px 19px 17px
+            &-title
+                font-size: 20px
+                margin-bottom: 30px
+                margin-left: 0px
+                text-align: center
+            & ul
+                & li
+                    font-size: 14px
+                    padding: 12px 0
+                    padding-left: 24px
+                    &:before
+                        width: 11px
+                        height: 11px
+                        top: 19px
+                        left: 4px
 </style>
