@@ -18,7 +18,7 @@
             cols="30" 
             :rows="rowsCount" 
             class="input textarea"
-            :class="{'main-form': additionalClass === 'main-form' }"
+            :class="additionalClass"
             v-model="inputValue"
             @input="onInput"
             :placeholder="placeholder"
@@ -174,6 +174,8 @@ export default {
         max-height: 243px
         &.main-form
             max-height: 204px
+        &.question-form
+            height: 290px
     
     .light
         & .label

@@ -1,7 +1,7 @@
 <template>
   <div class="mounting">
       <div class="section-title best__title">
-          <div class="section-title-text">Услуги по монтажу</div>
+          <div class="section-title-text">{{ title }}</div>
       </div>
       <div class="mounting__images">
           <div v-for="loop in loopsCount" :key="loop">
@@ -32,6 +32,12 @@ export default {
         return {
             imageCount: 6,
             maxImageCount: 15
+        }
+    },
+    props: {
+        title: {
+            type: String,
+            default: 'Услуги по монтажу'
         }
     },
     computed: {
