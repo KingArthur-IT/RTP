@@ -18,6 +18,7 @@
                         v-model:value="name"
                         :placeholder="'Введите имя'"
                         :isValid="isNameValid"
+                        :noValidText="'Это поле обязательно для заполнения'"
                       />
                   </div>
                   <div class="input-wrapper">
@@ -28,6 +29,7 @@
                         v-model:value="phone"
                         :placeholder="''"
                         :isValid="isPhoneValid"
+                        :noValidText="'Проверьте номер телефона'"
                       />
                   </div>
                   <CustomCheckbox v-model="isConfirmed" :isValid="isConfirmedValid">
@@ -46,6 +48,7 @@
                         v-model:value="email"
                         :placeholder="'Введите e-mail'"
                         :isValid="isEmailValid"
+                        :noValidText="'Не верный e-mail'"
                       />
                   </div>
                   <div>

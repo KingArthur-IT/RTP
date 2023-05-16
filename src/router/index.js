@@ -1,20 +1,5 @@
 import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ContactsView from '../views/ContactsView.vue'
-import CompanyView from '../views/CompanyView.vue'
-import CatalogView from '../views/CatalogView.vue'
-import AlphaServiceView from '../views/AlphaServiceView.vue'
-import CatalogSystemView from '../views/CatalogSystemView.vue'
-import ProductCardView from '../views/ProductCardView.vue'
-import BasketView from '../views/BasketView.vue'
-import SearchView from '../views/SearchView.vue'
-import DeliveryRulesView from '../views/DeliveryRulesView.vue'
-import TermsOfUseView from '../views/TermsOfUseView.vue'
-import ConfidenceView from '../views/ConfidenceView.vue'
-import NotFoundView from '../views/NotFoundView.vue'
-import ServicesView from '../views/ServicesView.vue'
-import PaymentMethodsView from '../views/PaymentMethodsView.vue'
-import OrderingView from '../views/OrderingView.vue'
 
 const baseUrl = import.meta.env.BASE_URL
 const history = import.meta.env.SSR ? createMemoryHistory(baseUrl) : createWebHistory(baseUrl)
@@ -30,87 +15,87 @@ const router = createRouter({
     {
       path: '/contacts',
       name: 'contacts',
-      component: ContactsView,
+      component: () => import('../views/ContactsView.vue'),
       meta: { name: 'Контакты' }
     },
     {
       path: '/company',
       name: 'company',
-      component: CompanyView,
+      component: () => import('../views/CompanyView.vue'),
       meta: { name: 'О компании' }
     },
     {
       path: '/catalog',
       name: 'catalog',
-      component: CatalogView
+      component: () => import('../views/CatalogView.vue'),
     },
     {
       path: '/alpha-system',
       name: 'alpha-system',
-      component: AlphaServiceView,
+      component: () => import('../views/AlphaServiceView.vue'),
       meta: { name: 'Система ALPHA полипропиленовые трубы и фитинги PP-R' }
     },
     {
       path: '/catalog-system/:name',
       name: 'catalog-system',
-      component: CatalogSystemView,
+      component: () => import('../views/CatalogSystemView.vue'),
     },
     {
       path: '/card/:name',
       name: 'card',
-      component: ProductCardView
+      component: () => import('../views/ProductCardView.vue'),
     },
     {
       path: '/basket',
       name: 'basket',
-      component: BasketView,
+      component: () => import('../views/BasketView.vue'),
       meta: { name: 'Корзина' }
     },
     {
       path: '/search',
       name: 'search',
-      component: SearchView,
+      component: () => import('../views/SearchView.vue'),
       meta: { name: 'Результаты поиска' }
     },
     {
       path: '/delivery-rules',
       name: 'delivery-rules',
-      component: DeliveryRulesView,
+      component: () => import('../views/DeliveryRulesView.vue'),
       meta: { name: 'Доставка и сервис' }
     },
     {
       path: '/terms-of-use',
       name: 'terms-of-use',
-      component: TermsOfUseView,
+      component: () => import('../views/TermsOfUseView.vue'),
       meta: { name: 'Пользовательское соглашение' }
     },
     {
       path: '/confidence',
       name: 'confidence',
-      component: ConfidenceView,
+      component: () => import('../views/ConfidenceView.vue'),
       meta: { name: 'Политика конфиденциальности' }
     },
     {
       path: '/services',
       name: 'services',
-      component: ServicesView,
+      component: () => import('../views/ServicesView.vue'),
       meta: { name: 'Услуги' }
     },
     {
       path: '/payment-methods',
       name: 'payment-methods',
-      component: PaymentMethodsView,
+      component: () => import('../views/PaymentMethodsView.vue'),
       meta: { name: 'Оплата' }
     },
     {
       path: '/ordering',
       name: 'ordering',
-      component: OrderingView,
+      component: () => import('../views/OrderingView.vue'),
       meta: { name: 'Оформление заказа' }
     },
     {
       path: '/:pathMatch(.*)*',
-      component: NotFoundView,
+      component: () => import('../views/NotFoundView.vue'),
       meta: { name: '404' }
     },
   ]
