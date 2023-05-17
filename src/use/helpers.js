@@ -39,6 +39,10 @@ export const getPageName = (catalog_title) => {
     return 'beta-orange'
 }
 
+export const isSelectedSystem = (pageName, systemName) => {
+  return getPageName(systemName) === pageName
+}
+
 export const getMonthName = (val) => {
     let month = ''
 

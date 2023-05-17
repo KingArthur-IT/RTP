@@ -27,33 +27,33 @@
       <div v-if="dispayModeValue === 'col'" class="list-col">
             <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
                 <ProductCard 
-                    :id="item.id" 
-                    :description="item.description"
-                    :newPrice="item.newPrice"
-                    :oldPrice="item.oldPrice"
+                    :id="item.ID" 
+                    :description="item.PREVIEW_TEXT"
+                    :newPrice="item.PRICE"
+                    :oldPrice="'0'"
                     :isBenefitShown="false"
                 />
             </div>
             <div class="list-col__gather">
                 <GatherBusket @showModal="isModalShow = true" />
             </div>
-            <div v-for="item in filteredList.slice(8, filteredList.length)" :key="item.id" class="list-col__card">
+            <div v-for="item in filteredList.slice(8, filteredList.length)" :key="item.ID" class="list-col__card">
                 <ProductCard 
-                    :id="item.id" 
-                    :description="item.description"
-                    :newPrice="item.newPrice"
-                    :oldPrice="item.oldPrice"
+                    :id="item.ID" 
+                    :description="item.PREVIEW_TEXT"
+                    :newPrice="item.PRICE"
+                    :oldPrice="'0'"
                     :isBenefitShown="false"
                 />
             </div>
         </div>
         <div v-else class="list-row">
-            <div v-for="(item, index) in filteredList" :key="item.id" class="list-row__card">
+            <div v-for="(item, index) in filteredList" :key="item.ID" class="list-row__card">
                 <ProductHorizontalCard 
-                    :id="item.id" 
-                    :title="item.title"
-                    :price="item.newPrice"
-                    :description="item.description"
+                    :id="item.ID" 
+                    :title="item.NAME"
+                    :price="item.PRICE"
+                    :description="item.PREVIEW_TEXT"
                     :infoList="item.info"
                 />
                 <div v-if="index === 1" class="list-row__gather">
@@ -86,6 +86,12 @@ export default {
         FiltersRow,
         Modal
     },
+    props: {
+        cardsList: {
+            type: Array,
+            default: []
+        }
+    },
     data() {
         return {
             systemList,
@@ -96,25 +102,6 @@ export default {
             dispayModeValue: 'col',
             oftenBuyList: ['Труба PN10 SDR 11-25мм для ХВС', 'Труба PN16 SDR 7.4 -25мм для ГВС', 'Уголок 90гр', 'Муфта'],
             filteredList: [],
-            cardsList: [
-                { id: 1, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 189, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 2, date: 2, starsCount: 2, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 200, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 3, date: 3, starsCount: 3, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 300, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 4, date: 4, starsCount: 4, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 490, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 5, date: 5, starsCount: 5, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 589, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 6, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 689, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 7, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 789, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 8, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 889, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 9, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 989, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 10, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 109, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 11, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 119, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 12, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 129, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 13, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 139, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 14, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 149, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 15, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 159, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 16, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 169, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-                { id: 17, date: 1, starsCount: 1, title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 179, oldPrice: 262, info: [{ description: 'DN номинальный диаметр, мм', value: '20' }, { description: 'Толщина стенок, мм', value: '1,9' }, { description: 'Кол-во в упаковке м/шт', value: '100/25' }, { description: 'Материал', value: 'Полипропилен' }, { description: 'Цвет', value: 'Белый' }] },
-            ],
         }
     },
     mounted() {
@@ -131,16 +118,16 @@ export default {
     watch: {
         filterValue() {
             const compareFromCheap = ( a, b ) => {
-                if ( a.newPrice < b.newPrice )
+                if ( a.PRICE < b.PRICE )
                     return -1;
-                if ( a.newPrice > b.newPrice )
+                if ( a.PRICE > b.PRICE )
                     return 1;
                 return 0;
             }
             const compareFromExpansive = ( a, b ) => {
-                if ( a.newPrice > b.newPrice )
+                if ( a.PRICE > b.PRICE )
                     return -1;
-                if ( a.newPrice < b.newPrice )
+                if ( a.PRICE < b.PRICE )
                     return 1;
                 return 0;
             }
@@ -152,9 +139,9 @@ export default {
                 return 0;
             }
             const compareDate = ( a, b ) => {
-                if ( a.date > b.date )
+                if ( Number(a.CREATED_DATE) > Number(b.CREATED_DATE) )
                     return -1;
-                if ( a.date < b.date )
+                if ( Number(a.CREATED_DATE) < Number(b.CREATED_DATE) )
                     return 1;
                 return 0;
             }
@@ -167,6 +154,9 @@ export default {
                 this.filteredList.sort(compareStars)
             if (this.filterValue === 'new')
                 this.filteredList.sort(compareDate)
+        },
+        cardsList() {
+            this.filteredList = this.cardsList
         }
     }
 }
@@ -286,6 +276,7 @@ export default {
             padding: 0
         &__card
             flex-basis: 25%
+            width: 25%
             padding: 8px
         &__gather
             padding: 8px

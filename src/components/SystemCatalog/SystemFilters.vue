@@ -4,7 +4,7 @@
           <PriceRange
             ref="filterPriceRange"
             :max="rangeMaximum"
-            :step="100"
+            :step="1"
             v-model:min-value="rangeMinValue"
             v-model:max-value="rangeMaxValue"
             @clearFilter="clearFilters"
@@ -16,7 +16,7 @@
             class="filters__cat-item"
             :class="{'active': cat.isSelected}"
             @click="cat.isSelected = !cat.isSelected"
-          >{{ cat.name }}</div>
+          >{{ cat.NAME }}</div>
       </div>
       <div class="filters__accordeon">
           <FilterCategoryAccordeon :id="'1'" :dataList="fiting" />
@@ -39,7 +39,7 @@
       <div class="filters__accordeon">
           <FilterCategoryAccordeon :id="'7'" :dataList="color" />
       </div>
-      <div class="filters__btn">
+      <div class="filters__btn" @click="applyCategories">
           <DarkRectButton :text="'Применить'" />
       </div>
   </div>
@@ -56,18 +56,13 @@ export default {
         FilterCategoryAccordeon,
         DarkRectButton
     },
+    props: {
+        categoriesList: {
+            type: Array,
+        }
+    },
     data() {
         return {
-            categoriesList: [
-                { name: 'фитинги', isSelected: false },
-                { name: 'Запорная арматура', isSelected: false },
-                { name: 'Коллекторы', isSelected: false },
-                { name: 'Труба армированная', isSelected: false },
-                { name: 'Труба не армированная', isSelected: false },
-                { name: 'Оборудование для монтажа', isSelected: false },
-                { name: 'Материалы для монтажа', isSelected: false },
-                { name: 'Другое', isSelected: false },
-            ],
             fiting: [
                 { isChecked: true, name: 'Муфта', count: 21 },
                 { isChecked: true, name: 'Отводы и угольники', count: 60 },
@@ -119,8 +114,8 @@ export default {
                 { isChecked: true, name: 'Зелёный', count: 1 },
             ],
             rangeMinValue: 0,
-            rangeMaxValue: 5000,
-            rangeMaximum: 10000,
+            rangeMaxValue: 500,
+            rangeMaximum: 1000,
         }
     },
     methods: {
@@ -133,6 +128,15 @@ export default {
             this.threadSize.forEach(c => c.isChecked = true)
             this.diametr.forEach(c => c.isChecked = true)
             this.color.forEach(c => c.isChecked = true)
+
+            this.applyCategories()
+        },
+        applyCategories() {
+            this.$emit('applyFilters', {
+                selectedCategories: this.categoriesList.filter(c => c.isSelected),
+                minPrice: this.rangeMinValue,
+                maxPrice: this.rangeMaxValue
+            })
         }
     }
 }

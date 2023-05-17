@@ -64,7 +64,7 @@ export default {
     },
     data() {
         return {
-            count: 0,
+            count: 1,
             isModalShow: false
         }
     },
@@ -74,7 +74,7 @@ export default {
     methods: {
         numberWithSpaces,
         decrementProductCount() {
-            if (this.count > 0)
+            if (this.count > 1)
                 this.count --
         },
         incrementProductCount() {

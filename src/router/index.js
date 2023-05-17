@@ -88,12 +88,6 @@ const router = createRouter({
       meta: { name: 'Оплата' }
     },
     {
-      path: '/ordering',
-      name: 'ordering',
-      component: () => import('../views/OrderingView.vue'),
-      meta: { name: 'Оформление заказа' }
-    },
-    {
       path: '/:pathMatch(.*)*',
       component: () => import('../views/NotFoundView.vue'),
       meta: { name: '404' }

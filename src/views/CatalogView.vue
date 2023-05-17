@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import GeneralCatalogCard from '../components/Catalog/GeneralCatalogCard.vue'
 import { getPageName } from '@/use/helpers.js'
+import { getCatalog, getAllCategoriesCount } from '@/use/middleware.js'
 
 export default {
   components: {
@@ -26,17 +26,23 @@ export default {
   data() {
     return {
       catalogList: [],
+      sectionIdCounts: []
     }
-  },
-  computed: {
-    // ...mapGetters('catalog', ['catalogList']),
   },
   async mounted(){
     window.scrollTo(0, 0);
     this.catalogList = await this.getCatalog()
+    this.sectionIdCounts = await this.getAllCategoriesCount()
+
+    this.catalogList.forEach(cat => {
+      cat.list.forEach(subcat => {
+        subcat.count = this.sectionIdCounts[subcat.ID] || 0
+      })
+    })
   },
   methods: {
-    ...mapActions('catalog', ['getCatalog']),
+    getCatalog, 
+    getAllCategoriesCount,
     getPageName
   }
 }

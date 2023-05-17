@@ -65,7 +65,7 @@ export default {
     },
     props: {
         id: {
-            type: Number,
+            type: String,
             required: true
         },
         title: {
@@ -77,8 +77,8 @@ export default {
             default: ''
         },
         price: {
-            type: Number,
-            required: true
+            type: String,
+            default: '0'
         },
         infoList: { //[{ description, value }]
             type: Array,
@@ -89,7 +89,7 @@ export default {
         return {
             slideIndex: 1,
             slideCount: 6,
-            productCount: 0
+            productCount: 1
         }
     },
     methods: {
@@ -105,7 +105,7 @@ export default {
                 this.slideIndex = this.slideCount
         },
         decrementProductCount() {
-            if (this.productCount > 0)
+            if (this.productCount > 1)
                 this.productCount --
         },
         incrementProductCount() {

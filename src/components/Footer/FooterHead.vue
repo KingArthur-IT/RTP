@@ -33,7 +33,6 @@
         </div>
         <div class="nav">
             <div class="nav__item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
-            <div class="nav__item" @click="goToPage('ordering')">Оформление заказа</div>
             <div class="nav__item" @click="goToPage('contacts')">Контакты</div>
         </div>
         </div>

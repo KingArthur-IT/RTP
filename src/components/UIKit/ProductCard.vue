@@ -1,57 +1,61 @@
 <template>
   <div class="card">
       <div class="card__hero">
-          <div class="card__carousel">
-              <Carousel 
-                :items-to-show="1" 
-                :ref="`prodCard${id}`" 
-                :wrap-around="true" 
-                :snapAlign="'start'" 
-                :mouseDrag="true"
-                @slide-start="onSlideChange"
-              >
-                <slide v-for="(slide, index) in slideCount" :key="index" class="card__slide">
-                    <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
-                </slide>
-              </Carousel>
-          </div>
-          <div v-if="isBenefitShown" class="card__discount-label">-{{ discountPercent }}%</div>
-          <div class="dots">
-              <div class="dot" 
-                v-for="(slide, index) in slideCount" :key="index"
-                :class="{'active': index + 1 === slideIndex}" 
-                @click="slideTo(index)"
-            ></div>
-          </div>
-          <div class="card__content" @click="goToCard">
-              <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
-                  {{ description }}
-              </p>
-              <div class="card__price">
-                  <div class="current">{{ newPrice }} ₽</div>
-                  <div class="old">{{ oldPrice }} ₽</div>
+          <div>
+              <div class="card__carousel">
+                  <Carousel 
+                    :items-to-show="1" 
+                    :ref="`prodCard${id}`" 
+                    :wrap-around="true" 
+                    :snapAlign="'start'" 
+                    :mouseDrag="true"
+                    @slide-start="onSlideChange"
+                  >
+                    <slide v-for="(slide, index) in slideCount" :key="index" class="card__slide">
+                        <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+                    </slide>
+                  </Carousel>
               </div>
-              <div v-if="isBenefitShown" class="card__benefit">
-                  Выгода <span>{{ oldPrice - newPrice }}</span> ₽
+              <div v-if="isBenefitShown" class="card__discount-label">-{{ discountPercent }}%</div>
+              <div class="dots">
+                  <div class="dot" 
+                    v-for="(slide, index) in slideCount" :key="index"
+                    :class="{'active': index + 1 === slideIndex}" 
+                    @click="slideTo(index)"
+                ></div>
+              </div>
+              <div class="card__content" @click="goToCard">
+                  <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
+                      {{ description }}
+                  </p>
               </div>
           </div>
-          <div class="card__controls" :class="{'no-benefit': !isBenefitShown}">
-              <div class="count-btns">
-                  <button @click="decrementProductCount">
-                    <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
-                    </svg>
-                  </button>
-                  <input type="text" v-model="productCount" @input="onCountInput">
-                  <button @click="incrementProductCount">
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
-                    </svg>
-                  </button>
-              </div>
-              <div class="card__order">
-                  <DarkRectButton :text="'В корзину'" />
-              </div>
+          <div>
+                <div class="card__price">
+                    <div class="current">{{ newPrice }} ₽</div>
+                    <div v-if="oldPrice !== '0'" class="old">{{ oldPrice }} ₽</div>
+                </div>
+                <div v-if="isBenefitShown" class="card__benefit">
+                    Выгода <span>{{ oldPrice - newPrice }}</span> ₽
+                </div>
+                <div class="card__controls" :class="{'no-benefit': !isBenefitShown}">
+                    <div class="count-btns">
+                        <button @click="decrementProductCount">
+                        <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
+                        </svg>
+                        </button>
+                        <input type="text" v-model="productCount" @input="onCountInput">
+                        <button @click="incrementProductCount">
+                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
+                        </svg>
+                        </button>
+                    </div>
+                    <div class="card__order">
+                        <DarkRectButton :text="'В корзину'" />
+                    </div>
+                </div>
           </div>
       </div>
   </div>
@@ -70,7 +74,7 @@ export default {
     },
     props: {
         id: {
-            type: Number,
+            type: String,
             required: true
         },
         description: {
@@ -78,11 +82,11 @@ export default {
             default: ''
         },
         newPrice: {
-            type: Number,
-            required: true
+            type: String,
+            default: '0'
         },
         oldPrice: {
-            type: Number,
+            type: String,
             required: true
         },
         isBenefitShown: {
@@ -94,7 +98,7 @@ export default {
         return {
             slideIndex: 1,
             slideCount: 6,
-            productCount: 0
+            productCount: 1
         }
     },
     methods: {
@@ -110,7 +114,7 @@ export default {
                 this.slideIndex = this.slideCount
         },
         decrementProductCount() {
-            if (this.productCount > 0)
+            if (this.productCount > 1)
                 this.productCount --
         },
         incrementProductCount() {
@@ -136,7 +140,15 @@ export default {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.15))
     padding: 16px 16px 19px 16px
     width: 100%
+    height: 100%
     background: #fff
+    display: flex
+    flex-direction: column
+    &__hero
+        height: 100%
+        display: flex
+        flex-direction: column
+        justify-content: space-between
     &__carousel
         position: relative
     &__slide
@@ -167,6 +179,7 @@ export default {
         color: #A6ACB3
         margin-bottom: 14px
         text-align: left
+        overflow-wrap: anywhere
         &.no-benefit
             margin-bottom: 38px
     &__price

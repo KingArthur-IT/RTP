@@ -16,7 +16,8 @@ export default {
     },
     methods: {
         searchEvent() {
-            this.$router.push({ name: 'search', query: { search: this.search } })
+            if (this.search.length > 2)
+                this.$router.push({ name: 'search', query: { search: this.search } })
         }
     }
 }

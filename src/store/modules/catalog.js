@@ -18,7 +18,7 @@ export default{
   },
 
   actions: {
-    async getCatalog() {
+    async getCatalog({ state }) {
       return await sendRequest('', 'POST', { 'method': 'get_catalog_sections' })
         .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_sections && res.data.get_catalog_sections.data) {
@@ -33,6 +33,7 @@ export default{
                 return acc
               }, [])
             console.log(list);
+            state.catalogList = list
             return list
           } else {
             console.log('Error while get catalog list', res);
@@ -40,6 +41,9 @@ export default{
         })
         .catch((err) => console.log('Error while get catalog list', err))
     },
+    getCatalogData({ state }) {
+      return state.catalogList
+    }
   },
 
   plugins: [createPersistedState()]
