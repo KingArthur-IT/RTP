@@ -20,6 +20,25 @@ export const numberWithSpaces = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+export const getPageName = (catalog_title) => {
+  if (catalog_title.includes('ALPHA'))
+    return 'alpha'
+  if (catalog_title.includes('SIGMA'))
+    return 'sigma'
+  if (catalog_title.includes('DELTA'))
+    return 'delta'
+  if (catalog_title.includes('GAMMA'))
+    return 'gamma'
+  if (catalog_title.includes('OMEGA'))
+    return 'omega'
+  if (catalog_title.includes('BETA'))
+    return 'beta'
+  if (catalog_title.includes('ELITE'))
+    return 'beta-elite'
+  if (catalog_title.includes('ORANGE'))
+    return 'beta-orange'
+}
+
 export const getMonthName = (val) => {
     let month = ''
 

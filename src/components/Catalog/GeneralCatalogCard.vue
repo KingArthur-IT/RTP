@@ -7,8 +7,8 @@
           </svg>
       </div>
       <div class="card__body">
-          <div class="card__row" v-for="(item, index) in data" :key="index">
-              <div class="card__name">{{ item.name }}</div>
+          <div class="card__row" v-for="item in data" :key="item.ID">
+              <div class="card__name">{{ item.NAME }}</div>
               <div class="card__count">{{ item.count }}</div>
           </div>
       </div>

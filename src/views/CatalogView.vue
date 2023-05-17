@@ -2,60 +2,11 @@
   <main>
     <div class="container">
       <div class="catalog">
-        <div class="catalog__card">
+        <div v-for="card in catalogList" :key="card.ID" class="catalog__card">
           <GeneralCatalogCard
-            :title="'Система ALPHA - Полипропиленовые трубы и фитинги PP-R'"
-            :data="alphaData"
-            :pageName="'alpha'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система SIGMA - Запорная арматура и латунные резьбовые фитинги'"
-            :data="sigmaData"
-            :pageName="'sigma'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система DELTA - Трубы PE-Xa / EVOH и аксиальные фитинги'"
-            :data="deltaData"
-            :pageName="'delta'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система OMEGA - Трубы и комплектующие для теплого пола PE-RT и PE-Xa'"
-            :data="omegaData"
-            :pageName="'omega'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система BETA ELITE - Малошумная канализация'"
-            :data="betaEliteData"
-            :pageName="'beta-elite'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система BETA ORANGE - Наружная канализация'"
-            :data="betaOrangeData"
-            :pageName="'beta-orange'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система BETA - Внутренняя канализация'"
-            :data="betaData"
-            :pageName="'beta'"
-          />
-        </div>
-        <div class="catalog__card">
-          <GeneralCatalogCard
-            :title="'Система GAMMA - Трубы ПНД и компрессионные фитинги'"
-            :data="gammaData"
-            :pageName="'gamma'"
+            :title="card.NAME"
+            :data="card.list"
+            :pageName="getPageName(card.NAME)"
           />
         </div>
       </div>
@@ -64,7 +15,9 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import GeneralCatalogCard from '../components/Catalog/GeneralCatalogCard.vue'
+import { getPageName } from '@/use/helpers.js'
 
 export default {
   components: {
@@ -72,63 +25,20 @@ export default {
   },
   data() {
     return {
-      alphaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-        { name: 'Труба не армированная', count: 12 },
-        { name: 'Оборудование для монтажа', count: 5 },
-        { name: 'Материалы для монтажа', count: 7 },
-        { name: 'Другое', count: 16 },
-      ],
-      sigmaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-      ],
-      deltaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-        { name: 'Другое', count: 16 },
-      ],
-      omegaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-      ],
-      betaEliteData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-      ],
-      betaOrangeData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-      ],
-      betaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-      ],
-      gammaData: [
-        { name: 'Фитинги', count: 12 },
-        { name: 'Запорная арматура', count: 34 },
-        { name: 'Коллекторы', count: 2 },
-        { name: 'Труба армированная', count: 17 },
-      ],
+      catalogList: [],
     }
   },
-  mounted(){
-    window.scrollTo(0, 0);
+  computed: {
+    // ...mapGetters('catalog', ['catalogList']),
   },
+  async mounted(){
+    window.scrollTo(0, 0);
+    this.catalogList = await this.getCatalog()
+  },
+  methods: {
+    ...mapActions('catalog', ['getCatalog']),
+    getPageName
+  }
 }
 </script>
 
