@@ -1,87 +1,3 @@
-<script setup>
-import { computed, ref, watchEffect, watch, reactive } from "vue";
-
-const { min, max, step, minValue, maxValue } = defineProps({
-  min: {
-    type: Number,
-    default: 0,
-  },
-  max: {
-    type: Number,
-    default: 200,
-  },
-  step: {
-    type: Number,
-    default: 1,
-  },
-  minValue: {
-    type: Number,
-    default: 0,
-  },
-  maxValue: {
-    type: Number,
-    default: 100,
-  },
-});
-
-// define emits for the slider component
-const emit = defineEmits(["update:minValue", "update:maxValue", "clearFilter"]);
-
-// define refs for the slider element and the slider values
-const slider = ref(null);
-const sliderMinValue = ref(minValue);
-const sliderMaxValue = ref(maxValue);
-
-// function to get the percentage of a value between the min and max values
-const getPercent = (value, min, max) => {
-  return ((value - min) / (max - min)) * 100;
-};
-
-const clearFilters = () => {
-  sliderMinValue.value = 0
-  sliderMaxValue.value = max / 2
-  emit("update:minValue", sliderMinValue.value);
-  emit("update:maxValue", sliderMaxValue.value);
-  emit("clearFilter")
-}
-
-// function to get the difference between the min and max values
-const sliderDifference = computed(() => {
-  return Math.abs(sliderMaxValue.value - sliderMinValue.value);
-});
-
-// function to set the css variables for width, left, and right
-const setCSSProps = (width, left, right) => {
-  slider.value.style.setProperty("--width", `${width}%`);
-  slider.value.style.setProperty("--progressLeft", `${left}%`);
-  slider.value.style.setProperty("--progressRight", `${right}%`);
-};
-
-// watchEffect to emit the updated values, and update the css variables
-// when the slider values change
-watchEffect(() => {
-  if (sliderMinValue.value > sliderMaxValue.value) {
-      sliderMinValue.value = sliderMaxValue.value
-  }
-  sliderMinValue.value = sliderMinValue.value < 0 ? 0 : sliderMinValue.value
-  sliderMaxValue.value = sliderMaxValue.value < 0 ? 0 : sliderMaxValue.value
-  
-  if (slider.value) {
-    // emit slidet values when updated
-    emit("update:minValue", sliderMinValue.value);
-    emit("update:maxValue", sliderMaxValue.value);
-
-    // calculate values in percentages
-    const differencePercent = getPercent(sliderDifference.value, min, max);
-    const leftPercent = getPercent(sliderMinValue.value, min, max);
-    const rightPercent = 100 - getPercent(sliderMaxValue.value, min, max);
-
-    // set the CSS variables
-    setCSSProps(differencePercent, leftPercent, rightPercent);
-  }
-});
-</script>
-
 <template>
     <div class="filters__head">
       <p>Фильтр</p>
@@ -119,6 +35,99 @@ watchEffect(() => {
         />
     </div>
 </template>
+
+<script>
+export default {
+  props: {
+    min: {
+      type: Number,
+      default: 0,
+    },
+    max: {
+      type: Number,
+      default: 100,
+    },
+    step: {
+      type: Number,
+      default: 1,
+    },
+    minValue: {
+      type: Number,
+      default: 0,
+    },
+    maxValue: {
+      type: Number,
+      default: 100,
+    },
+  },
+  emits: ["update:minValue", "update:maxValue", "clearFilter"],
+  data() {
+    return {
+      slider: null,
+      sliderMinValue: 0,
+      sliderMaxValue: 0
+    }
+  },
+  mounted(){
+    this.slider = this.$refs.slider
+  },
+  methods: {
+    getPercent(value, min, max) {
+      return ((value - min) / (max - min)) * 100;
+    },
+    clearFilters(){
+      this.sliderMinValue = 0
+      this.sliderMaxValue = this.max
+      this.$emit("update:minValue", this.sliderMinValue);
+      this.$emit("update:maxValue", this.sliderMaxValue);
+      this.$emit("clearFilter")
+    },
+    setCSSProps(width, left, right){
+      this.slider.style.setProperty("--width", `${width}%`);
+      this.slider.style.setProperty("--progressLeft", `${left}%`);
+      this.slider.style.setProperty("--progressRight", `${right}%`);
+    },
+    change() {
+      if (this.sliderMinValue > this.sliderMaxValue) {
+          this.sliderMinValue = this.sliderMaxValue
+      }
+      this.sliderMinValue = this.sliderMinValue < 0 ? 0 : this.sliderMinValue
+      this.sliderMaxValue = this.sliderMaxValue < 0 ? 0 : this.sliderMaxValue
+      
+      if (this.slider) {
+        // emit slidet values when updated
+        this.$emit("update:minValue", this.sliderMinValue);
+        this.$emit("update:maxValue", this.sliderMaxValue);
+
+        // calculate values in percentages
+        const differencePercent = this.getPercent(this.sliderDifference, this.min, this.max);
+        const leftPercent = this.getPercent(this.sliderMinValue, this.min, this.max);
+        const rightPercent = 100 - this.getPercent(this.sliderMaxValue, this.min, this.max);
+
+        // set the CSS variables
+        this.setCSSProps(differencePercent, leftPercent, rightPercent);
+      }
+    },
+  },
+  computed: {
+    sliderDifference() {
+      return Math.abs(this.sliderMaxValue - this.sliderMinValue);
+    }
+  },
+  watch: {
+    sliderMinValue() {
+      this.change()
+    },
+    sliderMaxValue() {
+      this.change()
+    },
+    maxValue() {
+      this.sliderMaxValue = this.maxValue
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 .filters__head {

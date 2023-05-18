@@ -1,17 +1,17 @@
 import { sendRequest } from './useRequest' 
 
+//Получить системы и категории 
 export const getCatalog = async () => {
     return await sendRequest('', 'POST', { 'method': 'get_catalog_sections' })
       .then((res) => {
         if (res.status === 200 && res.data && res.data.get_catalog_sections && res.data.get_catalog_sections.data) {
           const list = res.data.get_catalog_sections.data
-            .map(el => { return { ID: el.ID, NAME: el.NAME, IBLOCK_SECTION_ID: el.IBLOCK_SECTION_ID, list: []} })
-            .reduce((acc, el) => {
-              if (!el.IBLOCK_SECTION_ID)
+            .map(el => { return { ID: el.ID, NAME: el.NAME, IBLOCK_SECTION_ID: el.IBLOCK_SECTION_ID, list: []} }) //transform data
+            .reduce((acc, el) => { //collect categotiest to list []
+              if (!el.IBLOCK_SECTION_ID) //если это не категория а верхний уровень
                 acc.push(el)
-              else {
+              else
                 acc.find(item => item.ID === el.IBLOCK_SECTION_ID).list.push({ count: 0, ...el })
-              }
               return acc
             }, [])
           console.log('catList = ', list);
@@ -23,18 +23,17 @@ export const getCatalog = async () => {
       .catch((err) => console.log('Error while get catalog list', err))
   };
 
+//Посчитать сколько товаров есть по категориям { IBLOCK_SECTION_ID: count, ... }
 export const getAllCategoriesCount = async () => {
     return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
         .then((res) => {
-            console.log(res);
             if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
                 const sectionsIdsCount = Object.values(res.data.get_catalog_prod.data)
-                    .map(el => { return el.arFields.IBLOCK_SECTION_ID })
+                    .map(el => { return el.arFields.IBLOCK_SECTION_ID }) //вытащить только IBLOCK_SECTION_ID из товаров
                     .reduce((acc, el) => {
                         acc[el] = ( acc[el] || 0 ) + 1
                         return acc
                     }, {})
-                console.log('prod card list = ', sectionsIdsCount);
                 return sectionsIdsCount
             } else {
                 console.log('Error while get catalog list', res);
@@ -43,6 +42,25 @@ export const getAllCategoriesCount = async () => {
         .catch((err) => console.log('Error while get catalog list', err))
 };
 
+//получить продукты только заданных катогория по массиву id этих категорий
+export const getProductsOfSelectedSystem = async (idsArr) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              const products = []
+              Object.values(res.data.get_catalog_prod.data).forEach(el => {
+                  if (idsArr.some(id => id === el.arFields.IBLOCK_SECTION_ID))
+                      products.push(el)
+              })
+              return products
+          } else {
+              console.log('Error while get catalog list', res);
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};
+
+//получить все продукты в виде массива
 export const getAllProducts = async () => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
       .then((res) => {
@@ -56,23 +74,7 @@ export const getAllProducts = async () => {
       .catch((err) => console.log('Error while get catalog list', err))
 };
 
-export const getProductsOfSelectedSystem = async (idsArr) => {
-    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
-        .then((res) => {
-            if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-                const products = []
-                Object.values(res.data.get_catalog_prod.data).forEach(el => {
-                    if (idsArr.some(id => id === el.arFields.IBLOCK_SECTION_ID))
-                        products.push(el)
-                })
-                return products
-            } else {
-                console.log('Error while get catalog list', res);
-            }
-        })
-        .catch((err) => console.log('Error while get catalog list', err))
-};
-
+//добавить продукт в корзину
 export const addProductToBacket = async (id, count, backet_id) => {
   const dataSend = { 'method': 'cart_add_prod', 'prod_id': id, 'count': count }
   if (backet_id)
@@ -93,6 +95,7 @@ export const addProductToBacket = async (id, count, backet_id) => {
       .catch((err) => console.log('Error while get catalog list', err))
 };
 
+//получить из корзины продукты
 export const getBacketProducts = async (backet_id) => {
   return await sendRequest('', 'POST', { 'method': 'cart_get', 'fuser_id': backet_id})
       .then((res) => {
@@ -109,6 +112,7 @@ export const getBacketProducts = async (backet_id) => {
       .catch((err) => console.log('Error while get catalog list', err))
 };
 
+//удалить товар из корзины
 export const deleteCartItem = async (id, cart_id) => {
   return await sendRequest('', 'POST', { 'method': 'cart_clear', 'prod_id': id, 'fuser_id': cart_id})
       .then((res) => {

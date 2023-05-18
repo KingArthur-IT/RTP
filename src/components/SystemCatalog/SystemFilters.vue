@@ -57,6 +57,10 @@ export default {
         DarkRectButton
     },
     props: {
+        rangeMaximum: {
+            type: Number,
+            default: 500
+        },
         categoriesList: {
             type: Array,
         }
@@ -114,9 +118,11 @@ export default {
                 { isChecked: true, name: 'Зелёный', count: 1 },
             ],
             rangeMinValue: 0,
-            rangeMaxValue: 500,
-            rangeMaximum: 1000,
+            rangeMaxValue: 10,
         }
+    },
+    mounted() {
+        this.rangeMaxValue = this.rangeMaximum
     },
     methods: {
         clearFilters() {
@@ -137,6 +143,11 @@ export default {
                 minPrice: this.rangeMinValue,
                 maxPrice: this.rangeMaxValue
             })
+        }
+    },
+    watch: {
+        rangeMaximum() {
+            this.rangeMaxValue = this.rangeMaximum
         }
     }
 }

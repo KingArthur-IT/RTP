@@ -25,9 +25,7 @@
                 ></div>
               </div>
               <div class="card__content" @click="goToCard">
-                  <p class="card__description" :class="{'no-benefit': !isBenefitShown}">
-                      {{ description }}
-                  </p>
+                  <p class="card__description" :class="{'no-benefit': !isBenefitShown}" v-html="description"></p>
               </div>
           </div>
           <div>
@@ -53,7 +51,8 @@
                         </button>
                     </div>
                     <div class="card__order">
-                        <DarkRectButton @click="addToBasket" :text="'В корзину'" />
+                        <!-- <DarkRectButton @click="addToBasket" :text="'В корзину'" /> -->
+                        <AddToCartButtonVue @click="addToBasket" :text="'В корзину'" />
                     </div>
                 </div>
           </div>
@@ -66,12 +65,14 @@ import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import DarkRectButton from './DarkRectButton.vue';
 import { addProductToBacket } from '@/use/middleware.js'
+import AddToCartButtonVue from './AddToCartButton.vue';
 
 export default {
     components: {
         Carousel,
         Slide,
-        DarkRectButton
+        DarkRectButton,
+        AddToCartButtonVue
     },
     props: {
         id: {

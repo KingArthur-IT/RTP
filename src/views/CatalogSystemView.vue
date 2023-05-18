@@ -7,7 +7,8 @@
       <div class="catalog-system">
         <div class="catalog-system__filters">
           <SystemFilters 
-            :categoriesList="categories" 
+            :categoriesList="categories"
+            :rangeMaximum="maxPrice" 
             @applyFilters="applyFilters"
           />
         </div>
@@ -36,17 +37,20 @@ export default {
     return {
       categories: [],
       allProducts: [],
-      filteredProducts: []
+      filteredProducts: [],
+      maxPrice: 100
     }
   },
   async mounted() {
     window.scrollTo(0, 0);
-    const catalog = await this.getCatalog()
-
+    const catalog = await this.getCatalog() //Получить системы и категории 
+    //выбрать из них выбранную систему с категориями
     const categoriesList = catalog.filter(c => this.isSelectedSystem(this.$route.params.name, c.NAME))
     
+    //все продукты из категорий этой системы
     this.allProducts = await this.getProductsOfSelectedSystem(categoriesList[0].list.map(c => { return c.ID }))
 
+    //получить сколько в каждой категории есть товаров
     const productsCatIdsArr = Object.values(this.allProducts)
       .map(el => { return el.arFields.IBLOCK_SECTION_ID })
       .reduce((acc, el) => {
@@ -54,11 +58,20 @@ export default {
           return acc
       }, {})
 
+    //если в категории есть товары, то добавить ее и сделать активной выбранную если кликали по ней в каталоге
+    const activeCatId = this.$route.query.ID
     categoriesList[0].list.forEach(element => {
       if (productsCatIdsArr[element.ID])
-        this.categories.push({ isSelected: false, ...element })
+        this.categories.push({ isSelected: activeCatId === element.ID, ...element })
     });
 
+    //посчитать мах цену
+    this.allProducts.forEach(el => {
+      if (el.arPrice.PRICE > this.maxPrice)
+        this.maxPrice = Math.ceil(el.arPrice.PRICE)
+    })
+
+    //трансформировать данные из массива продуктов
     this.allProducts = this.allProducts.map(pr => {
       return {
         ID: pr.arFields.ID,
@@ -74,13 +87,17 @@ export default {
         ]
       }
     })
+
+    //применить фильтр категорий если есть активная 
+    if (activeCatId)
+      this.filteredProducts = this.allProducts.filter(p => p.IBLOCK_SECTION_ID === activeCatId)
+    else this.filteredProducts = this.allProducts
   },
   methods: {
     getCatalog, 
     getProductsOfSelectedSystem,
     isSelectedSystem,
     applyFilters(filters) {
-      console.log(filters);
       // selectedCategories: this.categoriesList.filter(c => c.isSelected),
       //           minPrice: this.rangeMinValue,
       //           maxPrice: this.rangeMaxValue
@@ -92,11 +109,6 @@ export default {
         })
     }
   },
-  watch: {
-    allProducts() {
-      this.filteredProducts = this.allProducts
-    }
-  }
 }
 </script>
 

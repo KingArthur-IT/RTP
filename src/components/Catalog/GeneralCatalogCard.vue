@@ -2,12 +2,14 @@
   <div class="card">
       <div class="card__head" :class="{'min-h': pageName === 'delta'}" @click="$router.push({ name: 'catalog-system', params: { name: pageName } })">
           <p>{{ title }}</p>
-          <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
-          </svg>
+          <div class="card__icon">
+              <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
+              </svg>
+          </div>
       </div>
       <div class="card__body">
-          <div class="card__row" v-for="item in data" :key="item.ID">
+          <div class="card__row" v-for="item in data" :key="item.ID" @click="$router.push({ name: 'catalog-system', params: { name: pageName }, query: { ID: item.ID } })">
               <div class="card__name">{{ item.NAME }}</div>
               <div class="card__count">{{ item.count }}</div>
           </div>
@@ -54,6 +56,8 @@ export default {
         cursor: pointer
         & p
             padding-right: 20px
+    &__icon
+        width: 14px
     &__body
         padding: 23px 30px
         background: #fff
@@ -62,6 +66,7 @@ export default {
         align-items: center
         justify-content: space-between
         padding: 7px 0
+        cursor: pointer
     &__name
         font-size: 20px
         color: #42474D

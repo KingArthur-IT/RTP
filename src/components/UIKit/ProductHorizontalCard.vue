@@ -23,7 +23,7 @@
         </div>
         <div class="card__hero" @click="goToCard">
             <div class="card__title">{{ title }}</div>
-            <p class="card__description">{{ description }}</p>
+            <p class="card__description" v-html="description"></p>
             <div class="card__content">
                 <div class="card__details">
                     <div v-for="(item, index) in infoList" :key="index" class="card__info">{{ item.description }}: <span>{{ item.value }}</span></div>

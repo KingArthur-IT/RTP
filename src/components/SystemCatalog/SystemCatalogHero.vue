@@ -118,16 +118,16 @@ export default {
     watch: {
         filterValue() {
             const compareFromCheap = ( a, b ) => {
-                if ( a.PRICE < b.PRICE )
+                if ( Number(a.PRICE) < Number(b.PRICE) )
                     return -1;
-                if ( a.PRICE > b.PRICE )
+                if ( Number(a.PRICE) > Number(b.PRICE) )
                     return 1;
                 return 0;
             }
             const compareFromExpansive = ( a, b ) => {
-                if ( a.PRICE > b.PRICE )
+                if ( Number(a.PRICE) > Number(b.PRICE) )
                     return -1;
-                if ( a.PRICE < b.PRICE )
+                if ( Number(a.PRICE) < Number(b.PRICE) )
                     return 1;
                 return 0;
             }
