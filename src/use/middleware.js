@@ -43,6 +43,19 @@ export const getAllCategoriesCount = async () => {
         .catch((err) => console.log('Error while get catalog list', err))
 };
 
+export const getAllProducts = async () => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+      .then((res) => {
+          console.log(res);
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while get catalog list', res);
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};
+
 export const getProductsOfSelectedSystem = async (idsArr) => {
     return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
         .then((res) => {
@@ -58,4 +71,40 @@ export const getProductsOfSelectedSystem = async (idsArr) => {
             }
         })
         .catch((err) => console.log('Error while get catalog list', err))
+};
+
+export const addProductToBacket = async (id, count, backet_id) => {
+  const dataSend = { 'method': 'cart_add_prod', 'prod_id': id, 'count': count }
+  if (backet_id)
+    dataSend['fuser_id'] = backet_id
+
+  return await sendRequest('', 'POST', dataSend)
+      .then((res) => {
+        console.log(res);
+          if (res.status === 200 && res.data && res.data.cart_add_prod && res.data.cart_add_prod.data) {
+              if (res.data.cart_add_prod.isSuccess === 1) {
+                return res.data.cart_add_prod.data.fuser_id
+              }
+          } else {
+              console.log('Error while get catalog list', res);
+              return 0
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};
+
+export const getBacketProducts = async (backet_id) => {
+  return await sendRequest('', 'POST', { 'method': 'cart_get', 'fuser_id': backet_id})
+      .then((res) => {
+        console.log(res);
+          if (res.status === 200) {
+              if (res.data.cart_get.isSuccess === 1) {
+                return res.data.cart_get.data
+              }
+          } else {
+              console.log('Error while get catalog list', res);
+              return []
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
 };

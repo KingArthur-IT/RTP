@@ -132,6 +132,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
+import { getBacketProducts, getAllProducts } from '@/use/middleware.js'
 
 export default {
   components: {
@@ -200,15 +201,29 @@ export default {
           count: 6 
         },
       ],
-      deliveryCost: 1000
+      deliveryCost: 1000,
+      backetId: 0
     }
   },
-  mounted(){
+  async mounted(){
     window.scrollTo(0, 0);
+    this.backetId = this.$backetId.value
+    const allProducts = await this.getAllProducts()
+    if (this.backetId) {
+      this.basketList = await this.getBacketProducts(this.backetId)
+      this.basketList.forEach(el => {
+        const productData = allProducts.filter(p => p.arFields.ID == el.prod_id)
+        el['title'] = productData[0].arFields.NAME
+        el['description'] = productData[0].arFields.PREVIEW_TEXT
+      })
+      console.log(this.basketList);
+    }
   },
   methods: {
     validateEmail,
     getMonthName,
+    getBacketProducts,
+    getAllProducts,
     deleteCard(id) {
       this.basketList = this.basketList.filter(p => p.id !== id)
     },

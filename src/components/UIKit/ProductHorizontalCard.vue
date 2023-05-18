@@ -44,7 +44,7 @@
                         </button>
                     </div>
                     <div class="card__order">
-                        <DarkRectButton :text="'В корзину'" />
+                        <DarkRectButton @click="addToBasket" :text="'В корзину'" />
                     </div>
                 </div>
             </div>
@@ -56,6 +56,7 @@
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import DarkRectButton from './DarkRectButton.vue';
+import { addProductToBacket } from '@/use/middleware.js'
 
 export default {
     components: {
@@ -89,10 +90,15 @@ export default {
         return {
             slideIndex: 1,
             slideCount: 6,
-            productCount: 1
+            productCount: 1,
+            backetId: 0
         }
     },
+    mounted() {
+        this.backetId = this.$backetId.value
+    },
     methods: {
+        addProductToBacket,
         slideTo(index) {
             this.$refs[`horizProdCard${this.id}`].slideTo(index)
             this.slideIndex = index + 1
@@ -116,8 +122,24 @@ export default {
         },
         goToCard() {
             this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
+        },
+        async addToBasket() {
+            const backetId = await addProductToBacket(this.id, this.productCount, this.backetId)
+            if (backetId) {
+                this.$basketCount.value = this.$basketCount.value + this.productCount
+                this.$backetId.value = backetId
+                this.backetId = backetId
+            }
         }
     },
+    watch: {
+        '$backetId.value': {
+            handler: function() {
+                this.backetId = this.$backetId.value
+            },
+            deep: true
+        }
+    }
 }
 </script>
 
