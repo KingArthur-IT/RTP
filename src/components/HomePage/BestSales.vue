@@ -14,10 +14,10 @@
                 <slide v-for="(slide, index) in count" :key="index">
                     <div class="best__card">
                         <ProductCard 
-                            :id="index" 
+                            :id="String(index)" 
                             :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                            :newPrice="189"
-                            :oldPrice="262"
+                            :newPrice="'189'"
+                            :oldPrice="'262'"
                         />
                     </div>
                 </slide>

@@ -113,7 +113,7 @@
         <!-- estimate -->
         <div class="estimate-wrapper">
           <BasketProductsList 
-            :basketList="basketList" 
+            :cartList="cartList" 
             @deleteCard="deleteCard" 
             :deliveryCost="deliveryCost"
           />
@@ -132,7 +132,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
-import { getBacketProducts, getAllProducts } from '@/use/middleware.js'
+import { getBacketProducts, getAllProducts, deleteCartItem } from '@/use/middleware.js'
 
 export default {
   components: {
@@ -157,66 +157,25 @@ export default {
       isNameValid: true,
       isPhoneValid: true,
       isEmailValid: true,
-      basketList: [
-        { 
-          id: 1,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 1 
-        },
-        { 
-          id: 2,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 2 
-        },
-        { 
-          id: 3,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 3 
-        },
-        { 
-          id: 4,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 4 
-        },
-        { 
-          id: 5,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 5 
-        },
-        { 
-          id: 6,
-          title: 'Труба из полипропилена PN SDR 11 - 20*1.9мм', 
-          description: 'Труба из полипропилена . PN 16 SDR 7.4 ХВС, ГВС, отопление до 60 0С., проекта сантехники для дома ALPHA диаметр 25мм., толщина стенки 3,5мм., 25 шт*4м., цвет белый', 
-          price: 1000, 
-          count: 6 
-        },
-      ],
+      cartList: [],
       deliveryCost: 1000,
-      backetId: 0
+      cartId: 0
     }
   },
   async mounted(){
     window.scrollTo(0, 0);
-    this.backetId = this.$backetId.value
-    const allProducts = await this.getAllProducts()
-    if (this.backetId) {
-      this.basketList = await this.getBacketProducts(this.backetId)
-      this.basketList.forEach(el => {
+    this.cartId = localStorage.getItem('cartId') || 0
+
+    if (this.cartId) {
+      const allProducts = await this.getAllProducts()
+
+      this.cartList = await this.getBacketProducts(this.cartId)
+      this.cartList.forEach(el => {
         const productData = allProducts.filter(p => p.arFields.ID == el.prod_id)
         el['title'] = productData[0].arFields.NAME
         el['description'] = productData[0].arFields.PREVIEW_TEXT
+        el['count'] = Number(el.count)
       })
-      console.log(this.basketList);
     }
   },
   methods: {
@@ -224,8 +183,16 @@ export default {
     getMonthName,
     getBacketProducts,
     getAllProducts,
-    deleteCard(id) {
-      this.basketList = this.basketList.filter(p => p.id !== id)
+    deleteCartItem,
+    async deleteCard(id) {
+      const rez = await deleteCartItem(id, this.cartId)
+      if (rez) {
+        this.cartList = this.cartList.filter(p => p.prod_id !== id)
+
+        const cartCount = localStorage.getItem('cartCount')
+        this.$cartCount.value = cartCount - 1
+        localStorage.setItem('cartCount', cartCount - 1)
+      }
     },
     submitBasket() {
       this.isNameValid = !!this.name.length

@@ -21,7 +21,7 @@
               >{{ item }}</div>
           </div>
       </div>
-      <div class="filters">
+      <div v-if="filteredList.length" class="filters">
           <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
       </div>
       <div v-if="dispayModeValue === 'col'" class="list-col">

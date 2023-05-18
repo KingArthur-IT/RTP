@@ -91,11 +91,7 @@ export default {
             slideIndex: 1,
             slideCount: 6,
             productCount: 1,
-            backetId: 0
         }
-    },
-    mounted() {
-        this.backetId = this.$backetId.value
     },
     methods: {
         addProductToBacket,
@@ -124,22 +120,16 @@ export default {
             this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
         },
         async addToBasket() {
-            const backetId = await addProductToBacket(this.id, this.productCount, this.backetId)
-            if (backetId) {
-                this.$basketCount.value = this.$basketCount.value + this.productCount
-                this.$backetId.value = backetId
-                this.backetId = backetId
+            const createdCartId = localStorage.getItem('cartId') || 0
+            const newCartId = await addProductToBacket(this.id, this.productCount, createdCartId)
+            if (newCartId) {
+                this.$cartCount.value = this.$cartCount.value + 1
+                this.$cartId.value = newCartId
+                localStorage.setItem('cartId', this.$cartId.value)
+                localStorage.setItem('cartCount', this.$cartCount.value)
             }
         }
     },
-    watch: {
-        '$backetId.value': {
-            handler: function() {
-                this.backetId = this.$backetId.value
-            },
-            deep: true
-        }
-    }
 }
 </script>
 

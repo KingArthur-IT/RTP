@@ -1,15 +1,17 @@
 <template>
     <div class="estimate">
-        <div v-for="prod in basketList" :key="prod.id" class="estimate__card">
+        <div v-for="prod in cartList" :key="prod.prod_id" class="estimate__card">
             <BasketCard 
+                :id="prod.prod_id"
                 :title="prod.title"
                 :description="prod.description"
                 :price="prod.price"
                 v-model:count="prod.count"
-                @delete="deleteCard(prod.id)"
+                @delete="deleteCard(prod.prod_id)"
+                @updateCount="updateProductCount"
             />
         </div>
-            <div class="resume">
+        <div class="resume">
             <div class="resume__head">
                 <div class="resume__title">Ваша корзина</div>
                 <div class="resume__allcount">{{ totalProductsCount }} товаров</div>
@@ -20,7 +22,7 @@
             </div>
             <div class="resume__row">
                 <div class="resume__row-txt">НДС (20%):</div>
-                <div class="resume__row-txt">{{ productsTotalCost / 5 }} ₽</div>
+                <div class="resume__row-txt">{{ taxes }} ₽</div>
             </div>
             <div class="resume__row resume__delivery">
                 <div class="resume__row-txt">Доставка:</div>
@@ -28,7 +30,7 @@
             </div>
             <div class="resume__row resume__total">
                 <div class="resume__row-txt">Всего к оплате:</div>
-                <div class="resume__row-txt">{{ productsTotalCost * 1.2 + deliveryCost }} ₽</div>
+                <div class="resume__row-txt">{{ totalForPay }} ₽</div>
             </div>
             <div class="resume__btn">
                 <button>Скачать смету</button>
@@ -39,13 +41,14 @@
 
 <script>
 import BasketCard from './BasketCard.vue'
+import { addProductToBacket } from '@/use/middleware.js'
 
 export default {
     components: {
         BasketCard
     },
     props: {
-        basketList: {
+        cartList: {
             type: Array,
             default: []
         },
@@ -56,17 +59,29 @@ export default {
     },
     computed: {
         productsTotalCost() {
-            return this.basketList.reduce((acc, el) => acc += el.price * el.count, 0)
+            return this.cartList.reduce((acc, el) => acc += el.price * el.count, 0).toFixed(2)
         },
         totalProductsCount() {
-            return this.basketList.reduce((acc, el) => acc += el.count, 0)
+            return this.cartList.reduce((acc, el) => acc += el.count, 0)
+        },
+        taxes() {
+            return (this.productsTotalCost / 5).toFixed(2)
+        },
+        totalForPay() {
+            return (this.productsTotalCost * 1.2 + this.deliveryCost).toFixed(2)
         }
     },
     methods: {
+        addProductToBacket,
         deleteCard(id) {
             this.$emit('deleteCard', id)
+        },
+        async updateProductCount({ delta, id }){
+            const cartId = localStorage.getItem('cartId')
+            console.log('add');
+            await this.addProductToBacket(id, delta, cartId)
         }
-    }
+    },
 }
 </script>
 
@@ -75,9 +90,10 @@ export default {
   width: 100%
   &__card
     margin-bottom: 15px
+    &:last-child
+        margin-bottom: 35px
 
 .resume
-  margin-top: 35px
   background: #F4F7FD
   border-radius: 8px
   padding: 20px

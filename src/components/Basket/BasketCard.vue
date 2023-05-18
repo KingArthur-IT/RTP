@@ -5,7 +5,7 @@
       </div>
       <div class="basket-card__hero">
           <div class="basket-card__title">{{ title }}</div>
-          <div class="basket-card__text">{{ description }}</div>
+          <div class="basket-card__text" v-html="description"></div>
       </div>
       <div class="basket-card__controls">
           <div class="basket-card__delete" @click="$emit('delete')">
@@ -19,7 +19,7 @@
                         <path d="M0 0H17V3H0V0Z" fill="#42474D"/>
                     </svg>
                 </button>
-                <input type="text" v-model="productCount" @input="onCountInput">
+                <input type="number" v-model="productCount" @input="onCountInput">
                 <button @click="incrementProductCount">
                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 7H7V0H10V7H17V10H10V17H7V10H0V7Z" fill="#42474D"/>
@@ -36,6 +36,10 @@ import { numberWithSpaces } from '@/use/helpers.js'
 
 export default {
     props: {
+        id: {
+            type: Number,
+            required: true
+        },
         title: {
             type: String,
             required: true
@@ -58,25 +62,32 @@ export default {
     },
     data() {
         return {
-            productCount: 0
+            productCount: 1
         }
     },
     methods: {
         numberWithSpaces,
         decrementProductCount() {
-            if (this.productCount > 0)
-                this.productCount --
+            if (this.productCount > 1) {
+                this.$emit('updateCount', { delta: -1, id: this.id })
+                this.$emit('update:count', this.productCount - 1)
+            }
         },
         incrementProductCount() {
-            this.productCount ++
+            this.$emit('updateCount', { delta: 1, id: this.id })
+            this.$emit('update:count', this.productCount + 1)
         },
         onCountInput() {
-            this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+            const newCount = Number(String(this.productCount).replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1'))
+            if (newCount) {
+                this.$emit('updateCount', { delta: newCount - this.count, id: this.id })
+                this.$emit('update:count', newCount)
+            }
         },
     },
     watch: {
-        productCount() {
-            this.$emit('update:count', this.productCount)
+        count() {
+            this.productCount = this.count
         }
     }
 }
@@ -144,6 +155,12 @@ export default {
             padding: 0 8px
             width: 45px
             text-align: center
+            &::-webkit-outer-spin-button
+                -webkit-appearance: none
+                margin: 0
+            &::-webkit-inner-spin-button 
+                -webkit-appearance: none
+                margin: 0
 
 @media screen and (max-width: 1600px)
     .basket-card
@@ -169,5 +186,5 @@ export default {
                     height: 11px
             & input
                 font-size: 14px
-                width: 30px
+                width: 31px
 </style>

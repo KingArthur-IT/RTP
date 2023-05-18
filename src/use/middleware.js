@@ -108,3 +108,17 @@ export const getBacketProducts = async (backet_id) => {
       })
       .catch((err) => console.log('Error while get catalog list', err))
 };
+
+export const deleteCartItem = async (id, cart_id) => {
+  return await sendRequest('', 'POST', { 'method': 'cart_clear', 'prod_id': id, 'fuser_id': cart_id})
+      .then((res) => {
+        console.log(res);
+          if (res.status === 200) {
+              return res.data.cart_clear.isSuccess === 1
+          } else {
+              console.log('Error while get catalog list', res);
+              return false
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};
