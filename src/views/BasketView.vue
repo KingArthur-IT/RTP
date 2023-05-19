@@ -190,7 +190,7 @@ export default {
         this.cartList = this.cartList.filter(p => p.prod_id !== id)
 
         const cartCount = localStorage.getItem('cartCount')
-        this.$cartCount.value = cartCount - 1
+        this.$cartCount.value = Number(cartCount) - 1
         localStorage.setItem('cartCount', cartCount - 1)
       }
     },

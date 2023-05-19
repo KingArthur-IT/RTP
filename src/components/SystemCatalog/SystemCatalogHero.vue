@@ -24,6 +24,7 @@
       <div v-if="filteredList.length" class="filters">
           <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
       </div>
+      <p v-else class="no-products">По заданным критериям товары не найдены</p>
       <div v-if="dispayModeValue === 'col'" class="list-col">
             <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
                 <ProductCard 
@@ -32,6 +33,11 @@
                     :newPrice="item.PRICE"
                     :oldPrice="'0'"
                     :isBenefitShown="false"
+                    :isInCart="item.isInCart"
+                    @addedToCart="addedToCart"
+                    v-model:count="item.count"
+                    @updateCountInCart="updateCountInCart"
+                    @deleteFromCart="deleteFromCart"
                 />
             </div>
             <div class="list-col__gather">
@@ -44,6 +50,11 @@
                     :newPrice="item.PRICE"
                     :oldPrice="'0'"
                     :isBenefitShown="false"
+                    :isInCart="item.isInCart"
+                    @addedToCart="addedToCart"
+                    v-model:count="item.count"
+                    @updateCountInCart="updateCountInCart"
+                    @deleteFromCart="deleteFromCart"
                 />
             </div>
         </div>
@@ -55,6 +66,11 @@
                     :price="item.PRICE"
                     :description="item.PREVIEW_TEXT"
                     :infoList="item.info"
+                    :isInCart="item.isInCart"
+                    @addedToCart="addedToCart"
+                    v-model:count="item.count"
+                    @updateCountInCart="updateCountInCart"
+                    @deleteFromCart="deleteFromCart"
                 />
                 <div v-if="index === 1" class="list-row__gather">
                     <GatherBusket @showModal="isModalShow = true"  />
@@ -77,6 +93,7 @@ import ProductHorizontalCard from '../UIKit/ProductHorizontalCard.vue'
 import GatherBusket from './GatherBusket.vue'
 import FiltersRow from '../Search/FiltersRow.vue'
 import Modal from '../Modals/Modal.vue'
+import { getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
 
 export default {
     components: {
@@ -102,17 +119,61 @@ export default {
             dispayModeValue: 'col',
             oftenBuyList: ['Труба PN10 SDR 11-25мм для ХВС', 'Труба PN16 SDR 7.4 -25мм для ГВС', 'Уголок 90гр', 'Муфта'],
             filteredList: [],
+            productsInCart: []
+
         }
     },
-    mounted() {
+    async mounted() {
+        //получить товары из корзины и трансформировать в { id, count }
+        const cartPrd = await this.getBacketProducts()
+        this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
+
         this.pageName = this.$route.params.name;
         this.banerInfo = this.systemList.find(el => el.name === this.pageName)
-        this.filteredList = this.cardsList
+
+        //все товары + данные о том есть ли в корзине и кол-во
+        await this.setFilteredList()
     },
     methods: {
         getImageUrl,
+        getBacketProducts,
+        addProductToBacket,
+        deleteCartItem,
         goToCard() {
             this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
+        },
+        async setFilteredList() {
+            const cartId = localStorage.getItem('cartId') || 0
+            //получить товары из корзины и трансформировать в { id, count }
+            const cartPrd = await this.getBacketProducts(cartId)
+            this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
+
+            this.filteredList = this.cardsList.map(el => { 
+                const isInCart = this.productsInCart.some(pr => pr.id == el.ID)
+                const count = isInCart ? this.productsInCart.find(pr => pr.id == el.ID).count : 1
+                return { isInCart: isInCart, count: count, ...el } 
+            })
+        },
+        addedToCart({ id, count }) { //нажата кнопка добавить в корзину
+            const product = this.filteredList.find(el => el.ID == id)
+            product.isInCart = true
+            product.count = count
+        },
+        async updateCountInCart({ delta, id }) {
+            const cartId = localStorage.getItem('cartId') || 0
+            console.log('add');
+            await this.addProductToBacket(id, delta, cartId)
+        },
+        async deleteFromCart(id) {
+            const cartId = localStorage.getItem('cartId')
+            const rez = await deleteCartItem(id, cartId)
+            if (rez) {
+                this.filteredList.find(p => p.ID == id).isInCart = false
+
+                const cartCount = localStorage.getItem('cartCount')
+                this.$cartCount.value = Number(cartCount) - 1
+                localStorage.setItem('cartCount', cartCount - 1)
+            }
         }
     },
     watch: {
@@ -155,14 +216,18 @@ export default {
             if (this.filterValue === 'new')
                 this.filteredList.sort(compareDate)
         },
-        cardsList() {
-            this.filteredList = this.cardsList
+        async cardsList() {
+            await this.setFilteredList()
         }
     }
 }
 </script>
 
 <style scoped lang="sass">
+.no-products
+    text-align: center
+    color: #42474D
+    padding: 10px 0 20px
 .catalog-hero
     width: 100%
     margin-bottom: 40px

@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="{'loading': isLoading}" @click="clickEvent">
+  <button class="button" :class="{'loading': isLoading, 'disabled': disabled}" @click="clickEvent">
     <span>{{ text }}</span>
     <div class="cart">
         <svg viewBox="0 0 36 26">
@@ -16,6 +16,10 @@ export default {
         text: {
             type: String,
             default: ''
+        },
+        disabled: {
+          type: Boolean,
+          default: false
         }
     },
     data() {
@@ -25,6 +29,7 @@ export default {
     },
     methods: {
         clickEvent() {
+          if (this.disabled) return
             this.isLoading = true
             this.$emit('clickEvent')
             setTimeout(() => {
@@ -52,8 +57,12 @@ export default {
     overflow: hidden;
     transition: box-shadow .3s ease, transform 0.4s cubic-bezier(0.36, 1.01, 0.32, 1.27);
 }
-.button:hover {
+.button:not(.disabled):hover {
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35);
+}
+.button.disabled {
+  background: #224386ed;
+  cursor: default;
 }
 .button span {
   display: block;

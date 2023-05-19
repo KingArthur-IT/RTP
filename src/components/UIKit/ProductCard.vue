@@ -51,8 +51,11 @@
                         </button>
                     </div>
                     <div class="card__order">
-                        <!-- <DarkRectButton @click="addToBasket" :text="'В корзину'" /> -->
-                        <AddToCartButtonVue @click="addToBasket" :text="'В корзину'" />
+                        <AddToCartButtonVue 
+                            @click="addToBasket" 
+                            :text="btnText" 
+                            :disabled="isInCart"
+                        />
                     </div>
                 </div>
           </div>
@@ -63,7 +66,6 @@
 <script>
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
-import DarkRectButton from './DarkRectButton.vue';
 import { addProductToBacket } from '@/use/middleware.js'
 import AddToCartButtonVue from './AddToCartButton.vue';
 
@@ -71,7 +73,6 @@ export default {
     components: {
         Carousel,
         Slide,
-        DarkRectButton,
         AddToCartButtonVue
     },
     props: {
@@ -94,6 +95,14 @@ export default {
         isBenefitShown: {
             type: Boolean,
             default: true
+        },
+        isInCart: {
+            type: Boolean,
+            default: false
+        },
+        count: {
+            type: Number, 
+            default: 1
         }
     },
     data() {
@@ -102,6 +111,9 @@ export default {
             slideCount: 6,
             productCount: 1,
         }
+    },
+    mounted() {
+        this.productCount = this.count
     },
     methods: {
         addProductToBacket,
@@ -117,34 +129,60 @@ export default {
                 this.slideIndex = this.slideCount
         },
         decrementProductCount() {
-            if (this.productCount > 1)
-                this.productCount --
+            if (this.productCount > 1) {
+                this.$emit('update:count', this.productCount - 1)
+                if (this.isInCart) {
+                    this.$emit('updateCountInCart', { delta: -1, id: this.id })
+                }
+            }
+            if (this.productCount === 1 && this.isInCart)
+                this.$emit('deleteFromCart', this.id)
         },
         incrementProductCount() {
-            this.productCount ++
+            this.$emit('update:count', this.productCount + 1)
+            if (this.isInCart) {
+                this.$emit('updateCountInCart', { delta: 1, id: this.id })
+            }
         },
         onCountInput() {
-            this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
+            const newCount = Number(String(this.productCount).replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1'))
+            if (newCount) {
+                this.$emit('update:count', newCount)
+                if (this.isInCart)
+                    this.$emit('updateCountInCart', { delta: newCount - this.count, id: this.id })
+            }
         },
         goToCard() {
             this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
         },
         async addToBasket() {
+            if (this.isInCart) return
+
             const createdCartId = localStorage.getItem('cartId') || 0
             const newCartId = await addProductToBacket(this.id, this.productCount, createdCartId)
             if (newCartId) {
-                this.$cartCount.value = this.$cartCount.value + 1
+                const cartCount = localStorage.getItem('cartCount')
+                this.$cartCount.value = Number(cartCount) + 1
                 this.$cartId.value = newCartId
                 localStorage.setItem('cartId', this.$cartId.value)
                 localStorage.setItem('cartCount', this.$cartCount.value)
+                this.$emit('addedToCart', { id: this.id, count: this.productCount })
             }
-        }
+        },
     },
     computed: {
         discountPercent() {
             return Math.round(100.0 - 100.0 * this.newPrice / this.oldPrice)
-        }
+        },
+        btnText() {
+            return this.isInCart ? 'В корзине' : 'В корзину'
+        },
     },
+    watch: {
+        count() {
+            this.productCount = this.count
+        }
+    }
 }
 </script>
 
