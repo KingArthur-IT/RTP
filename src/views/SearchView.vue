@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div v-if="dispayModeValue === 'col'" class="search-hero-col">
-                <div v-for="item in filteredResults.slice(pageStartVal, pageEndVal)" :key="item.id" class="search-hero-col__card">
+                <div v-for="item in filteredResults.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
                     <ProductCard 
                         :id="item.id" 
                         :description="item.description"
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div v-else class="search-hero-row">
-                <div v-for="item in filteredResults.slice(pageStartVal, pageEndVal)" :key="item.id" class="search-hero-row__card">
+                <div v-for="item in filteredResults.slice(0, currentCardsCount)" :key="item.id" class="search-hero-row__card">
                     <ProductHorizontalCard 
                         :id="item.id" 
                         :title="item.title"
@@ -34,28 +34,9 @@
                     />
                 </div>
             </div>
-            <div v-if="isMoreBtnShown" class="more-btn" @click="showMore">
-                <DarkRectButton :text="'Показать еще'" />
+            <div class="suggestions-wrapper">
+                <SuggestSection :list="suggestionsList" />
             </div>
-            <div v-if="isMoreBtnShown" class="pagination">
-                <div v-if="currentPage != 1" class="pagination__btn" @click="currentPage --">
-                    <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 1L1 10L11 19" stroke="#42474D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div 
-                    v-for="(item, i) in paginationItems" :key="i" 
-                    class="pagination__item"
-                    :class="{'active': i + 1 == currentPage}"
-                    @click="currentPage = i + 1"
-                >{{ item }}</div>
-                <div v-if="currentPage != pagesCount" class="pagination__btn" @click="currentPage ++">
-                    <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 19L11 10L1 1" stroke="#42474D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-            </div>
-            <SuggestSection :list="suggestionsList" />
             <div class="search-system-list">
                 <SearchSystemsList />
             </div>
@@ -68,7 +49,6 @@ import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import FiltersRow from '../components/Search/FiltersRow.vue'
 import SearchSystemsList from '../components/Search/SearchSystemsList.vue'
 import SuggestSection from '../components/Search/SuggestSection.vue'
-import DarkRectButton from '../components/UIKit/DarkRectButton.vue'
 import ProductCard from '../components/UIKit/ProductCard.vue'
 import ProductHorizontalCard from '../components/UIKit/ProductHorizontalCard.vue'
 
@@ -79,7 +59,6 @@ export default {
         FiltersRow,
         ProductCard,
         ProductHorizontalCard,
-        DarkRectButton,
         SearchSystemsList
     },
     data() {
@@ -112,15 +91,30 @@ export default {
                 { id: 4, description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 189, oldPrice: 262 },
                 { id: 5, description: 'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.', newPrice: 189, oldPrice: 262 },
             ],
-            cardsPerPage: 10,
-            currentPage: 1,
             filterValue: 'popular',
-            dispayModeValue: 'col'
+            dispayModeValue: 'col',
+            maxCardsPerPage: 10,
+            currentCardsCount: 10
         }
     },
     mounted() {
         this.searchValue = this.$route.query.search
         this.filteredResults = this.searchResults
+
+        //Scroll animation
+        const suggestionBlock = document.querySelectorAll('.suggestions-wrapper');
+        const showMoreObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                console.log('123');
+                // this.currentCardsCount += this.maxCardsPerPage
+            })
+        }, {
+            rootMargin: '30px',
+        });
+
+        suggestionBlock.forEach(entry => {
+            showMoreObserver.observe(entry);
+        });
     },
     computed: {
         resultText() {
@@ -130,48 +124,23 @@ export default {
                 return `По вашему запросу «${this.searchValue}» найден 1 товар.`
             return `По вашему запросу «${this.searchValue}» найдено ${this.searchResults.length} товаров.`
         },
-        isMoreBtnShown() {
-            return this.filteredResults.length > this.cardsPerPage
-        },
-        pageStartVal() {
-            return (this.currentPage - 1) * this.cardsPerPage
-        },
-        pageEndVal() {
-            return this.currentPage * this.cardsPerPage
-        },
-        pagesCount() {
-            return  Math.ceil(this.filteredResults.length / this.cardsPerPage)
-        },
-        paginationItems() {
-            if (this.pagesCount > 6)
-                return ['1', '2', '3', '4', '...', this.pagesCount]
-            else {
-                const arr = []
-                for (let i = 0; i < this.pagesCount; i++)
-                    arr.push(i + 1)
-                return arr
-            }
-        }
     },
     methods: {
-        showMore() {
-            this.cardsPerPage += 10
-            this.currentPage = 1
-        },
+
     },
     watch: {
         filterValue() {
             const compareFromCheap = ( a, b ) => {
-                if ( a.newPrice < b.newPrice )
+                if ( Number(a.newPrice) < Number(b.newPrice) )
                     return -1;
-                if ( a.newPrice > b.newPrice )
+                if ( Number(a.newPrice) > Number(b.newPrice) )
                     return 1;
                 return 0;
             }
             const compareFromExpansive = ( a, b ) => {
-                if ( a.newPrice > b.newPrice )
+                if ( Number(a.newPrice) > Number(b.newPrice) )
                     return -1;
-                if ( a.newPrice < b.newPrice )
+                if ( Number(a.newPrice) < Number(b.newPrice) )
                     return 1;
                 return 0;
             }
@@ -253,32 +222,7 @@ export default {
     &__card
         flex-basis: 100%
         margin-bottom: 20px
-.more-btn
-    margin-top: 39px
-    width: 100%
-    height: 37px
 
-.pagination
-    display: flex
-    align-items: center
-    justify-content: center
-    margin-top: 65px
-    &__item
-        cursor: pointer
-        font-weight: 500
-        font-size: 20px
-        color: #42474D
-        padding: 4px 10px
-        margin: 0 5px
-        border-radius: 50%
-        transition: color .3s ease, background .3s ease
-        &.active
-            color: #fff
-            background: var(--primary-color)
-    &__btn
-        cursor: pointer
-        padding: 4px 10px
-        margin: 0 5px
 .search-system-list
     margin: 78px 0 112px
 </style>

@@ -149,3 +149,17 @@ export const createOrder = async (name, phone, email, date, adress, comment, car
       })
       .catch((err) => console.log('Error while get catalog list', err))
 };
+
+//получить файл сметы
+export const printCart = async (cart_id) => {
+  return await sendRequest('', 'POST', { 'method': 'cart_print', 'fuser_id': cart_id })
+      .then((res) => {
+          if (res.status === 200) {
+            return res.data.cart_print.data
+          } else {
+              console.log('Error while get catalog list', res);
+              return ''
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};

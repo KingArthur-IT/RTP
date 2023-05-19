@@ -124,7 +124,7 @@
           <BasketProductsList 
             :cartList="cartList" 
             @deleteCard="deleteCard" 
-            :deliveryCost="deliveryCost"
+            :deliveryCost="0"
           />
         </div>
       </div>
@@ -142,13 +142,14 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
 import { getBacketProducts, getAllProducts, deleteCartItem, createOrder } from '@/use/middleware.js'
+
 export default {
   components: {
     BreadCrumbs,
     DarkRectButton,
     VueDatePicker,
     BasketProductsList,
-    AcceptOrderModal
+    AcceptOrderModal,
   },
   data() {
     return {
@@ -166,9 +167,8 @@ export default {
       isPhoneValid: true,
       isEmailValid: true,
       cartList: [],
-      deliveryCost: 1000,
       cartId: 0,
-      isOrderSended: true
+      isOrderSended: true,
     }
   },
   async mounted(){
@@ -218,12 +218,15 @@ export default {
       } else
         this.isOrderSended = false
     },
-    callMeEvent() {
+    async callMeEvent() {
       this.isCallMePhoneValid = this.callMePhone.length === 18
 
-      if (this.isCallMePhoneValid) {
+      if (!this.isCallMePhoneValid) return
+      
+      const rez = await this.createOrder('Клиент', this.callMePhone, 'api.create@test.com', '', '', '', this.cartId)
+      if (rez) {
         this.isModalShown = true
-        this.clearCart()
+        this.callMePhone = ''
       }
     },
     clearCart() {

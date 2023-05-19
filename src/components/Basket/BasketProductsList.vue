@@ -32,20 +32,21 @@
                 <div class="resume__row-txt">Всего к оплате:</div>
                 <div class="resume__row-txt">{{ totalForPay }} ₽</div>
             </div>
-            <div class="resume__btn">
+            <div class="resume__btn" @click="downloadFile">
                 <button>Скачать смету</button>
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
 import BasketCard from './BasketCard.vue'
-import { addProductToBacket } from '@/use/middleware.js'
+import { addProductToBacket, printCart } from '@/use/middleware.js'
 
 export default {
     components: {
-        BasketCard
+        BasketCard,
     },
     props: {
         cartList: {
@@ -73,6 +74,7 @@ export default {
     },
     methods: {
         addProductToBacket,
+        printCart,
         deleteCard(id) {
             this.$emit('deleteCard', id)
         },
@@ -80,6 +82,22 @@ export default {
             const cartId = localStorage.getItem('cartId')
             console.log('add');
             await this.addProductToBacket(id, delta, cartId)
+        },
+        async downloadFile() {
+            const cartId = localStorage.getItem('cartId')
+
+            const fileUrl = await this.printCart(cartId)
+            console.log(fileUrl);
+            if (fileUrl) {
+                fetch(fileUrl)
+                    .then(res => res.blob())
+                    .then(data => {
+                        var a = document.createElement("a");
+                        a.href = window.URL.createObjectURL(data);
+                        a.download = "Смета";
+                        a.click();
+                    });
+            }
         }
     },
 }
