@@ -105,6 +105,15 @@
             <DarkRectButton @click.prevent="submitBasket" :text="'Оформить заказ'" />
           </div>
 
+          <div v-if="!isOrderSended" class="basket-main-error">
+            <div class="basket-main-error__icon">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.125 10H7.5V7.5H6.875M7.5 5H7.50625M13.125 7.5C13.125 8.23869 12.9795 8.97014 12.6968 9.65259C12.4141 10.3351 11.9998 10.9551 11.4775 11.4775C10.9551 11.9998 10.3351 12.4141 9.65259 12.6968C8.97014 12.9795 8.23869 13.125 7.5 13.125C6.76131 13.125 6.02986 12.9795 5.34741 12.6968C4.66495 12.4141 4.04485 11.9998 3.52252 11.4775C3.00019 10.9551 2.58586 10.3351 2.30318 9.65259C2.02049 8.97014 1.875 8.23869 1.875 7.5C1.875 6.00816 2.46763 4.57742 3.52252 3.52252C4.57742 2.46763 6.00816 1.875 7.5 1.875C8.99184 1.875 10.4226 2.46763 11.4775 3.52252C12.5324 4.57742 13.125 6.00816 13.125 7.5Z" stroke="#F27272" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="basket-main-error__text">Заказ не отправлен. Проверьте введенные данные или обратитесь к менеджерам</div>
+          </div>
+
           <div class="basket__small-info">
             Нажимая “Оформить заказ” вы даете свое согласие на обработку персональных данных
             и соглашаетесь с нашей политикой конфиденциальности
@@ -132,8 +141,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
-import { getBacketProducts, getAllProducts, deleteCartItem } from '@/use/middleware.js'
-
+import { getBacketProducts, getAllProducts, deleteCartItem, createOrder } from '@/use/middleware.js'
 export default {
   components: {
     BreadCrumbs,
@@ -159,7 +167,8 @@ export default {
       isEmailValid: true,
       cartList: [],
       deliveryCost: 1000,
-      cartId: 0
+      cartId: 0,
+      isOrderSended: true
     }
   },
   async mounted(){
@@ -184,6 +193,7 @@ export default {
     getBacketProducts,
     getAllProducts,
     deleteCartItem,
+    createOrder,
     async deleteCard(id) {
       const rez = await deleteCartItem(id, this.cartId)
       if (rez) {
@@ -194,16 +204,40 @@ export default {
         localStorage.setItem('cartCount', cartCount - 1)
       }
     },
-    submitBasket() {
+    async submitBasket() {
       this.isNameValid = !!this.name.length
       this.isEmailValid = this.validateEmail(this.email)
       this.isPhoneValid = this.phone.length === 18
+
+      if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid) return
+
+      const rez = await this.createOrder(this.name, this.phone, this.email, this.selectedDate, this.adress, this.message, this.cartId)
+      if (rez) {
+        this.isModalShown = true
+        this.clearCart()
+      } else
+        this.isOrderSended = false
     },
     callMeEvent() {
       this.isCallMePhoneValid = this.callMePhone.length === 18
 
-      if (this.isCallMePhoneValid)
+      if (this.isCallMePhoneValid) {
         this.isModalShown = true
+        this.clearCart()
+      }
+    },
+    clearCart() {
+      this.$cartCount.value = 0
+      this.$cartId.value = 0
+      localStorage.setItem('cartId', 0)
+      localStorage.setItem('cartCount', 0)
+      this.cartList = []
+
+      this.name = ''
+      this.phone = ''
+      this.message = ''
+      this.email = ''
+      this.callMePhone = ''
     }
   },
   computed: {
@@ -376,12 +410,12 @@ export default {
   &__btn
     width: 100%
     height: 42px
-    margin-bottom: 40px
   &__small-info
     font-weight: 500
     font-size: 16px
     text-align: center
     color: #42474D
+    margin-top: 40px
 
 .basket-error
   display: flex
@@ -391,6 +425,23 @@ export default {
     margin-right: 3px
     height: 15px
     width: 15px
+  &__text
+    font-weight: 500
+    font-size: 10px
+    color: #F27272
+
+.basket-main-error
+  display: flex
+  align-items: center
+  padding: 4px 8px
+  margin-top: 8px
+  &__icon
+    margin-right: 3px
+    height: 20px
+    width: 20px
+    & svg
+      width: 20px
+      height: 20px
   &__text
     font-weight: 500
     font-size: 10px
@@ -502,8 +553,6 @@ export default {
       padding: 14px
       font-size: 16px
       margin: 40px 0 36px
-    &__btn
-      margin-bottom: 40px
     &__small-info
       font-size: 13px
 

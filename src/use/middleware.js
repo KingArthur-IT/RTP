@@ -126,3 +126,26 @@ export const deleteCartItem = async (id, cart_id) => {
       })
       .catch((err) => console.log('Error while get catalog list', err))
 };
+
+//оформить заказ из корзины
+export const createOrder = async (name, phone, email, date, adress, comment, cart_id) => {
+  return await sendRequest('', 'POST', { 
+    'method': 'order_create',
+    'user_name': name,
+    'user_phone': phone,
+    'user_email': email,
+    'user_data_poluch': date,
+    'user_address': adress,
+    'user_comment': comment,
+    'fuser_id': cart_id,
+  })
+      .then((res) => {
+          if (res.status === 200) {
+            return res.data.order_create.isSuccess === 1
+          } else {
+              console.log('Error while get catalog list', res);
+              return false
+          }
+      })
+      .catch((err) => console.log('Error while get catalog list', err))
+};

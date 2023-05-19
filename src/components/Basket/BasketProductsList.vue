@@ -20,14 +20,14 @@
                 <div class="resume__row-txt">Товары ({{ totalProductsCount }})</div>
                 <div class="resume__row-txt">{{ productsTotalCost }} ₽</div>
             </div>
-            <div class="resume__row">
+            <div class="resume__row resume__nds">
                 <div class="resume__row-txt">НДС (20%):</div>
                 <div class="resume__row-txt">{{ taxes }} ₽</div>
             </div>
-            <div class="resume__row resume__delivery">
+            <!-- <div class="resume__row resume__delivery">
                 <div class="resume__row-txt">Доставка:</div>
                 <div class="resume__row-txt">{{ deliveryCost }} ₽</div>
-            </div>
+            </div> -->
             <div class="resume__row resume__total">
                 <div class="resume__row-txt">Всего к оплате:</div>
                 <div class="resume__row-txt">{{ totalForPay }} ₽</div>
@@ -123,6 +123,9 @@ export default {
     color: #42474D
   &__delivery
     margin: 32px 0
+  &__nds
+      padding-bottom: 32px
+      margin-bottom: 0
   &__total
     padding: 0
     padding: 32px 0 27px
