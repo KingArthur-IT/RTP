@@ -13,7 +13,7 @@
           />
         </div>
         <div class="catalog-system__hero">
-          <SystemCatalogHero :cardsList="filteredProducts" />
+          <SystemCatalogHero :isLoaded="isLoaded" :cardsList="filteredProducts" />
         </div>
       </div>
     </div>
@@ -38,7 +38,8 @@ export default {
       categories: [],
       allProducts: [],
       filteredProducts: [],
-      maxPrice: 100
+      maxPrice: 100,
+      isLoaded: false
     }
   },
   async mounted() {
@@ -89,9 +90,14 @@ export default {
     })
 
     //применить фильтр категорий если есть активная 
-    if (activeCatId)
+    if (activeCatId) {
       this.filteredProducts = this.allProducts.filter(p => p.IBLOCK_SECTION_ID === activeCatId)
-    else this.filteredProducts = this.allProducts
+      this.isLoaded = true
+    }
+    else {
+      this.filteredProducts = this.allProducts
+      this.isLoaded = true
+    }
   },
   methods: {
     getCatalog, 

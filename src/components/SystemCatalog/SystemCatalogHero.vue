@@ -21,11 +21,12 @@
               >{{ item }}</div>
           </div>
       </div>
+      <span v-if="!isLoaded" class="loader"></span>
       <div v-if="filteredList.length" class="filters">
           <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
       </div>
-      <p v-else class="no-products">По заданным критериям товары не найдены</p>
-      <div v-if="dispayModeValue === 'col'" class="list-col">
+      <p v-if="!filteredList.length && isLoaded" class="no-products">По заданным критериям товары не найдены</p>
+        <div v-if="dispayModeValue === 'col'" class="list-col">
             <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
                 <ProductCard 
                     :id="item.ID" 
@@ -76,7 +77,7 @@
                     <GatherBusket @showModal="isModalShow = true"  />
                 </div>
             </div>
-      </div>
+        </div>
   </div>
   <Modal 
         v-model:open="isModalShow"
@@ -107,6 +108,10 @@ export default {
         cardsList: {
             type: Array,
             default: []
+        },
+        isLoaded: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
@@ -119,8 +124,7 @@ export default {
             dispayModeValue: 'col',
             oftenBuyList: ['Труба PN10 SDR 11-25мм для ХВС', 'Труба PN16 SDR 7.4 -25мм для ГВС', 'Уголок 90гр', 'Муфта'],
             filteredList: [],
-            productsInCart: []
-
+            productsInCart: [],
         }
     },
     async mounted() {
@@ -355,6 +359,50 @@ export default {
             margin-bottom: 20px
         &__gather
             margin-top: 20px
+
+.loader
+    width: 60px
+    height: 60px
+    border-radius: 50%
+    position: relative
+    animation: rotate 1s linear infinite
+    display: block
+    margin: auto
+    margin-bottom: 20px
+    &::before
+        content: ""
+        box-sizing: border-box
+        position: absolute
+        inset: 0px
+        border-radius: 50%
+        border: 5px solid var(--primary-color)
+        animation: prixClipFix 2s linear infinite 
+    &::after 
+        content: ""
+        box-sizing: border-box
+        position: absolute
+        inset: 0px
+        border-radius: 50%
+        border: 5px solid #FFF
+        animation: prixClipFix 2s linear infinite 
+        inset: 8px
+        transform: rotate3d(90, 90, 0, 180deg )
+        border-color: #D5E0F5 
+
+@keyframes rotate 
+    0%  
+        transform: rotate(0deg)
+    100%   
+        transform: rotate(360deg)
+
+@keyframes prixClipFix 
+    0%   
+        clip-path: polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)
+    50%  
+        clip-path: polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)
+    75%, 100%  
+        clip-path: polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)
+
 
 @media screen and (max-width: 1600px)
     .catalog-baner
