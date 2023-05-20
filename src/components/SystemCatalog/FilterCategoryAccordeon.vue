@@ -1,7 +1,7 @@
 <template>
   <div :ref="`accordeon${id}`" class="accordeon">
       <div class="accordeon__head" @click="showHideAccordeon">
-          <div class="accordeon__title">Вид фитинга</div>
+          <div class="accordeon__title">{{ typeName }}</div>
           <div class="accordeon__shevron" :class="{'rotate': !isBodyShown}">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 10L8 6L4 10" stroke="#42474D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -9,10 +9,10 @@
           </div>
       </div>
       <div class="accordeon__body">
-          <div v-for="(item, index) in dataList.slice(0, currentCount)" :key="index" class="accordeon__row">
+          <div v-for="(item, index) in list.slice(0, currentCount)" :key="index" class="accordeon__row">
               <div class="accordeon__checkbox">
                   <CustomCheckbox v-model="item.isChecked">
-                    <div class="accordeon__check-text">{{ item.name }} ({{ item.count }})</div>
+                    <div class="accordeon__check-text">{{ item.value }} ({{ item.count }})</div>
                   </CustomCheckbox>
               </div>
           </div>
@@ -37,18 +37,22 @@ export default {
             required: true
         },
         dataList: {
-            type: Array,
+            type: Object,
             required: true
         },
     },
     mounted() {
         this.currentCount = this.dataList.length
+        this.typeName = this.dataList.name
+        this.list = this.dataList.list
     },
     data() {
         return {
             maxCount: 5,
             currentCount: 0,
-            isBodyShown: true
+            isBodyShown: true,
+            typeName: '',
+            list: []
         }
     },
     methods: {
@@ -80,6 +84,14 @@ export default {
                 } else {
                     bodyWrapper.style.maxHeight = bodyWrapper.scrollHeight + "px";
                 };
+        }
+    },
+    watch: {
+        list: {
+            handler() {
+                this.$emit('updateList', { propName: this.dataList.propName, newList: this.list })
+            },
+            deep: true
         }
     }
 }

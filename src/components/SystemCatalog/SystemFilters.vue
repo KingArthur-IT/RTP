@@ -18,10 +18,14 @@
             @click="cat.isSelected = !cat.isSelected"
           >{{ cat.NAME }}</div>
       </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'1'" :dataList="fiting" />
+      <div v-for="(type, index) in typesArray" :key="index" class="filters__accordeon">
+          <FilterCategoryAccordeon 
+            :id="String(index)" 
+            :dataList="type" 
+            @updateList="updateTypesArray"
+          />
       </div>
-      <div class="filters__accordeon">
+      <!-- <div class="filters__accordeon">
           <FilterCategoryAccordeon :id="'2'" :dataList="fitingTypes" />
       </div>
       <div class="filters__accordeon">
@@ -38,7 +42,7 @@
       </div>
       <div class="filters__accordeon">
           <FilterCategoryAccordeon :id="'7'" :dataList="color" />
-      </div>
+      </div> -->
       <div class="filters__btn" @click="applyCategories">
           <DarkRectButton :text="'Применить'" />
       </div>
@@ -63,66 +67,23 @@ export default {
         },
         categoriesList: {
             type: Array,
+            default: []
+        },
+        typesList: {
+            type: Array,
+            default: []
         }
     },
     data() {
         return {
-            fiting: [
-                { isChecked: true, name: 'Муфта', count: 21 },
-                { isChecked: true, name: 'Отводы и угольники', count: 60 },
-                { isChecked: true, name: 'Тройники и крестовины', count: 1 },
-                { isChecked: true, name: 'Запорная арматура', count: 1 },
-                { isChecked: true, name: 'Другое', count: 1 },
-                { isChecked: true, name: 'Муфта', count: 1 },
-                { isChecked: true, name: 'Муфта', count: 1 },
-            ],
-            fitingTypes: [
-                { isChecked: true, name: 'Переходной', count: 21 },
-            ],
-            connectionTypes: [
-                { isChecked: true, name: 'Разъемный', count: 1 },
-                { isChecked: true, name: 'Пайка', count: 1 },
-            ],
-            threadTypes: [
-                { isChecked: true, name: 'Внутренняя', count: 21 },
-                { isChecked: true, name: 'Наружная', count: 60 },
-                { isChecked: true, name: 'Без резьбы', count: 1 },
-            ],
-            threadSize: [
-                { isChecked: true, name: '1/2', count: 1 },
-                { isChecked: true, name: '3/4', count: 1 },
-                { isChecked: true, name: '1', count: 1 },
-                { isChecked: true, name: '1,25', count: 1 },
-                { isChecked: true, name: '1,5', count: 1 },
-                { isChecked: true, name: '2', count: 1 },
-                { isChecked: true, name: '3', count: 1 },
-                { isChecked: true, name: '4', count: 1 },
-            ],
-            diametr: [
-                { isChecked: true, name: '20 мм', count: 60 },
-                { isChecked: true, name: '25 мм', count: 1 },
-                { isChecked: true, name: '32 мм', count: 1 },
-                { isChecked: true, name: '40 мм', count: 1 },
-                { isChecked: true, name: '50 мм', count: 1 },
-                { isChecked: true, name: '63 мм', count: 1 },
-                { isChecked: true, name: '75 мм', count: 1 },
-                { isChecked: true, name: '90 мм', count: 1 },
-                { isChecked: true, name: '110 мм', count: 1 },
-                { isChecked: true, name: '125 мм', count: 1 },
-                { isChecked: true, name: '140 мм', count: 1 },
-                { isChecked: true, name: '160 мм', count: 1 },
-            ],
-            color: [
-                { isChecked: true, name: 'Белый', count: 21 },
-                { isChecked: true, name: 'Серый', count: 60 },
-                { isChecked: true, name: 'Зелёный', count: 1 },
-            ],
+            typesArray: [],
             rangeMinValue: 0,
             rangeMaxValue: 10,
         }
     },
     mounted() {
         this.rangeMaxValue = this.rangeMaximum
+        this.typesArray = this.typesList
     },
     methods: {
         clearFilters() {
@@ -141,13 +102,20 @@ export default {
             this.$emit('applyFilters', {
                 selectedCategories: this.categoriesList.filter(c => c.isSelected),
                 minPrice: this.rangeMinValue,
-                maxPrice: this.rangeMaxValue
+                maxPrice: this.rangeMaxValue,
+                selectedTypes: this.typesArray
             })
+        },
+        updateTypesArray({ propName, newList }) {
+            this.typesArray.find(t => t.propName === propName).list = newList
         }
     },
     watch: {
         rangeMaximum() {
             this.rangeMaxValue = this.rangeMaximum
+        },
+        typesList() {
+            this.typesArray = this.typesList
         }
     }
 }

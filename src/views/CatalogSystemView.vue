@@ -8,6 +8,7 @@
         <div class="catalog-system__filters">
           <SystemFilters 
             :categoriesList="categories"
+            :typesList="typesForFilter"
             :rangeMaximum="maxPrice" 
             @applyFilters="applyFilters"
           />
@@ -36,6 +37,7 @@ export default {
   data() {
     return {
       categories: [],
+      typesForFilter: [],
       allProducts: [],
       filteredProducts: [],
       maxPrice: 100,
@@ -72,8 +74,36 @@ export default {
         this.maxPrice = Math.ceil(el.arPrice.PRICE)
     })
 
+    //сформировать массив типов для секции фильтров с галочками
+    const typesPropsList = ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY']
+    this.allProducts.forEach(product => {
+      typesPropsList.forEach(prop => {
+        if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
+          const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
+          if (propInTypes) { //если уже есть такой тип
+            const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
+            if (findVal) 
+              findVal.count += 1
+            else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: true})
+          } else
+            this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
+        }
+      })
+    })
+
     //трансформировать данные из массива продуктов
     this.allProducts = this.allProducts.map(pr => {
+      const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
+      const infoList = []
+      const hiddenList = []
+      propsArray.forEach((propName) => {
+        if (pr.arProps[propName].VALUE)
+          infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
+      })
+      typesPropsList.forEach((propName) => {
+        hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
+      })
+
       return {
         ID: pr.arFields.ID,
         IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
@@ -82,12 +112,12 @@ export default {
         PREVIEW_TEXT: pr.arFields.PREVIEW_TEXT,
         CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
         PRICE: pr.arPrice.PRICE,
-        info: [
-          { description: pr.arProps.DIAMETR.NAME, value: pr.arProps.DIAMETR.VALUE },
-          { description: pr.arProps.DLINA.NAME, value: pr.arProps.DLINA.VALUE },
-        ]
+        info: infoList,
+        hidden: hiddenList
       }
     })
+
+    console.log('this.allProducts', this.allProducts);
 
     //применить фильтр категорий если есть активная 
     if (activeCatId) {
@@ -103,15 +133,20 @@ export default {
     getCatalog, 
     getProductsOfSelectedSystem,
     isSelectedSystem,
-    applyFilters(filters) {
-      // selectedCategories: this.categoriesList.filter(c => c.isSelected),
-      //           minPrice: this.rangeMinValue,
-      //           maxPrice: this.rangeMaxValue
-      console.log(this.allProducts);
+    applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+      console.log(selectedTypes);
       this.filteredProducts = this.allProducts 
-        .filter(p => Number(p.PRICE) >= filters.minPrice && Number(p.PRICE) <= filters.maxPrice)
+        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
         .filter(p => {
-          return filters.selectedCategories.some(c => c.ID === p.IBLOCK_SECTION_ID) || !filters.selectedCategories.length
+          return selectedCategories.some(c => c.ID === p.IBLOCK_SECTION_ID) || !selectedCategories.length
+        })
+        .filter(p => {
+          let isSelected = false
+          selectedTypes.forEach(prop => { //фикс цвет
+            const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
+            isSelected = isSelected || prop.list.some(el => el.value === productPropValue && el.isChecked || !el.isChecked)
+          })
+          return isSelected
         })
     }
   },
