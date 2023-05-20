@@ -137,7 +137,7 @@ export default {
     &__item
         flex-basis: 33.33%
     &__card
-        margin-right: 70px
+        margin-right: 88px
         &.last
             margin-right: 50px
         & .icon

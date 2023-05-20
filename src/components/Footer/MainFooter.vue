@@ -62,6 +62,8 @@ export default {
   background: #42474D
   color: #fff
   font-size: 16px
+  border: none
+  margin-top: -1px
   &__hero
     padding: 43px 0px 43px 7px
   

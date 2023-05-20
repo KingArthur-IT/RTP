@@ -111,6 +111,7 @@ export default {
             font-size: 32px
             margin-bottom: 53px
             margin-left: 46px
+            color: #828D99
             & span
                 color: var(--primary-color)
                 font-weight: 700
@@ -123,7 +124,7 @@ export default {
                 color: #828D99
                 padding: 29px 0
                 padding-left: 42px
-                border-bottom: 1px solid #828D99
+                border-bottom: 1px solid #DBDBDB
                 &:before
                     content: ''
                     position: absolute

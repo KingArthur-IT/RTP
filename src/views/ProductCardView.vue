@@ -83,49 +83,14 @@
                 <div class="section-title-text">С этим часто покупают</div>
             </div>
             <div class="often-buy__list">
-                <div class="often-buy__item">
+                <div v-for="i in 5" :key="i" class="often-buy__item">
                     <ProductCard 
                         :id="1" 
                         :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
                         :newPrice="189"
                         :oldPrice="262"
                         :isBenefitShown="false"
-                    />
-                </div>
-                <div class="often-buy__item">
-                    <ProductCard 
-                        :id="2" 
-                        :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                        :newPrice="189"
-                        :oldPrice="262"
-                        :isBenefitShown="false"
-                    />
-                </div>
-                <div class="often-buy__item">
-                    <ProductCard 
-                        :id="3" 
-                        :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                        :newPrice="189"
-                        :oldPrice="262"
-                        :isBenefitShown="false"
-                    />
-                </div>
-                <div class="often-buy__item">
-                    <ProductCard 
-                        :id="4" 
-                        :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                        :newPrice="189"
-                        :oldPrice="262"
-                        :isBenefitShown="false"
-                    />
-                </div>
-                <div class="often-buy__item">
-                    <ProductCard 
-                        :id="5" 
-                        :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                        :newPrice="189"
-                        :oldPrice="262"
-                        :isBenefitShown="false"
+                        :hasShadow="false"
                     />
                 </div>
             </div>

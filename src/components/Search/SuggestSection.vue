@@ -9,6 +9,7 @@
                     :newPrice="item.newPrice"
                     :oldPrice="item.oldPrice"
                     :isBenefitShown="false"
+                    :hasShadow="false"
                 />
             </div>
         </div>

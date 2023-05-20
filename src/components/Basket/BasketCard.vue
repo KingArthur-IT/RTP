@@ -100,7 +100,6 @@ export default {
 
 <style scoped lang="sass">
 .basket-card
-    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.05))
     background: #fff
     padding: 16px
     display: flex

@@ -169,7 +169,7 @@ export default {
             color: var(--primary-color)
     .textarea
         padding: 8px 11px
-        font-size: 13px
+        font-size: 16px
         font-weight: 400
         max-height: 243px
         &.main-form
@@ -205,6 +205,7 @@ export default {
         padding: 10px 6px
     .textarea
         max-height: 150px
+        font-size: 12px
         &.main-form
             max-height: 125px
 </style>
