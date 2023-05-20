@@ -1,9 +1,19 @@
 <template>
   <div class="price-card">
       <div class="price-card__text">Цена за упаковку</div>
-      <div class="price-card__price">{{ numberWithSpaces(price) }} ₽</div>
+      <div class="price-card__price">
+        {{ numberWithSpaces(price) }}
+        <svg class="rub-symb" width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.16 18V0.863999H7.632C9.84 0.863999 11.448 1.312 12.456 2.208C13.48 3.104 13.992 4.336 13.992 5.904C13.992 6.832 13.784 7.704 13.368 8.52C12.952 9.336 12.256 9.992 11.28 10.488C10.32 10.984 9.008 11.232 7.344 11.232H5.784V18H2.16ZM0.24 15.432V13.104H9.48V15.432H0.24ZM0.24 11.232V8.256H7.272V11.232H0.24ZM6.984 8.256C7.672 8.256 8.264 8.184 8.76 8.04C9.256 7.88 9.64 7.632 9.912 7.296C10.184 6.96 10.32 6.536 10.32 6.024C10.32 5.288 10.088 4.744 9.624 4.392C9.16 4.024 8.432 3.84 7.44 3.84H5.784V8.256H6.984Z" fill="#224386"/>
+        </svg>
+      </div>
       <div class="price-card__count">х{{ count }}</div>
-      <div class="price-card__total">{{ numberWithSpaces(price * count) }} ₽</div>
+      <div class="price-card__total">
+        {{ numberWithSpaces(price * count) }}
+        <svg class="rub-symb" width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.16 18V0.863999H7.632C9.84 0.863999 11.448 1.312 12.456 2.208C13.48 3.104 13.992 4.336 13.992 5.904C13.992 6.832 13.784 7.704 13.368 8.52C12.952 9.336 12.256 9.992 11.28 10.488C10.32 10.984 9.008 11.232 7.344 11.232H5.784V18H2.16ZM0.24 15.432V13.104H9.48V15.432H0.24ZM0.24 11.232V8.256H7.272V11.232H0.24ZM6.984 8.256C7.672 8.256 8.264 8.184 8.76 8.04C9.256 7.88 9.64 7.632 9.912 7.296C10.184 6.96 10.32 6.536 10.32 6.024C10.32 5.288 10.088 4.744 9.624 4.392C9.16 4.024 8.432 3.84 7.44 3.84H5.784V8.256H6.984Z" fill="#42474D"/>
+        </svg>
+      </div>
       <div class="count-btns">
         <button @click="decrementProductCount">
             <svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -193,8 +203,12 @@ export default {
             font-size: 14px
         &__price
             font-size: 20px
+            & .rub-symb
+                height: 15px
         &__total
             font-size: 20px
+            & .rub-symb
+                height: 15px
         &__btn
             margin-bottom: 73px
     .count-btns

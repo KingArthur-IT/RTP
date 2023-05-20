@@ -47,7 +47,7 @@
       <div class="container">
           <div class="our-services">
             <div class="section-title our-services__title">
-                <div class="section-title-text">Наши услуги{{isModalShow}}</div>
+                <div class="section-title-text">Наши услуги</div>
             </div>
             <div class="our-services__hero">
                 <div class="our-services__item" @click="isModalShow = true">

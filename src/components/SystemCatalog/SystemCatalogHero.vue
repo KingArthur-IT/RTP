@@ -1,5 +1,6 @@
 <template>
   <div class="catalog-hero">
+      <!-- baner -->
       <div class="catalog-baner" :class="banerInfo.name">
             <img :src="getImageUrl('baner-bg', banerInfo.name)" :alt="pageName" class="catalog-baner__bg">
             <div class="catalog-baner__hero">
@@ -11,6 +12,7 @@
                 <p class="catalog-baner__text" v-html="banerInfo.catalogBanerTextHtml"></p>
             </div>
       </div>
+      <!-- often buy -->
       <div class="often-buy">
           <div class="often-buy__title">Часто оказывается в корзине</div>
           <div class="often-buy__hero">
@@ -21,14 +23,19 @@
               >{{ item }}</div>
           </div>
       </div>
+      <!-- loader -->
       <span v-if="!isLoaded" class="loader"></span>
+      <!-- filters -->
       <div v-if="filteredList.length" class="filters">
           <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
       </div>
+      <!-- products list -->
       <p v-if="!filteredList.length && isLoaded" class="no-products">По заданным критериям товары не найдены</p>
         <div v-if="dispayModeValue === 'col'" class="list-col">
             <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
                 <ProductCard 
+                    v-model:count="item.count"
+                    :hasShadow="false"
                     :id="item.ID" 
                     :description="item.PREVIEW_TEXT"
                     :newPrice="item.PRICE"
@@ -36,7 +43,6 @@
                     :isBenefitShown="false"
                     :isInCart="item.isInCart"
                     @addedToCart="addedToCart"
-                    v-model:count="item.count"
                     @updateCountInCart="updateCountInCart"
                     @deleteFromCart="deleteFromCart"
                 />
@@ -278,7 +284,7 @@ export default {
         height: 100%
         object-fit: cover
     &__hero
-        padding: 38px 45px 31px
+        padding: 38px 45px 55px
         z-index: 12
         display: flex
         flex-direction: column
