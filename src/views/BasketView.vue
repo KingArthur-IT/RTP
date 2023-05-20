@@ -81,15 +81,18 @@
               </svg>
             </div>
           </div>
-
           <div class="delivery-adress">
             <div class="delivery-adress__text">Доставка по адресу: </div>
             <div class="delivery-adress__content" :class="{'w-100': isAdressEditing}">
-              <input v-if="isAdressEditing" v-model="adress" type="text" class="delivery-adress__adress">
+              <div v-if="isAdressEditing" class="delivery-adress__adress">
+                <AdressAutocomplete v-model:adress="adress" />
+              </div>
               <div v-else class="delivery-adress__adress">{{ adress }}</div>
-              <svg @click="isAdressEditing = !isAdressEditing" class="delivery-adress__icon" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.3 6.175L12.05 1.975L13.45 0.575C13.8333 0.191667 14.3043 0 14.863 0C15.4217 0 15.8923 0.191667 16.275 0.575L17.675 1.975C18.0583 2.35833 18.2583 2.821 18.275 3.363C18.2917 3.905 18.1083 4.36733 17.725 4.75L16.3 6.175ZM14.85 7.65L4.25 18.25H0V14L10.6 3.4L14.85 7.65Z" fill="#BDBDBD"/>
-              </svg>
+              <div class="delivery-adress__icon">
+                <svg @click="isAdressEditing = !isAdressEditing" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.3 6.175L12.05 1.975L13.45 0.575C13.8333 0.191667 14.3043 0 14.863 0C15.4217 0 15.8923 0.191667 16.275 0.575L17.675 1.975C18.0583 2.35833 18.2583 2.821 18.275 3.363C18.2917 3.905 18.1083 4.36733 17.725 4.75L16.3 6.175ZM14.85 7.65L4.25 18.25H0V14L10.6 3.4L14.85 7.65Z" fill="#BDBDBD"/>
+                </svg>
+              </div>
             </div>
           </div>
 
@@ -142,6 +145,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
 import { getBacketProducts, getAllProducts, deleteCartItem, createOrder } from '@/use/middleware.js'
+import AdressAutocomplete from '../components/UIKit/AdressAutocomplete.vue';
 
 export default {
   components: {
@@ -150,6 +154,7 @@ export default {
     VueDatePicker,
     BasketProductsList,
     AcceptOrderModal,
+    AdressAutocomplete
   },
   data() {
     return {
@@ -471,6 +476,9 @@ export default {
     bottom: 0
     left: 0
     right: 0
+    color: #42474D
+  &__text
+    color: #42474D
   & svg
     position: absolute
     right: 24px
@@ -492,21 +500,13 @@ export default {
   &__adress
     font-weight: 700
     color: #224386
-  & input
-    margin-top: 5px
     width: 100%
-    font-size: 16px
-    font-family: 'Ubuntu'
-    height: 44px
-    background: #FFFFFF
-    border: 1px solid #BDBDBD
-    border-radius: 11px
-    padding: 12px 14px 11px
-    outline: none
+    margin-right: 30px
   &__icon
     cursor: pointer
-    margin-left: 30px
     width: 18px
+    & svg
+      width: 18px
 
 .estimate-wrapper
   margin-left: 80px
@@ -579,9 +579,11 @@ export default {
       font-weight: 700
       color: #224386
       margin-left: 3px
+      margin-right: 20px
     &__icon
-      margin-left: 30px
-      width: 18px
+      height: 30px
+      & svg
+        width: 16px
 
   .estimate-wrapper
     margin-left: 20px
