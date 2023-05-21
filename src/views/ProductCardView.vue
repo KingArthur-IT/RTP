@@ -82,23 +82,23 @@
                 />
             </div>
         </div>
-        <!-- <div class="often-buy">
+        <div class="often-buy">
             <div class="section-title often-buy__title">
                 <div class="section-title-text">С этим часто покупают</div>
             </div>
             <div class="often-buy__list">
                 <div v-for="i in 5" :key="i" class="often-buy__item">
                     <ProductCard 
-                        :id="1" 
+                        :id="String(i)" 
                         :description="'Труба из полипропилена PN SDR 11 для холодной воды, проекта сантехники для дома ALPHA, 4 метра - 20*1.9мм.'"
-                        :newPrice="189"
-                        :oldPrice="262"
+                        :newPrice="'189'"
+                        :oldPrice="'262'"
                         :isBenefitShown="false"
                         :hasShadow="false"
                     />
                 </div>
             </div>
-        </div> -->
+        </div>
         <div id="description" class="description">
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>
