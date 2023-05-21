@@ -15,6 +15,7 @@
               </div>
           </div>
           <div class="modal__body">
+              <!-- левая колонка -->
               <div class="modal__column">
                   <div class="input-wrapper">
                       <CustomInput 
@@ -69,6 +70,7 @@
                       <img src="@/assets/modal-logo.png" alt="RTP">
                   </div>
               </div>
+              <!-- правая колонка -->
               <div class="modal__column">
                   <div class="input-wrapper">
                       <CustomInput 
@@ -107,6 +109,10 @@
               </div>
           </div>
       </div>
+      <AcceptOrderModalVue  
+        v-model:open="isAcceptedModalShown"
+        @closeModal="clearAndCloseForm"
+      />
   </div>
 </template>
 
@@ -115,14 +121,17 @@ import CustomInput from '../UIKit/CustomInput.vue'
 import DropFileSection from '../UIKit/DropFileSection.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import { validateEmail } from '@/use/helpers.js'
+import { sendFormData } from '@/use/middleware.js'
 import { VueRecaptcha } from 'vue-recaptcha';
+import AcceptOrderModalVue from './AcceptOrderModal.vue';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
         DropFileSection,
-        VueRecaptcha
+        VueRecaptcha,
+        AcceptOrderModalVue
     },
     props: {
         title: {
@@ -136,6 +145,10 @@ export default {
         open: {
             type: Boolean,
             default: false
+        },
+        formInfo: {
+            type: String,
+            required: true
         }
     },
     data() {
@@ -152,11 +165,13 @@ export default {
             isEmailValid: true,
             isRecaptchaVerified: null,
             isShown: false,
-            isVisible: false
+            isVisible: false,
+            isAcceptedModalShown: false
         }
     },
     methods: {
         validateEmail,
+        sendFormData,
         recaptchaVerified(response) {
             console.log(response);
             this.isRecaptchaVerified = response
@@ -164,7 +179,7 @@ export default {
         recaptchaExpired() {
             this.$refs.vueRecaptcha.reset();
         },
-        formSubmit() {
+        async formSubmit() {
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 18
@@ -172,10 +187,24 @@ export default {
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
                 return
 
-            //отправить данные
-        },
+            const rez = await this.sendFormData('callback', this.formInfo, window.location.href, this.name, this.surname, this.phone, this.email, this.theme, this.message)
+            if (rez) {
+                this.isAcceptedModalShown = true
+            }
+        },  
         closeModal() {
             this.$emit('update:open', false)
+        },
+        clearAndCloseForm() {
+            this.name = ''
+            this.surname = ''
+            this.phone = '+7 ('
+            this.email = ''
+            this.message = ''
+            this.theme = ''
+            setTimeout(() => {
+                this.closeModal()
+            }, 500);
         }
     },
     watch: {

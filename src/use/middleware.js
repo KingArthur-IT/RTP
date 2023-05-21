@@ -36,10 +36,10 @@ export const getAllCategoriesCount = async () => {
                     }, {})
                 return sectionsIdsCount
             } else {
-                console.log('Error while get catalog list', res);
+                console.log('Error while getAllCategoriesCount', res);
             }
         })
-        .catch((err) => console.log('Error while get catalog list', err))
+        .catch((err) => console.log('Error while getAllCategoriesCount', err))
 };
 
 //получить продукты только заданных катогория по массиву id этих категорий
@@ -54,10 +54,10 @@ export const getProductsOfSelectedSystem = async (idsArr) => {
               })
               return products
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while getProductsOfSelectedSystem', res);
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while getProductsOfSelectedSystem', err))
 };
 
 //получить все продукты в виде массива
@@ -68,10 +68,10 @@ export const getAllProducts = async () => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while getAllProducts', res);
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while getAllProducts', err))
 };
 
 //добавить продукт в корзину
@@ -88,11 +88,11 @@ export const addProductToBacket = async (id, count, backet_id) => {
                 return res.data.cart_add_prod.data.fuser_id
               }
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while addProductToBacket', res);
               return 0
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while addProductToBacket', err))
 };
 
 //получить из корзины продукты
@@ -105,11 +105,11 @@ export const getBacketProducts = async (backet_id) => {
                 return res.data.cart_get.data
               }
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while getBacketProducts', res);
               return []
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while getBacketProducts', err))
 };
 
 //удалить товар из корзины
@@ -120,11 +120,11 @@ export const deleteCartItem = async (id, cart_id) => {
           if (res.status === 200) {
               return res.data.cart_clear.isSuccess === 1
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while deleteCartItem', res);
               return false
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while deleteCartItem', err))
 };
 
 //оформить заказ из корзины
@@ -143,11 +143,11 @@ export const createOrder = async (name, phone, email, date, adress, comment, car
           if (res.status === 200) {
             return res.data.order_create.isSuccess === 1
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while createOrder', res);
               return false
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while createOrder', err))
 };
 
 //получить файл сметы
@@ -157,9 +157,37 @@ export const printCart = async (cart_id) => {
           if (res.status === 200) {
             return res.data.cart_print.data
           } else {
-              console.log('Error while get catalog list', res);
+              console.log('Error while printCart', res);
               return ''
           }
       })
-      .catch((err) => console.log('Error while get catalog list', err))
+      .catch((err) => console.log('Error while printCart', err))
+};
+
+//отправка данных формы
+export const sendFormData = async (type, formInfo, url, name, surname, phone, email, theme, message, additional_message = '') => {
+  return await sendRequest('', 'POST', 
+    { 
+      'method': 'form_send',
+      'type': type,
+      'form': formInfo,
+      'data_url': url,
+      'data_name': name,
+      'data_fam': surname,
+      'data_phone': phone,
+      'data_email': email,
+      'data_theme': theme,
+      'data_mess': message,
+      'data_dop_mess': additional_message,
+    }
+  )
+      .then((res) => {
+          if (res.status === 200) {
+            return res.data.form_send.isSuccess === 1
+          } else {
+              console.log('Error while send form data', res);
+              return false
+          }
+      })
+      .catch((err) => console.log('Error while send form data', err))
 };

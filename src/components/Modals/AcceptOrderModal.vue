@@ -5,8 +5,8 @@
     @click="closeModal"
   >
       <div class="modal" @click.stop>
-          <div class="modal__title">Ваш заказ принят в работу!</div>
-          <div class="modal__subtitle">Менеджер свяжется с Вами в течение 30 минут</div>
+          <div class="modal__title">{{ title }}</div>
+          <div class="modal__subtitle">{{ subtitle }}</div>
           <div class="modal__close" @click="closeModal">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 20.7344L10.5 13.2344L3 20.7344L0.499999 18.2344L8 10.7344L0.499999 3.23438L3 0.734376L10.5 8.23438L18 0.734376L20.5 3.23438L13 10.7344L20.5 18.2344L18 20.7344Z" fill="white"/>
@@ -23,7 +23,15 @@ export default {
         open: {
             type: Boolean,
             default: false
-        }
+        },
+        title: {
+            type: String,
+            default: 'Ваш заказ принят в работу!'
+        },
+        subtitle: {
+            type: String,
+            default: 'Менеджер свяжется с Вами в течение 30 минут'
+        },
     },
     data() {
         return {
@@ -34,6 +42,7 @@ export default {
     methods: {
         closeModal() {
             this.$emit('update:open', false)
+            this.$emit('closeModal')
         }
     },
     watch: {
@@ -107,20 +116,20 @@ export default {
         top: -31px
         right: 72px
 
-// @media screen and (max-width: 1600px)
-//     .modal
-//         width: 995px
-//         padding: 64px 45px 84px
-//         &__title
-//             font-size: 32px
-//         &__subtitle
-//             font-size: 18px
-//         &__close
-//             top: 18px
-//             right: 21px
-//         &__box
-//             width: 310px
-//             height: 303px
-//             top: -31px
-//             right: 72px
+@media screen and (max-width: 1600px)
+    .modal
+        width: 860px
+        padding: 54px 45px 64px
+        &__title
+            font-size: 32px
+        &__subtitle
+            font-size: 18px
+        &__close
+            top: 18px
+            right: 21px
+        &__box
+            width: 245px
+            height: 240px
+            top: -20px
+            right: 72px
 </style>
