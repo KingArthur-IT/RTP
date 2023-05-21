@@ -212,6 +212,12 @@ export default {
             this.email = ''
             this.message = ''
             this.theme = ''
+            this.isRecaptchaChecked = true
+            this.recaptchaResponse = null
+            this.isEmailValid = true
+            this.isNameValid = true
+            this.isPhoneValid = true
+            this.recaptchaExpired()
             setTimeout(() => {
                 this.closeModal()
             }, 500);
