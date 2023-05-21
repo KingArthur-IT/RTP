@@ -205,3 +205,16 @@ export const getProductById = async (id) => {
       })
       .catch((err) => console.log('Error while getProductById', err))
 };
+
+//получить лучшие предложения
+export const getBestPropositions = async () => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while getBestPropositions', res);
+          }
+      })
+      .catch((err) => console.log('Error while getBestPropositions', err))
+};

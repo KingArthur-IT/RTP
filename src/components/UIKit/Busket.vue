@@ -19,18 +19,14 @@ export default {
     }
   },
   async mounted() {
-    this.cartCount = localStorage.getItem('cartCount') || 0
+    const cartId = localStorage.getItem('cartId') || 0
 
     //если не найдено товаров по запросу из корзины то очистить данные в приложении
-    if (this.cartCount) {
-      const cartId = localStorage.getItem('cartId')
+    if (cartId) {
       const cartProducts = await this.getBacketProducts(cartId)
-      if (cartProducts.length === 0) {
-        this.$cartCount.value = 0
-        this.$cartId.value = 0
-        localStorage.setItem('cartId', 0)
-        localStorage.setItem('cartCount', 0)
-      }
+      console.log('moiunted', cartProducts);
+      this.$cartCount.value = cartProducts.length
+      localStorage.setItem('cartCount', cartProducts.length)
     }
   },
   watch: {
