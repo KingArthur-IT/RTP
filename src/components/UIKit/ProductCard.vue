@@ -152,8 +152,7 @@ export default {
                 if (this.isInCart) {
                     this.$emit('updateCountInCart', { delta: -1, id: this.id })
                 }
-            }
-            if (this.productCount === 1 && this.isInCart)
+            } else if (this.productCount === 1 && this.isInCart)
                 this.$emit('deleteFromCart', this.id)
         },
         incrementProductCount() {
@@ -171,7 +170,7 @@ export default {
             }
         },
         goToCard() {
-            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' } })
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: this.id } })
         },
         async addToBasket() {
             if (this.isInCart) return

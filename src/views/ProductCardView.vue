@@ -1,10 +1,10 @@
 <template>
   <main>
     <div class="container product-card">
-        <BreadCrumbsSecondLevel :thirdLevel="'Труба из полипропилена PN SDR 11'" />
+        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.NAME" />
         <div class="product-head">
             <div class="product-head__head">
-                <h1 class="product-head__title">Труба из полипропилена PN SDR 11 для холодной воды, 4 метра - 20*1.9мм.</h1>
+                <h1 class="product-head__title">{{ productCardInfo?.arFields?.NAME }}</h1>
                 <div class="product-head__icons">
                     <div class="product-head__icon" @click="copyCurrentLink">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,8 +45,8 @@
                     <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
                 </div>
                 <div class="subhead__info">
-                    <div>Артикул 599221204</div>
-                    <div>Код УТ-00009617</div>
+                    <div>Артикул {{ productCardInfo?.arProps?.ARKTIKUL_POSTAVSHCHIKA.VALUE }}</div>
+                    <div>Код {{ productCardInfo?.arProps?.CML2_BAR_CODE.VALUE }}</div>
                 </div>
             </div>
         </div>
@@ -75,10 +75,14 @@
                 </div>
             </div>
             <div class="product-hero__card">
-                <PriceCard :price="2885" v-model:productCount="productCount" />
+                <PriceCard 
+                    :prodId="$route.query.id"
+                    :price="Number(productCardInfo?.arPrice?.PRICE) || 0" 
+                    v-model:productCount="productCount" 
+                />
             </div>
         </div>
-        <div class="often-buy">
+        <!-- <div class="often-buy">
             <div class="section-title often-buy__title">
                 <div class="section-title-text">С этим часто покупают</div>
             </div>
@@ -94,13 +98,13 @@
                     />
                 </div>
             </div>
-        </div>
+        </div> -->
         <div id="description" class="description">
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>
             </div>
             <div class="description__text">
-                Трубы из полипропилена для напорного водоснабжения (ХВС, ГВС) и отопления. Обладают отличными прочностными характеристиками и изготавливаются согласно требованиям ГОСТ. RTP располагает самым широким ассортиментом труб и фитингов, что позволяет осуществлять монтаж любой сложности. Трубы из полипропилена для напорного водоснабжения (ХВС, ГВС) и отопления. Обладают отличными прочностными характеристиками и изготавливаются согласно требованиям ГОСТ. RTP располагает самым широким ассортиментом труб и фитингов, что позволяет осуществлять монтаж любой сложности. Трубы из полипропилена для напорного водоснабжения (ХВС, ГВС) и отопления. Обладают отличными прочностными характеристиками и изготавливаются согласно требованиям ГОСТ. RTP располагает самым широким ассортиментом труб и фитингов, что позволяет осуществлять монтаж любой сложности.
+                {{ productCardInfo?.arProps?.OPISANIE.VALUE }}
             </div>
         </div>
         <div class="characteristic-section">
@@ -129,6 +133,7 @@ import ProductCardDetail from '../components/ProductCard/ProductCardDetail.vue';
 import ProductCardPreview from '../components/ProductCard/ProductCardPreview.vue';
 import ProductCharacteristics from '../components/ProductCard/ProductCharacteristics.vue';
 import ProductCard from '../components/UIKit/ProductCard.vue';
+import { getProductById } from '@/use/middleware.js'
 
 export default {
     components: {
@@ -141,6 +146,7 @@ export default {
     },
     data() {
         return {
+            productCardInfo: null,
             starsCount: 4,
             description: [
                 { 
@@ -172,10 +178,13 @@ export default {
             productCount: 1
         }
     },
-    mounted(){
+    async mounted(){
         window.scrollTo(0, 0);
+        this.productCardInfo = await this.getProductById(this.$route.query.id)
+        console.log('productCardInfo', this.productCardInfo);
     },
     methods: {
+        getProductById,
         updateSelectedInDetails(data) {
             this.description[data.arrIndex].selectedValueIndex = data.newSelected
         },

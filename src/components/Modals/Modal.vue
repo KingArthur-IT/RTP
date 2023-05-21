@@ -217,7 +217,6 @@ export default {
             this.isEmailValid = true
             this.isNameValid = true
             this.isPhoneValid = true
-            this.recaptchaExpired()
             setTimeout(() => {
                 this.closeModal()
             }, 500);
@@ -225,6 +224,7 @@ export default {
     },
     watch: {
         open() {
+            this.recaptchaExpired()
             if (this.open) {
                 document.body.classList.add('overflow-hidden')
                 this.isShown = true

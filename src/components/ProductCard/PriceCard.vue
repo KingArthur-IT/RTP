@@ -27,8 +27,11 @@
             </svg>
         </button>
       </div>
-      <div class="price-card__btn">
-          <DarkRectButton :text="'В корзину'" @click="$router.push({ name: 'basket' })" />
+      <div class="price-card__btn" @click="addToCart">
+          <AddToCartButton
+            :disabled="isInCart"
+            :text="isInCart ? 'В корзине' : 'В корзину'"
+          />
       </div>
       <div class="gather-basket">
           <div class="gather-basket__head">
@@ -57,11 +60,14 @@
 import DarkRectButton from '../UIKit/DarkRectButton.vue'
 import Modal from '../Modals/Modal.vue'
 import { numberWithSpaces } from '@/use/helpers.js'
+import AddToCartButton from '../UIKit/AddToCartButton.vue'
+import { getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
 
 export default {
     components: {
         DarkRectButton,
-        Modal
+        Modal,
+        AddToCartButton
     },
     props: {
         price: {
@@ -72,34 +78,82 @@ export default {
             type: Number,
             default: 1
         },
+        prodId: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {
             count: 1,
-            isModalShow: false
+            isModalShow: false,
+            isInCart: false,
+            cartId: 0
         }
     },
-    mounted() {
+    async mounted() {
         this.count = this.productCount
+        //получить товары из корзины и понять есть ли там выбранный
+        this.cartId = localStorage.getItem('cartId') || 0
+        if (this.cartId) {
+            const cartPrd = await this.getBacketProducts(this.cartId)
+            this.isInCart = cartPrd.some(p => p.prod_id == this.prodId)
+            if (this.isInCart) {
+                this.count = cartPrd.find(p => p.prod_id == this.prodId).count
+                this.$emit('update:productCount', this.count)
+            }
+        }
     },
     methods: {
         numberWithSpaces,
-        decrementProductCount() {
-            if (this.count > 1)
-                this.count --
+        getBacketProducts, addProductToBacket, deleteCartItem,
+        async decrementProductCount() {
+            if (this.count > 1) {
+                this.$emit('update:productCount', this.count - 1)
+                if (this.isInCart)
+                    await this.addProductToBacket(this.prodId, -1, this.cartId)
+            } else if (this.count === 1 && this.isInCart) {
+                const rez = await deleteCartItem(this.prodId, this.cartId)
+                if (rez) {
+                    this.isInCart = false
+                    const cartCount = localStorage.getItem('cartCount')
+                    this.$cartCount.value = Number(cartCount) - 1
+                    localStorage.setItem('cartCount', cartCount - 1)
+                }
+            }
         },
-        incrementProductCount() {
-            this.count ++
+        async incrementProductCount() {
+            this.$emit('update:productCount', this.count + 1)
+            if (this.isInCart) {
+                await this.addProductToBacket(this.prodId, 1, this.cartId)
+            }
         },
-        onCountInput() {
-            this.count = this.count.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
-            // this.productCount = this.productCount.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1')
-            // this.$emit('update:productCount', )
+        async onCountInput() {
+            const newCount = Number(String(this.count).replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1'))
+            if (newCount) {
+                console.log(newCount, this.productCount);
+                if (this.isInCart)
+                    await this.addProductToBacket(this.prodId, newCount - this.productCount, this.cartId)
+                this.$emit('update:productCount', newCount)
+            }
         },
+        async addToCart() {
+            if (this.isInCart) return
+
+            const newCartId = await addProductToBacket(this.prodId, this.productCount, this.cartId)
+            if (newCartId) {
+                const cartCount = localStorage.getItem('cartCount')
+                this.$cartCount.value = Number(cartCount) + 1
+                this.$cartId.value = newCartId
+                localStorage.setItem('cartId', this.$cartId.value)
+                localStorage.setItem('cartCount', this.$cartCount.value)
+                this.isInCart = true
+            }
+        }
     },
     watch: {
-        count() {
-            this.$emit('update:productCount', this.count)
+        productCount() {
+            this.count = this.productCount
         }
     }
 }

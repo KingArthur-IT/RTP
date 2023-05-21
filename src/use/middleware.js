@@ -191,3 +191,17 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
       })
       .catch((err) => console.log('Error while send form data', err))
 };
+
+//получить товар по id
+export const getProductById = async (id) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+            const allProducts = Object.values(res.data.get_catalog_prod.data)
+              return allProducts.find(p => p.arFields.ID === id)
+          } else {
+              console.log('Error while getProductById', res);
+          }
+      })
+      .catch((err) => console.log('Error while getProductById', err))
+};

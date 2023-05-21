@@ -10,14 +10,28 @@
 </template>
 
 <script>
+import { getBacketProducts } from '@/use/middleware.js'
+
 export default {
   data() {
     return {
       cartCount: 0
     }
   },
-  mounted() {
+  async mounted() {
     this.cartCount = localStorage.getItem('cartCount') || 0
+
+    //если не найдено товаров по запросу из корзины то очистить данные в приложении
+    if (this.cartCount) {
+      const cartId = localStorage.getItem('cartId')
+      const cartProducts = await this.getBacketProducts(cartId)
+      if (cartProducts.length === 0) {
+        this.$cartCount.value = 0
+        this.$cartId.value = 0
+        localStorage.setItem('cartId', 0)
+        localStorage.setItem('cartCount', 0)
+      }
+    }
   },
   watch: {
     '$cartCount.value': {
@@ -26,6 +40,9 @@ export default {
       },
       deep: true
     }
+  },
+  methods: {
+    getBacketProducts
   }
 }
 </script>

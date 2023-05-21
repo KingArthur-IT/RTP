@@ -136,8 +136,8 @@ export default {
     },
     async mounted() {
         //получить товары из корзины и трансформировать в { id, count }
-        const cartPrd = await this.getBacketProducts()
-        this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
+        // const cartPrd = await this.getBacketProducts()
+        // this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
 
         this.pageName = this.$route.params.name;
         this.banerInfo = this.systemList.find(el => el.name === this.pageName)

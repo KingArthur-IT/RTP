@@ -76,7 +76,7 @@ export default {
   top: 50%;
   margin: -13px 0 0 -18px;
   transform-origin: 12px 23px;
-  transform: translateX(-120px) rotate(-18deg);
+  transform: translateX(-160px) rotate(-18deg);
 }
 .button .cart:before, .button .cart:after {
   content: '';
