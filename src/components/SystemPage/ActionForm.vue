@@ -65,6 +65,10 @@
               </form>
           </div>
       </div>
+      <AcceptOrderModal  
+        v-model:open="isAcceptedModalShown"
+        @closeModal="clearAndCloseForm"
+      />
   </div>
 </template>
 
@@ -73,12 +77,15 @@ import CustomInput from '../UIKit/CustomInput.vue'
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import CustomCheckbox from '../UIKit/CustomCheckbox.vue';
 import { validateEmail } from '@/use/helpers.js'
+import { sendFormData } from '@/use/middleware.js'
+import AcceptOrderModal from '../Modals/AcceptOrderModal.vue';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
-        CustomCheckbox
+        CustomCheckbox,
+        AcceptOrderModal
     },
     data() {
         return {
@@ -91,20 +98,32 @@ export default {
             isEmailValid: true,
             isConfirmedValid: true,
             isConfirmed: false,
+            isAcceptedModalShown: false
         }
     },
     methods: {
         validateEmail,
-        sendForm() {
+        sendFormData,
+        async sendForm() {
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
-            this.isPhoneValid = this.phone.length === 12
+            this.isPhoneValid = this.phone.length === 18
             this.isConfirmedValid = this.isConfirmed
 
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid || !this.isConfirmed)
                 return
 
-            //отправить данные
+            const rez = await this.sendFormData('callback', 'form-questions-from-alpha', window.location.href, this.name, '', this.phone, this.email, '', this.message)
+            if (rez) {
+                this.isAcceptedModalShown = true
+            }
+        },
+        clearAndCloseForm() {
+            this.name = ''
+            this.email = ''
+            this.phone = '+7 ('
+            this.message = ''
+            this.isConfirmed = false
         }
     }
 }

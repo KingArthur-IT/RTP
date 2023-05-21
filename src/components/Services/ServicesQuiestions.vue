@@ -62,6 +62,10 @@
               </div>
           </form>
       </div>
+      <AcceptOrderModal  
+        v-model:open="isAcceptedModalShown"
+        @closeModal="clearAndCloseForm"
+      />
   </div>
 </template>
 
@@ -69,11 +73,14 @@
 import CustomInput from '../UIKit/CustomInput.vue'
 import LightRectButton from '../UIKit/LightRectButton.vue'
 import { validateEmail } from '@/use/helpers.js'
+import { sendFormData } from '@/use/middleware.js'
+import AcceptOrderModal from '../Modals/AcceptOrderModal.vue'
 
 export default {
     components: {
         CustomInput,
-        LightRectButton
+        LightRectButton,
+        AcceptOrderModal
     },
     data() {
         return {
@@ -84,11 +91,13 @@ export default {
             isNameValid: true,
             isPhoneValid: true,
             isEmailValid: true,
+            isAcceptedModalShown: false
         }
     },
     methods: {
         validateEmail,
-        formSubmit() {
+        sendFormData,
+        async formSubmit() {
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 18
@@ -96,8 +105,17 @@ export default {
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
                 return
 
-            //отправить данные
+            const rez = await this.sendFormData('callback', 'form-questions-from-services', window.location.href, this.name, '', this.phone, this.email, '', this.message)
+            if (rez) {
+                this.isAcceptedModalShown = true
+            }
         },
+        clearAndCloseForm() {
+            this.name = ''
+            this.email = ''
+            this.phone = '+7 ('
+            this.message = ''
+        }
     }
 }
 </script>

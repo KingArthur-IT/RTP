@@ -34,6 +34,7 @@
       v-model:open="isModalShow"
       :title="'Обратный звонок'"
       :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
+      :formInfo="'form-callback-from-alpha'"
   />
 </template>
 

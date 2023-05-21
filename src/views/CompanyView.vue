@@ -42,7 +42,7 @@
 
       <div class="company-action">
         <div class="company-action__item company-action__form">
-          <CompanyActionForm />
+          <CompanyActionForm @questionFormSended="questionFormSended" />
         </div>
         <div class="company-action__item company-action__card">
           <WhatsUpCard />
@@ -53,6 +53,9 @@
       </div>
 
     </div>
+    <AcceptOrderModal  
+        v-model:open="isAcceptedModalShown"
+    />
   </main>
 </template>
 
@@ -63,6 +66,7 @@ import CompanyHistory from '../components/Company/CompanyHistory.vue'
 import GrovingGeography from '../components/HomePage/GrovingGeography.vue'
 import WhatsUpCard from '../components/Company/WhatsUpCard.vue'
 import MailCard from '../components/Company/MailCard.vue'
+import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue'
 
 export default {
   components: {
@@ -71,11 +75,22 @@ export default {
     GrovingGeography,
     CompanyActionForm,
     WhatsUpCard,
-    MailCard
+    MailCard,
+    AcceptOrderModal
   },
   mounted(){
     window.scrollTo(0, 0);
   },
+  data() {
+    return {
+      isAcceptedModalShown: false
+    }
+  },
+  methods: {
+    questionFormSended() {
+      this.isAcceptedModalShown = true
+    }
+  }
 }
 </script>
 

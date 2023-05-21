@@ -20,9 +20,11 @@
       </div>
       <div class="preview__wrapper">
           <div class="preview__sale">
-                <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.45205 0.964844L0.800781 12.0503H5.23496V18.7016L11.8862 7.61611H7.45205V0.964844Z" fill="white"/>
-                </svg>
+                <div>
+                    <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.45205 0.964844L0.800781 12.0503H5.23496V18.7016L11.8862 7.61611H7.45205V0.964844Z" fill="white"/>
+                    </svg>
+                </div>
                 <span>Распродажа</span>
           </div>
           <img v-if="isPreviewImage" :src="getImageUrl('product-card', previewImgName, 'jpg')" alt="preview">
@@ -102,7 +104,7 @@ export default {
         right: 19px
         display: flex
         align-items: center
-        padding: 7px 8px
+        padding: 6px 8px 6px
         background: #DC1818
         border-radius: 6px
         color: #fff
@@ -134,7 +136,7 @@ export default {
                 justify-content: center
         &__sale
             right: 12px
-            padding: 4px 10px
+            padding: 1px 10px 0
             font-size: 10px
             & svg
                 width: 9px

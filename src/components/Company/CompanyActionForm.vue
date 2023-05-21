@@ -9,6 +9,7 @@
                 :placeholder="'Введите ФИО'"
                 :isValid="isNameValid"
                 :isLabelBlue="true"
+                :noValidText="'Это поле обязательно для заполнения'"
             />
         </div>
         <div class="input-wrapper">
@@ -20,6 +21,7 @@
                 :placeholder="''"
                 :isValid="isPhoneValid"
                 :isLabelBlue="true"
+                :noValidText="'Проверьте номер телефона'"
             />
         </div>
         <div class="input-wrapper">
@@ -31,6 +33,7 @@
                 :placeholder="'Введите e-mail'"
                 :isValid="isEmailValid"
                 :isLabelBlue="true"
+                :noValidText="'Не верный e-mail'"
             />
         </div>
         <div class="submit-wrapper">
@@ -62,12 +65,13 @@ import CustomInput from '../UIKit/CustomInput.vue'
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import CustomCheckbox from '../UIKit/CustomCheckbox.vue';
 import { validateEmail } from '@/use/helpers.js'
+import { sendFormData } from '@/use/middleware.js'
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
-        CustomCheckbox
+        CustomCheckbox,
     },
     data() {
         return {
@@ -84,16 +88,28 @@ export default {
     },
     methods: {
         validateEmail,
-        sendForm() {
+        sendFormData,
+        async sendForm() {
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
-            this.isPhoneValid = this.phone.length === 12
+            this.isPhoneValid = this.phone.length === 18
             this.isConfirmedValid = this.isConfirmed
 
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid || !this.isConfirmed)
                 return
 
-            //отправить данные
+            const rez = await this.sendFormData('callback', 'form-questions-from-company', window.location.href, this.name, '', this.phone, this.email, '', this.message)
+            if (rez) {
+                this.$emit('questionFormSended')
+                this.clearAndCloseForm()
+            }
+        },
+        clearAndCloseForm() {
+            this.name = ''
+            this.email = ''
+            this.phone = '+7 ('
+            this.message = ''
+            this.isConfirmed = false
         }
     }
 }
