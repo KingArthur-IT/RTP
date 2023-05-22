@@ -194,11 +194,11 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
 
 //получить товар по id
 export const getProductById = async (id) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': id })
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-            const allProducts = Object.values(res.data.get_catalog_prod.data)
-              return allProducts.find(p => p.arFields.ID === id)
+            console.log('id', Object.values(res.data.get_catalog_prod.data)[0]);
+              return Object.values(res.data.get_catalog_prod.data)[0]
           } else {
               console.log('Error while getProductById', res);
           }

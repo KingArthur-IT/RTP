@@ -103,9 +103,7 @@
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>
             </div>
-            <div class="description__text">
-                {{ productCardInfo?.arProps?.OPISANIE.VALUE }}
-            </div>
+            <div class="description__text" v-html="productCardInfo?.arProps?.OPISANIE.VALUE"></div>
         </div>
         <div class="characteristic-section">
             <div class="section-title characteristic-section__title">
