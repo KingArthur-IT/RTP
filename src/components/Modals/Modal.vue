@@ -158,7 +158,11 @@ export default {
         formInfo: {
             type: String,
             required: true
-        }
+        },
+        type: {
+            type: String,
+            default: 'callback'
+        },
     },
     data() {
         return {
@@ -197,7 +201,7 @@ export default {
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
                 return
 
-            const rez = await this.sendFormData('callback', this.formInfo, window.location.href, this.name, this.surname, this.phone, this.email, this.theme, this.message)
+            const rez = await this.sendFormData(this.type, this.formInfo, window.location.href, this.name, this.surname, this.phone, this.email, this.theme, this.message)
             if (rez) {
                 this.isAcceptedModalShown = true
             }

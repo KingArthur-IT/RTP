@@ -79,6 +79,7 @@
         :title="'Обратный звонок'"
         :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
         :formInfo="'form-calculate-cost-from-services'"
+        :type="'calculate'"
       />
 </template>
 

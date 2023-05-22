@@ -105,7 +105,7 @@ export default {
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
                 return
 
-            const rez = await this.sendFormData('callback', 'form-questions-from-services', window.location.href, this.name, '', this.phone, this.email, '', this.message)
+            const rez = await this.sendFormData('questions', 'form-questions-from-services', window.location.href, this.name, '', this.phone, this.email, '', this.message)
             if (rez) {
                 this.isAcceptedModalShown = true
             }

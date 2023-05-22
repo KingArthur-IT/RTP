@@ -53,6 +53,7 @@
     :title="'Обратный звонок'"
     :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
     :formInfo="'form-gather-cart-from-product'"
+    :type="'gather'"
   />
 </template>
 

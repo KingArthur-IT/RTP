@@ -103,6 +103,7 @@
         :title="'Консультация по монтажу'"
         :descriptionHtml="'Подбор оборудования, консультация и расчет сметы для Вас - БЕСПЛАТНО! <br> Пожалуйста, заполните обязательные поля, и мы с Вами свяжемся. '"
         :formInfo="'form-consultation-from-services'"
+        :type="'consultation'"
       />
   </main>
 </template>

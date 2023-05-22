@@ -98,7 +98,7 @@ export default {
             if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid || !this.isConfirmed)
                 return
 
-            const rez = await this.sendFormData('callback', 'form-questions-from-company', window.location.href, this.name, '', this.phone, this.email, '', this.message)
+            const rez = await this.sendFormData('questions', 'form-questions-from-company', window.location.href, this.name, '', this.phone, this.email, '', this.message)
             if (rez) {
                 this.$emit('questionFormSended')
                 this.clearAndCloseForm()

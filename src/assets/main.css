@@ -73,7 +73,7 @@ button {
 .section-title::before {
   content: '';
   left: 0;
-  bottom: -11px;
+  bottom: -12px;
   position: absolute;
   height: 1px;
   width: 100%;

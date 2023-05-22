@@ -14,6 +14,7 @@
       :title="'Соберите мне корзину'"
       :descriptionHtml="'Пожалуйста, заполните обязательные поля, <br> и мы с Вами свяжемся.'"
       :formInfo="'form-gather-cart-from-alpha'"
+      :type="'gather'"
   />
 </template>
 
