@@ -92,8 +92,8 @@ export default {
     })
 
     //трансформировать данные из массива продуктов
+    const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
     this.allProducts = this.allProducts.map(pr => {
-      const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
       const infoList = []
       const hiddenList = []
       propsArray.forEach((propName) => {

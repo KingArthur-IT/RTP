@@ -218,3 +218,16 @@ export const getBestPropositions = async () => {
       })
       .catch((err) => console.log('Error while getBestPropositions', err))
 };
+
+//поиск
+export const searchProducts = async (search_text) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+            return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while getBestPropositions', res);
+          }
+      })
+      .catch((err) => console.log('Error while getBestPropositions', err))
+};
