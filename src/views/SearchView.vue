@@ -26,6 +26,7 @@
                             :oldPrice="item.PRICE"
                             :isBenefitShown="true"
                             :isInCart="item.isInCart"
+                            :photoes="item.photoes"
                             @addedToCart="addedToCart"
                             @updateCountInCart="updateCountInCart"
                             @deleteFromCart="deleteFromCart"
@@ -42,6 +43,7 @@
                         :description="item.PREVIEW_TEXT"
                         :infoList="item.info"
                         :isInCart="item.isInCart"
+                        :photoes="item.photoes"
                         @addedToCart="addedToCart"
                         @updateCountInCart="updateCountInCart"
                         @deleteFromCart="deleteFromCart"
@@ -173,6 +175,7 @@ export default {
                     PRICE: el.arPrice.PRICE,
                     CREATED_DATE: el.arFields.DATE_CREATE_UNIX,
                     info: infoList,
+                    photoes: el.arPhoto
                 }
             })
 

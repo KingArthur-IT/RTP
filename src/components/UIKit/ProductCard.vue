@@ -2,7 +2,13 @@
   <div class="card" :class="{'has-shadow': hasShadow}">
       <div class="card__hero">
           <div>
-              <div class="card__carousel">
+              <div v-if="!photoes.length" class="card__slide">
+                  <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+              </div>
+              <div v-else-if="photoes.length === 1" class="card__slide">
+                  <img :src="photoes[0]" alt="img" class="card__img">
+              </div>
+              <div v-else class="card__carousel">
                   <Carousel 
                     :items-to-show="1" 
                     :ref="`prodCard${id}`" 
@@ -11,20 +17,20 @@
                     :mouseDrag="true"
                     @slide-start="onSlideChange"
                   >
-                    <slide v-for="(slide, index) in slideCount" :key="index" class="card__slide">
-                        <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+                    <slide v-for="(photo, index) in photoes" :key="index" class="card__slide">
+                        <img :src="photo" alt="img" class="card__img">
                     </slide>
                   </Carousel>
               </div>
               <div v-if="isBenefitShown" class="card__discount-label">-{{ discountPercent }}%</div>
-              <div class="dots">
+              <div v-if="photoes.length > 1" class="dots">
                   <div class="dot" 
-                    v-for="(slide, index) in slideCount" :key="index"
+                    v-for="(photo, index) in photoes" :key="index"
                     :class="{'active': index + 1 === slideIndex}" 
                     @click="slideTo(index)"
                 ></div>
               </div>
-              <div class="card__content" @click="goToCard">
+              <div class="card__content" :class="{'no-dots': photoes.length < 2}" @click="goToCard">
                   <p class="card__description" :class="{'no-benefit': !isBenefitShown}" v-html="description"></p>
               </div>
           </div>
@@ -98,6 +104,10 @@ export default {
             type: String,
             default: ''
         },
+        photoes: {
+            type: Array,
+            default: []
+        },
         newPrice: {
             type: String,
             default: '0'
@@ -126,7 +136,6 @@ export default {
     data() {
         return {
             slideIndex: 1,
-            slideCount: 6,
             productCount: 1,
         }
     },
@@ -141,10 +150,10 @@ export default {
         },
         onSlideChange(data) {
             this.slideIndex = data.slidingToIndex + 1
-            if (this.slideIndex > this.slideCount)
+            if (this.slideIndex > this.photoes.length)
                 this.slideIndex =  1
             if (this.slideIndex < 1)
-                this.slideIndex = this.slideCount
+                this.slideIndex = this.photoes.length
         },
         decrementProductCount() {
             if (this.productCount > 1) {
@@ -186,6 +195,9 @@ export default {
                 this.$emit('addedToCart', { id: this.id, count: this.productCount })
             }
         },
+        getPhoto(url) {
+            return new URL(url, import.meta.url).href
+        }
     },
     computed: {
         discountPercent() {
@@ -224,6 +236,7 @@ export default {
         width: 100%
     &__img
         width: 100%
+        aspect-ratio: 1.7
     &__discount-label
         position: absolute
         top: 0
@@ -242,6 +255,8 @@ export default {
         transform: translateZ(10px)
     &__content
         cursor: pointer
+        &.no-dots
+            padding-top: 27px
     &__description
         font-weight: 700
         font-size: 16px
@@ -360,6 +375,9 @@ export default {
             padding: 6px 0 5px
             & .rub-symb
                 height: 12px
+        &__content
+            &.no-dots
+                padding-top: 22px
         &__controls
             margin-top: 13px
             &.no-benefit

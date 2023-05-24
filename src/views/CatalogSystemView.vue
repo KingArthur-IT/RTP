@@ -113,7 +113,8 @@ export default {
         CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
         PRICE: pr.arPrice.PRICE,
         info: infoList,
-        hidden: hiddenList
+        hidden: hiddenList,
+        photoes: pr.arPhoto
       }
     })
 

@@ -1,13 +1,13 @@
 <template>
   <div class="preview">
-      <div class="preview__sidebar">
+      <div v-if="photoes.length" class="preview__sidebar">
           <div 
-            v-for="(img, index) in imagesList" :key="index" 
+            v-for="(img, index) in photoes" :key="index" 
             class="preview__small" 
             :class="{'active': currentActiveImage === index}" 
             @click="smallPreviewClick(index)"
           >
-              <img :src="getImageUrl('product-card', img, 'jpg')" alt="img">
+              <img :src="img" alt="img">
           </div>
           <div class="preview__small" @click="isPreviewImage = false">
               <img src="@/assets/product-card/preview-icon.png" alt="preview">
@@ -27,7 +27,8 @@
                 </div>
                 <span>Распродажа</span>
           </div>
-          <img v-if="isPreviewImage" :src="getImageUrl('product-card', previewImgName, 'jpg')" alt="preview">
+          <img v-if="!photoes.length && isPreviewImage" src="@/assets/card-no-img.jpg" alt="preview">
+          <img v-else-if="isPreviewImage" :src="photoes[currentActiveImage]" alt="preview">
           <video v-else src="@/assets/product-card/video.mp4" controls></video>
       </div>
   </div>
@@ -37,24 +38,27 @@
 import { getImageUrl } from '@/use/helpers.js'
 
 export default {
+    props: {
+        photoes: {
+            type: Array,
+            default: []
+        }
+    },
     data() {
         return {
             isPreviewImage: true,
             currentActiveImage: 0,
             activeSrc: '',
-            imagesList: ['1', '2', '3'],
-            previewImgName: '1'
         }
     },
     mounted() {
-
+        
     },
     methods: {
         getImageUrl,
         smallPreviewClick(index) {
             this.isPreviewImage = true
             this.currentActiveImage = index
-            this.previewImgName = this.imagesList[index]
         }
     }
 }
@@ -87,7 +91,7 @@ export default {
     &__wrapper
         position: relative
         border: 1px solid #A6ACB3
-        border-radius: 2px
+        border-radius: 5px
         position: relative
         overflow: hidden
         width: 100%
@@ -141,4 +145,6 @@ export default {
             & svg
                 width: 9px
                 margin-right: 4px
+            & span
+                transform: translateY(-1px)
 </style>

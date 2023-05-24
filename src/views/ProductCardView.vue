@@ -53,7 +53,7 @@
         <div class="product-hero">
             <div class="product-hero__about">
                 <div class="product-hero__preview">
-                    <ProductCardPreview />
+                    <ProductCardPreview :photoes="productCardInfo?.arPhoto" />
                 </div>
                 <div class="product-hero__detail">
                     <ProductCardDetail 

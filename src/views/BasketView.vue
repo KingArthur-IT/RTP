@@ -186,9 +186,10 @@ export default {
       this.cartList = await this.getBacketProducts(this.cartId)
       this.cartList.forEach(el => {
         const productData = allProducts.filter(p => p.arFields.ID == el.prod_id)
-        el['title'] = productData[0].arFields.NAME
-        el['description'] = productData[0].arFields.PREVIEW_TEXT
+        el['title'] = productData[0]?.arFields.NAME || ''
+        el['description'] = productData[0]?.arFields.PREVIEW_TEXT || ''
         el['count'] = Number(el.count)
+        el['photo'] = productData[0]?.arPhoto[0] || ''
       })
     }
   },

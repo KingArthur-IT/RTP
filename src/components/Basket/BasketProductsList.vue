@@ -6,6 +6,7 @@
                 :title="prod.title"
                 :description="prod.description"
                 :price="prod.price"
+                :photoUrl="prod.photo"
                 v-model:count="prod.count"
                 @delete="deleteCard(prod.prod_id)"
                 @updateCount="updateProductCount"

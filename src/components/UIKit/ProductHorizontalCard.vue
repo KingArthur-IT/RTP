@@ -1,6 +1,12 @@
 <template>
   <div class="card" :class="{'has-shadow': hasShadow}">
-        <div class="card__carousel">
+        <div v-if="!photoes.length" class="card__carousel card__slide no-dots">
+            <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+        </div>
+        <div v-else-if="photoes.length === 1" class="card__carousel card__slide no-dots">
+            <img :src="photoes[0]" alt="img" class="card__img">
+        </div>
+        <div v-else class="card__carousel">
             <Carousel 
                 :items-to-show="1" 
                 :ref="`horizProdCard${id}`" 
@@ -9,13 +15,13 @@
                 :mouseDrag="true"
                 @slide-start="onSlideChange"
             >
-                <slide v-for="(slide, index) in slideCount" :key="index" class="card__slide">
-                    <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
+                <slide v-for="(photo, index) in photoes" :key="index" class="card__slide">
+                    <img :src="photo" alt="img" class="card__img">
                 </slide>
             </Carousel>
             <div class="dots">
                 <div class="dot" 
-                    v-for="(slide, index) in slideCount" :key="index"
+                    v-for="(photo, index) in photoes" :key="index"
                     :class="{'active': index + 1 === slideIndex}" 
                     @click="slideTo(index)"
                 ></div>
@@ -87,6 +93,10 @@ export default {
             type: String,
             default: ''
         },
+        photoes: {
+            type: Array,
+            default: []
+        },
         price: {
             type: String,
             default: '0'
@@ -111,7 +121,6 @@ export default {
     data() {
         return {
             slideIndex: 1,
-            slideCount: 6,
             productCount: 1,
         }
     },
@@ -126,10 +135,10 @@ export default {
         },
         onSlideChange(data) {
             this.slideIndex = data.slidingToIndex + 1
-            if (this.slideIndex > this.slideCount)
+            if (this.slideIndex > this.photoes.length)
                 this.slideIndex =  1
             if (this.slideIndex < 1)
-                this.slideIndex = this.slideCount
+                this.slideIndex = this.photoes.length
         },
         decrementProductCount() {
             if (this.productCount > 1) {
@@ -198,6 +207,8 @@ export default {
         position: relative
         max-width: 274px
         margin-right: 30px
+        &.no-dots
+            padding-bottom: 33px
     &__slide
         width: 100%
         max-height: 216px

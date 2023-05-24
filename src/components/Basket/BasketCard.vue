@@ -1,6 +1,9 @@
 <template>
   <div class="basket-card">
-      <div class="basket-card__img">
+      <div v-if="photoUrl" class="basket-card__img">
+          <img :src="photoUrl" alt="img">
+      </div>
+      <div v-else class="basket-card__img">
           <img src="@/assets/basket-no-img.jpg" alt="img">
       </div>
       <div class="basket-card__hero">
@@ -43,6 +46,10 @@ export default {
     props: {
         id: {
             type: Number,
+            required: true
+        },
+        photoUrl: {
+            type: String,
             required: true
         },
         title: {
@@ -105,8 +112,8 @@ export default {
     display: flex
     max-height: 181px
     &__img
-        height: 100%
         margin-right: 26px
+        max-width: 188px
         & img
             width: 100%
             height: 100%
