@@ -4,7 +4,7 @@
       <BanerCarousel class="baner" />
       <SystemsList />
       <ActionForm class="action-form" />
-      <BestSales />
+      <!-- <BestSales /> -->
     </div>
     <div class="video-section-container">
       <VideoSection />

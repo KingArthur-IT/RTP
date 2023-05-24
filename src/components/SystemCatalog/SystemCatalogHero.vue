@@ -13,7 +13,7 @@
             </div>
       </div>
       <!-- often buy -->
-      <div class="often-buy">
+      <!-- <div class="often-buy">
           <div class="often-buy__title">Часто оказывается в корзине</div>
           <div class="often-buy__hero">
               <div 
@@ -22,7 +22,7 @@
                 @click="goToCard"
               >{{ item }}</div>
           </div>
-      </div>
+      </div> -->
       <!-- loader -->
       <div v-if="!isLoaded">
           <Loader />

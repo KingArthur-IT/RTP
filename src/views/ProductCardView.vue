@@ -82,7 +82,7 @@
                 />
             </div>
         </div>
-        <div class="often-buy">
+        <!-- <div class="often-buy">
             <div class="section-title often-buy__title">
                 <div class="section-title-text">С этим часто покупают</div>
             </div>
@@ -98,7 +98,7 @@
                     />
                 </div>
             </div>
-        </div>
+        </div> -->
         <div id="description" class="description">
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>

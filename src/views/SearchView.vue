@@ -48,9 +48,9 @@
                     />
                 </div>
             </div>
-            <div class="suggestions-wrapper">
+            <!-- <div class="suggestions-wrapper">
                 <SuggestSection :list="suggestionsList" />
-            </div>
+            </div> -->
             <div class="search-system-list">
                 <SearchSystemsList />
             </div>
