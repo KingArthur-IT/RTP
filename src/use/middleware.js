@@ -129,10 +129,11 @@ export const deleteCartItem = async (id, cart_id) => {
 
 //оформить заказ из корзины
 export const createOrder = async (name, phone, email, date, adress, comment, cart_id) => {
+  const phoneOnlyDigits = phone.replaceAll(' ', '').replaceAll('-', '').replaceAll('(','').replaceAll(')','').replaceAll('+','')
   return await sendRequest('', 'POST', { 
     'method': 'order_create',
     'user_name': name,
-    'user_phone': phone,
+    'user_phone': phoneOnlyDigits,
     'user_email': email,
     'user_data_poluch': date,
     'user_address': adress,
@@ -166,6 +167,7 @@ export const printCart = async (cart_id) => {
 
 //отправка данных формы
 export const sendFormData = async (type, formInfo, url, name, surname, phone, email, theme, message, additional_message = '') => {
+  const phoneOnlyDigits = phone.replaceAll(' ', '').replaceAll('-', '').replaceAll('(','').replaceAll(')','').replaceAll('+','')
   return await sendRequest('', 'POST', 
     { 
       'method': 'form_send',
@@ -174,7 +176,7 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
       'data_url': url,
       'data_name': name,
       'data_fam': surname,
-      'data_phone': phone,
+      'data_phone': phoneOnlyDigits,
       'data_email': email,
       'data_theme': theme,
       'data_mess': message,
