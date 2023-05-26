@@ -1,6 +1,9 @@
 <template>
   <main>
     <div class="container">
+      <div class="breadcrumbs">
+        <BreadCrumbs />
+      </div>
       <div class="catalog">
         <div v-for="card in catalogList" :key="card.ID" class="catalog__card">
           <GeneralCatalogCard
@@ -18,10 +21,12 @@
 import GeneralCatalogCard from '../components/Catalog/GeneralCatalogCard.vue'
 import { getPageName } from '@/use/helpers.js'
 import { getCatalog, getAllCategoriesCount } from '@/use/middleware.js'
+import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 
 export default {
   components: {
-    GeneralCatalogCard
+    GeneralCatalogCard,
+    BreadCrumbs
   },
   data() {
     return {

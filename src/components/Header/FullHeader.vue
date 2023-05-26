@@ -1,17 +1,17 @@
 <template>
     <div class="header__hero" @click="isServicesHeaderListShown = false">
-        <div class="header__logo" @click="goToPage('home')">
+        <div class="header__logo" :class="{'cursor-default': isHomePage}" @click="logoClick">
             <img src="@/assets/logo.png" alt="RTP">
             <div class="header__logo-txt">
                 Производитель<br>
                 инженерной сантехники<br>
-                с 17 летним опытом
+                с 2005 года
             </div>
         </div>
         <div class="header__content">
             <nav class="header__nav">
                 <div class="header__nav-item" :class="{'active': isServicesHeaderListShown}" @click.stop="servicesListShownToogle">
-                    <span>Сервис</span>
+                    <span>Системы</span>
                     <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6.5 6.55671e-07L12.9952 7.5L0.00480872 7.5L6.5 6.55671e-07Z" fill="#8CA7DD"/>
                     </svg>
@@ -25,9 +25,7 @@
             </nav>
             <div class="header__call-info">
                 <a href="tel:+84955405262" class="header__phone">8 (495) 540-52-62</a>
-                <div class="header__phone-description">
-                    Звонок бесплатный <br> Пн-Пт 9:00-18:00 
-                </div>
+                <div class="header__phone-description">Пн-Пт 9:00-18:00</div>
             </div>
         </div>
         <div class="header__contacts">
@@ -67,8 +65,17 @@ export default {
         },
         goToPage(name) {
             this.$router.push({ name })
+        },
+        logoClick() {
+            if (!this.isHomePage)   
+                this.goToPage('home')
         }
     },
+    computed: {
+        isHomePage() {
+            return this.$route.name === 'home'
+        }
+    }
 }
 </script>
 
@@ -85,6 +92,8 @@ export default {
         & img
             width: 120px
             margin-right: 15px
+        &.cursor-default
+            cursor: default
     &__logo-txt
         color: #fff
         font-size: 12px
@@ -160,10 +169,9 @@ export default {
         color: #FFFFFF
         margin-right: 15px
     &__phone-description
-        font-size: 12px
-        text-align: right
+        font-size: 24px
         color: #FFFFFF
-        padding-left: 13px
+        padding-left: 15px
         border-left: 1px solid #e0e0e0
 
 @media screen and (max-width: 1600px)
@@ -196,7 +204,7 @@ export default {
         &__phone
             font-size: 14px
         &__phone-description
-            font-size: 8px
-            padding-left: 9px
+            font-size: 14px
+            padding-left: 15px
 
 </style>

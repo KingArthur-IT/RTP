@@ -28,6 +28,7 @@ const router = createRouter({
       path: '/catalog',
       name: 'catalog',
       component: () => import('../views/CatalogView.vue'),
+      meta: { name: 'Каталог' }
     },
     {
       path: '/alpha-system',

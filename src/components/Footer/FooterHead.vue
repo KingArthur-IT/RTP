@@ -1,8 +1,8 @@
 <template>
   <div class="head">
       <div class="footer__contacts-col">
-        <div class="footer__logo">
-        <img src="@/assets/footer-logo.png" alt="RTP">
+        <div class="footer__logo" :class="{'cursor-default': isHomePage}" @click="logoClick">
+            <img src="@/assets/footer-logo.png" alt="RTP">
         </div>
         <div class="footer__title">Оставайтесь на связи</div>
         <div class="footer__contacts">
@@ -45,6 +45,15 @@ export default {
     methods: {
         goToPage(name) {
             this.$router.push({ name })
+        },
+        logoClick() {
+            if (!this.isHomePage)   
+                this.goToPage('home')
+        }
+    },
+    computed: {
+        isHomePage() {
+            return this.$route.name === 'home'
         }
     }
 }
@@ -60,8 +69,11 @@ export default {
     &__logo
         width: 190px
         margin-bottom: 63px
+        cursor: pointer
         & img
             width: 100%
+        &.cursor-default
+            cursor: default
     &__title
         font-weight: 700
         font-size: 18px
