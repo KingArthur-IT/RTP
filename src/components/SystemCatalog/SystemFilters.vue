@@ -87,14 +87,17 @@ export default {
     },
     methods: {
         clearFilters() {
-            this.categoriesList.forEach(c => c.isSelected = false)
-            this.fiting.forEach(c => c.isChecked = true)
-            this.fitingTypes.forEach(c => c.isChecked = true)
-            this.connectionTypes.forEach(c => c.isChecked = true)
-            this.threadTypes.forEach(c => c.isChecked = true)
-            this.threadSize.forEach(c => c.isChecked = true)
-            this.diametr.forEach(c => c.isChecked = true)
-            this.color.forEach(c => c.isChecked = true)
+            this.categoriesList.forEach(c => c.isSelected = false )
+            this.typesArray.forEach(t => {
+                t.list.forEach(el => el.isChecked = true)
+            })
+            // this.fiting.forEach(c => c.isChecked = true)
+            // this.fitingTypes.forEach(c => c.isChecked = true)
+            // this.connectionTypes.forEach(c => c.isChecked = true)
+            // this.threadTypes.forEach(c => c.isChecked = true)
+            // this.threadSize.forEach(c => c.isChecked = true)
+            // this.diametr.forEach(c => c.isChecked = true)
+            // this.color.forEach(c => c.isChecked = true)
 
             this.applyCategories()
         },
