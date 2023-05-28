@@ -42,6 +42,8 @@
           </div>
         </div>
       </div>
+      <div class="section-title-simple contacts__title">Реквизиты</div>
+      <Requisites />
     </div>
   </main>
 </template>
@@ -51,13 +53,15 @@ import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import ContactCard from '../components/Contacts/ContactCard.vue'
 import WhatsUpCard from '../components/Contacts/WhatsUpCard.vue'
 import MailCard from '../components/Contacts/MailCard.vue'
+import Requisites from '../components/Contacts/Requisites.vue'
 
 export default {
   components: {
     BreadCrumbs,
     ContactCard,
     WhatsUpCard,
-    MailCard
+    MailCard,
+    Requisites
   },
   mounted(){
     window.scrollTo(0, 0);
