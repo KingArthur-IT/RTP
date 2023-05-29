@@ -78,7 +78,7 @@ async function start() {
   // Routes
   app.use('/', router)
 
-  app.listen(3000, () => {
+  app.listen(30000, () => {
     console.log('Сервер запущен')
   })
 }
