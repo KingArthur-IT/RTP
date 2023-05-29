@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://pm-rtp-test-4.swforge.ru/api/'
+const baseUrl = 'https://bitrix.vps-2.swforge.ru/api/'
 
 async function sendRequest(url, method = 'GET', data = null){
     return await axios({

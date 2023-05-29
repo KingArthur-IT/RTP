@@ -25,8 +25,8 @@ export default {
     if (cartId) {
       const cartProducts = await this.getBacketProducts(cartId)
       console.log('moiunted', cartProducts);
-      this.$cartCount.value = cartProducts.length
-      localStorage.setItem('cartCount', cartProducts.length)
+      this.$cartCount.value = cartProducts?.length || 0
+      localStorage.setItem('cartCount', cartProducts?.length || 0)
     }
   },
   watch: {
