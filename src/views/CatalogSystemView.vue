@@ -25,7 +25,7 @@
 import BreadCrumbsSecondLevel from '../components/BreadCrumbs/BreadCrumbsSecondLevel.vue';
 import SystemCatalogHero from '../components/SystemCatalog/SystemCatalogHero.vue';
 import SystemFilters from '../components/SystemCatalog/SystemFilters.vue';
-import { getCatalog, getProductsOfSelectedSystem } from '@/use/middleware.js'
+import { getAllCategoriesCount, getCatalog, getProductsOfSelectedSystem } from '@/use/middleware.js'
 import { isSelectedSystem } from '@/use/helpers.js'
 
 export default {
@@ -41,30 +41,29 @@ export default {
       allProducts: [],
       filteredProducts: [],
       maxPrice: 100,
-      isLoaded: false
+      isLoaded: false,
+      categoriesList: {}
     }
   },
   async mounted() {
     window.scrollTo(0, 0);
-    const catalog = await this.getCatalog() //Получить системы и категории 
-    //выбрать из них выбранную систему с категориями
-    const categoriesList = catalog.filter(c => this.isSelectedSystem(this.$route.params.name, c.NAME))
-    
-    //все продукты из категорий этой системы
-    this.allProducts = await this.getProductsOfSelectedSystem(categoriesList[0].list.map(c => { return c.ID }))
 
-    //получить сколько в каждой категории есть товаров
-    const productsCatIdsArr = Object.values(this.allProducts)
-      .map(el => { return el.arFields.IBLOCK_SECTION_ID })
-      .reduce((acc, el) => {
-          acc[el] = ( acc[el] || 0 ) + 1
-          return acc
-      }, {})
+    const activeCatId = this.$route.query.ID
+
+    const catalog = await this.getCatalog() //Получить системы и категории 
+    const catalogCount = await this.getAllCategoriesCount()
+
+    //выбрать из них выбранную систему с категориями
+    this.categoriesList = catalog.find(c => this.isSelectedSystem(this.$route.params.name, c.NAME))
+
+    //все продукты из категорий этой системы
+    if (activeCatId)
+      this.allProducts = await this.getProductsOfSelectedSystem([activeCatId])
+    else this.allProducts = await this.getProductsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
 
     //если в категории есть товары, то добавить ее и сделать активной выбранную если кликали по ней в каталоге
-    const activeCatId = this.$route.query.ID
-    categoriesList[0].list.forEach(element => {
-      if (productsCatIdsArr[element.ID])
+    this.categoriesList.list.forEach(element => {
+      if (catalogCount[element.ID])
         this.categories.push({ isSelected: activeCatId === element.ID, ...element })
     });
 
@@ -131,24 +130,73 @@ export default {
     }
   },
   methods: {
+    getAllCategoriesCount, 
     getCatalog, 
     getProductsOfSelectedSystem,
     isSelectedSystem,
-    applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
-      console.log(selectedTypes);
+    async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+      //получить продукты по выбранным категориям
+      if (selectedCategories.length)
+        this.allProducts = await this.getProductsOfSelectedSystem(selectedCategories.map(el => el.ID))
+      else this.allProducts = await this.getProductsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
+
+      //сформировать массив типов для секции фильтров с галочками
+      const typesPropsList = ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY']
+      this.allProducts.forEach(product => {
+        typesPropsList.forEach(prop => {
+          if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
+            const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
+            if (propInTypes) { //если уже есть такой тип
+              const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
+              if (findVal) 
+                findVal.count += 1
+              else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: true})
+            } else
+              this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
+          }
+        })
+      })
+
+      //трансформировать данные из массива продуктов
+      const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
+      this.allProducts = this.allProducts.map(pr => {
+        const infoList = []
+        const hiddenList = []
+        propsArray.forEach((propName) => {
+          if (pr.arProps[propName].VALUE)
+            infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
+        })
+        typesPropsList.forEach((propName) => {
+          hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
+        })
+
+        return {
+          ID: pr.arFields.ID,
+          IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
+          NAME: pr.arFields.NAME,
+          PREVIEW_PICTURE: pr.arFields.PREVIEW_PICTURE,
+          PREVIEW_TEXT: pr.arFields.PREVIEW_TEXT,
+          CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
+          PRICE: pr.arPrice.PRICE,
+          info: infoList,
+          hidden: hiddenList,
+          photoes: pr.arPhoto
+        }
+      })
+
+      console.log(this.allProducts);
+
+      //ост фильры
       this.filteredProducts = this.allProducts 
         .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
-        .filter(p => {
-          return selectedCategories.some(c => c.ID === p.IBLOCK_SECTION_ID) || !selectedCategories.length
-        })
-        .filter(p => {
-          let isSelected = false
-          selectedTypes.forEach(prop => { //фикс цвет
-            const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
-            isSelected = isSelected || prop.list.some(el => el.value === productPropValue && el.isChecked || !el.isChecked)
-          })
-          return isSelected
-        })
+        // .filter(p => {
+        //   let isSelected = false
+        //   selectedTypes.forEach(prop => { //фикс цвет
+        //     const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
+        //     isSelected = isSelected || prop.list.some(el => el.value === productPropValue && el.isChecked || !el.isChecked)
+        //   })
+        //   return isSelected
+        // })
     }
   },
 }

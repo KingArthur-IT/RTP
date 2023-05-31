@@ -25,16 +25,10 @@ export const getCatalog = async () => {
 
 //Посчитать сколько товаров есть по категориям { IBLOCK_SECTION_ID: count, ... }
 export const getAllCategoriesCount = async () => {
-    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+    return await sendRequest('', 'POST', { 'method': 'get_catalog_num_prod_in_section' })
         .then((res) => {
-            if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-                const sectionsIdsCount = Object.values(res.data.get_catalog_prod.data)
-                    .map(el => { return el.arFields.IBLOCK_SECTION_ID }) //вытащить только IBLOCK_SECTION_ID из товаров
-                    .reduce((acc, el) => {
-                        acc[el] = ( acc[el] || 0 ) + 1
-                        return acc
-                    }, {})
-                return sectionsIdsCount
+            if (res.status === 200 && res.data && res.data.get_catalog_num_prod_in_section && res.data.get_catalog_num_prod_in_section.data && res.data.get_catalog_num_prod_in_section.data.prod_sect) {
+                return res.data.get_catalog_num_prod_in_section.data.prod_sect
             } else {
                 console.log('Error while getAllCategoriesCount', res);
             }
@@ -44,15 +38,10 @@ export const getAllCategoriesCount = async () => {
 
 //получить продукты только заданных катогория по массиву id этих категорий
 export const getProductsOfSelectedSystem = async (idsArr) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'section_id': idsArr.join(';') })
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-              const products = []
-              Object.values(res.data.get_catalog_prod.data).forEach(el => {
-                  if (idsArr.some(id => id === el.arFields.IBLOCK_SECTION_ID))
-                      products.push(el)
-              })
-              return products
+              return Object.values(res.data.get_catalog_prod.data)
           } else {
               console.log('Error while getProductsOfSelectedSystem', res);
           }
