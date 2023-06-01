@@ -119,6 +119,8 @@
           </div>
       </div>
       <AcceptOrderModalVue  
+        :title="'Ваш сообщение принято в работу!'"
+        :isOrder="false"
         v-model:open="isAcceptedModalShown"
         @closeModal="clearAndCloseForm"
       />

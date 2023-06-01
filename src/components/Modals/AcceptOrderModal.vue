@@ -5,14 +5,15 @@
     @click="closeModal"
   >
       <div class="modal" @click.stop>
-          <div class="modal__title">{{ title }}</div>
+          <div class="modal__title" :class="{'mail': !isOrder}">{{ title }}</div>
           <div class="modal__subtitle">{{ subtitle }}</div>
           <div class="modal__close" @click="closeModal">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 20.7344L10.5 13.2344L3 20.7344L0.499999 18.2344L8 10.7344L0.499999 3.23438L3 0.734376L10.5 8.23438L18 0.734376L20.5 3.23438L13 10.7344L20.5 18.2344L18 20.7344Z" fill="white"/>
               </svg>
           </div>
-          <img src="@/assets/modal-box.png" alt="" class="modal__box">
+          <img v-if="isOrder" src="@/assets/modal-box.png" class="modal__box">
+          <img v-else src="@/assets/modal-mail.png" class="modal__box" :class="{'mail': !isOrder}">
       </div>
   </div>
 </template>
@@ -31,6 +32,10 @@ export default {
         subtitle: {
             type: String,
             default: 'Менеджер свяжется с Вами в течение 30 минут'
+        },
+        isOrder: {
+            type: Boolean,
+            default: true
         },
     },
     data() {
@@ -100,6 +105,8 @@ export default {
         font-weight: 700
         font-size: 40px
         line-height: 121% 
+        &.mail
+            font-size: 38px
     &__subtitle
         font-weight: 500
         font-size: 25px
@@ -115,21 +122,23 @@ export default {
         height: 303px
         top: -31px
         right: 72px
+        pointer-events: none
+        &.mail
+            right: 30px
 
-@media screen and (max-width: 1600px)
-    .modal
-        width: 860px
-        padding: 54px 45px 64px
-        &__title
-            font-size: 32px
-        &__subtitle
-            font-size: 18px
-        &__close
-            top: 18px
-            right: 21px
-        &__box
-            width: 245px
-            height: 240px
-            top: -20px
-            right: 72px
+// @media screen and (max-width: 1600px)
+//     .modal
+//         width: 860px
+//         padding: 54px 45px 64px
+//         &__title
+//             font-size: 32px
+//         &__subtitle
+//             font-size: 18px
+//         &__close
+//             top: 18px
+//             right: 21px
+//         &__box
+//             width: 245px
+//             height: 240px
+//             top: -20px
 </style>

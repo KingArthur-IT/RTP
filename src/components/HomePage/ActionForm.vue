@@ -66,6 +66,8 @@
           </form>
       </div>
       <AcceptOrderModal  
+        :title="'Ваш сообщение принято в работу!'"
+        :isOrder="false"
         v-model:open="isAcceptedModalShown"
         @closeModal="clearAndCloseForm"
       />
