@@ -13,8 +13,8 @@
           </div>
       </div>
       <img src="@/assets/video/RTP.png" alt="RTP" class="video-section__logo">
+      <VideoModal v-model:open="isModalOpened" />
   </div>
-  <VideoModal v-model:open="isModalOpened" />
 </template>
 
 <script>
