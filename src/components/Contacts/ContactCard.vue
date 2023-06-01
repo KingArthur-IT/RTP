@@ -74,6 +74,8 @@ export default {
         color: #42474D
         & span
             font-weight: 400
+        & a
+            color: #42474D
     &__img
         position: absolute
         top: 0

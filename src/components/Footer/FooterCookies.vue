@@ -65,7 +65,7 @@ export default {
 
 @media screen and (max-width: 1600px)
     .cookies
-        padding: 10px 0 13px
+        padding: 12px 0 14px
         &__text
             font-size: 10px
         &__details

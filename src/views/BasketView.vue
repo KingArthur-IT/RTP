@@ -165,7 +165,7 @@ export default {
       phone: '',
       email: '',
       message: '',
-      date: new Date(),
+      date: new Date(new Date().getTime()+(2*24*60*60*1000)),
       adress: '',
       isAdressEditing: false,
       isNameValid: true,

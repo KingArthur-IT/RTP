@@ -49,13 +49,16 @@ export default {
   position: relative
   width: 17px
   height: 17px
+  border: 1px solid #fff
+  border-radius: 3px
   & svg
     position: absolute
     top: 0
     bottom: 0
-    left: 3px
+    left: 2px
     right: 0
 .custom-checkbox 
+  opacity: 0
   position: relative
   appearance: none
   background-color: transparent

@@ -112,7 +112,7 @@ export default {
     .info
         padding: 74px 0 62px
         &__text
-            padding: 27px 37px 12px 85px
+            padding: 27px 37px 27px 85px
             font-size: 13px
     .cards__wrapper
         margin-bottom: 76px

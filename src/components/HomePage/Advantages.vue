@@ -107,8 +107,6 @@ export default {
                 fill: var(--primary-color)
     &__icon
         margin-bottom: 25px
-        & svg path
-            transition: all .3s ease
     &__title
         font-weight: 700
         font-size: 24px

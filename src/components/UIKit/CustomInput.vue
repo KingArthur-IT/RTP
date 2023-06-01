@@ -135,8 +135,7 @@ export default {
                     result += value[i];
                 }
 
-                // this.inputValue = result;
-                this.inputValue = value;
+                this.inputValue = result;
             }
         }
     }

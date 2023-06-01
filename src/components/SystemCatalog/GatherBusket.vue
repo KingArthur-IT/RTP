@@ -3,7 +3,7 @@
       <img src="@/assets/cart_icon.png" alt="busket" class="gather-basket__img">
       <div class="gather-basket__content">
           <div class="gather-basket__title">Соберите мне корзину</div>
-          <div class="gather-basket__text">Доверти покупки профессионалам, загрузите или заполните список и наш менеджер соберет вам корзину </div>
+          <div class="gather-basket__text">Доверьте покупки профессионалам, загрузите или заполните список и наш менеджер соберет вам корзину </div>
       </div>
       <div class="gather-basket__btn">
           <DarkRectButtonVue @click="$emit('showModal')" :text="'Заказать обратный звонок'" />

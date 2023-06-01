@@ -38,7 +38,7 @@
                       <CustomInput 
                         v-model:value="message"
                         :label="'Сообщение'"
-                        :placeholder="'Иван'"
+                        :placeholder="'Введите текст'"
                         :isLight="true"
                         :isTextArea="true"
                         :additionalClass="'question-form'"
@@ -49,7 +49,7 @@
                         v-model:value="email"
                         :label="'E-mail'"
                         :isRequired="true"
-                        :placeholder="'vanivan@mail.ru'"
+                        :placeholder="'Введите e-mail'"
                         :isLight="true"
                         :type="'email'"
                         :isValid="isEmailValid"

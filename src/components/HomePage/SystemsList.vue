@@ -62,6 +62,7 @@ export default {
         pointer-events: none
         opacity: 0
         transition: opacity .3s ease
+        border-radius: 23px
     &:hover
         & .card__description
             color: #fff

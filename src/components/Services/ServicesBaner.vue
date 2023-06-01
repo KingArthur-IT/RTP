@@ -11,7 +11,11 @@
                             <path d="M0.99106 15.4999C0.99106 15.4999 111.996 4.00117 164.999 4.00006C218.001 3.99894 333.991 9.49991 333.991 9.49991" stroke="#FECC00" stroke-width="7"/>
                             </svg>
                         </span>
-                        от производителя от 1590 ₽ за м²</h1>
+                        от производителя от 1590 
+                        <svg class="rub-symb" width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.16 18V0.863999H7.632C9.84 0.863999 11.448 1.312 12.456 2.208C13.48 3.104 13.992 4.336 13.992 5.904C13.992 6.832 13.784 7.704 13.368 8.52C12.952 9.336 12.256 9.992 11.28 10.488C10.32 10.984 9.008 11.232 7.344 11.232H5.784V18H2.16ZM0.24 15.432V13.104H9.48V15.432H0.24ZM0.24 11.232V8.256H7.272V11.232H0.24ZM6.984 8.256C7.672 8.256 8.264 8.184 8.76 8.04C9.256 7.88 9.64 7.632 9.912 7.296C10.184 6.96 10.32 6.536 10.32 6.024C10.32 5.288 10.088 4.744 9.624 4.392C9.16 4.024 8.432 3.84 7.44 3.84H5.784V8.256H6.984Z" fill="#42474D"/>
+                        </svg>
+                        за м²</h1>
                         <img src="@/assets/services/no1.png" alt="1">
                     </div>
                     <div class="services-baner__list">
@@ -206,6 +210,12 @@ export default {
         color: #fff
         width: 102%
 
+.rub-symb
+    height: 39px
+    width: 31px
+    & path
+        fill: #fff
+
 @media screen and (max-width: 1600px)
     .services-baner
         &__hero
@@ -262,4 +272,8 @@ export default {
         &__text
             font-size: 14px
             width: 102%
+
+    .rub-symb
+        height: 25px
+        width: 21px
 </style>
