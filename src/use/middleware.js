@@ -63,6 +63,20 @@ export const getAllProducts = async () => {
       .catch((err) => console.log('Error while getAllProducts', err))
 };
 
+//получить продукты из корзины
+export const getAllProductsInCart = async (idsArr) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': idsArr.join(';') })
+      .then((res) => {
+          console.log(res);
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while getAllProducts', res);
+          }
+      })
+      .catch((err) => console.log('Error while getAllProducts', err))
+};
+
 //добавить продукт в корзину
 export const addProductToBacket = async (id, count, backet_id) => {
   const dataSend = { 'method': 'cart_add_prod', 'prod_id': id, 'count': count }

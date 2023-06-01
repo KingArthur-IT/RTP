@@ -144,7 +144,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
-import { getBacketProducts, getAllProducts, deleteCartItem, createOrder } from '@/use/middleware.js'
+import { getBacketProducts, getAllProductsInCart, deleteCartItem, createOrder } from '@/use/middleware.js'
 import AdressAutocomplete from '../components/UIKit/AdressAutocomplete.vue';
 
 export default {
@@ -181,9 +181,10 @@ export default {
     this.cartId = localStorage.getItem('cartId') || 0
 
     if (this.cartId) {
-      const allProducts = await this.getAllProducts()
-
       this.cartList = await this.getBacketProducts(this.cartId)
+
+      const allProducts = await this.getAllProductsInCart(this.cartList.map(el => el.prod_id))
+
       this.cartList.forEach(el => {
         const productData = allProducts.filter(p => p.arFields.ID == el.prod_id)
         el['title'] = productData[0]?.arFields.NAME || ''
@@ -197,7 +198,7 @@ export default {
     validateEmail,
     getMonthName,
     getBacketProducts,
-    getAllProducts,
+    getAllProductsInCart,
     deleteCartItem,
     createOrder,
     async deleteCard(id) {
