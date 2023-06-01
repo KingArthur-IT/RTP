@@ -33,12 +33,12 @@ export const getPageName = (catalog_title) => {
     return 'gamma'
   if (catalog_title.includes('OMEGA'))
     return 'omega'
-  if (catalog_title.includes('BETA'))
-    return 'beta'
   if (catalog_title.includes('ELITE'))
     return 'beta-elite'
   if (catalog_title.includes('ORANGE'))
     return 'beta-orange'
+  if (catalog_title.includes('BETA'))
+      return 'beta'
 }
 
 export const isSelectedSystem = (pageName, systemName) => {

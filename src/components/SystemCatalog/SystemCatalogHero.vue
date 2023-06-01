@@ -148,6 +148,7 @@ export default {
         // this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
 
         this.pageName = this.$route.params.name;
+        console.log('this.systemList', this.systemList);
         this.banerInfo = this.systemList.find(el => el.name === this.pageName)
 
         //все товары + данные о том есть ли в корзине и кол-во
@@ -253,6 +254,7 @@ export default {
     &__card
         padding: 10px 0
 .catalog-baner
+    min-height: 440px
     width: 100%
     height: 100%
     border-radius: 8px
@@ -377,6 +379,7 @@ export default {
 
 @media screen and (max-width: 1600px)
     .catalog-baner
+        min-height: 340px
         margin-bottom: 30px
         &__label
             margin-bottom: 24px

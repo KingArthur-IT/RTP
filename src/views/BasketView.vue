@@ -260,12 +260,12 @@ export default {
       const value = this.phone.replace(/\D+/g, "");
       const numberLength = 11;
 
-      let result = '+';
+      let result = '';
 
       for (let i = 0; i < value.length && i < numberLength; i++) {
           switch (i) {
           case 0:
-              result += '7 ('
+              result += '+7 ('
               continue;
           case 4:
               result += ") ";
@@ -288,12 +288,12 @@ export default {
       const value = this.callMePhone.replace(/\D+/g, "");
       const numberLength = 11;
 
-      let result = '+';
+      let result = '';
 
       for (let i = 0; i < value.length && i < numberLength; i++) {
           switch (i) {
           case 0:
-              result += '7 ('
+              result += '+7 ('
               continue;
           case 4:
               result += ") ";
