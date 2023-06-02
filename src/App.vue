@@ -16,6 +16,9 @@ export default {
         MainHeader,
         MainFooter
     },
+    mounted() {
+      console.clear()
+    },
     computed: {
       pageName() {
         return this.$route.name

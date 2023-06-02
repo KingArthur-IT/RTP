@@ -252,7 +252,12 @@ export default {
   },
   computed: {
     selectedDate() {
-      return this.date.getDate() + ' ' + this.getMonthName(this.date.getMonth())
+      if (new Date(new Date().getTime()+(2*24*60*60*1000)) < this.date)
+        return this.date.getDate() + ' ' + this.getMonthName(this.date.getMonth())
+      else {
+        const date = new Date(new Date().getTime()+(2*24*60*60*1000))
+        return date.getDate() + ' ' + this.getMonthName(date.getMonth())
+      }
     },
   },
   watch: {

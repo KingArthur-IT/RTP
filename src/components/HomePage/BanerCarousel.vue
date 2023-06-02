@@ -85,7 +85,7 @@ export default {
             if (name === 'alpha')
                 this.$router.push({ name: 'alpha-system' })
             else this.$router.push({ name: 'catalog' })
-        }
+        },
     },
 }
 </script>

@@ -187,6 +187,7 @@ export default {
         async deleteFromCart(id) {
             const cartId = localStorage.getItem('cartId')
             const rez = await deleteCartItem(id, cartId)
+            console.log(rez);
             if (rez) {
                 this.filteredList.find(p => p.ID == id).isInCart = false
 

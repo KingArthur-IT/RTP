@@ -59,6 +59,7 @@
 <script>
 import BasketCard from './BasketCard.vue'
 import { addProductToBacket, printCart } from '@/use/middleware.js'
+import axios from 'axios'
 
 export default {
     components: {
@@ -105,6 +106,23 @@ export default {
             const fileUrl = await this.printCart(cartId)
             console.log(fileUrl);
             if (fileUrl) {
+                // await axios({
+                //     method: 'GET',
+                //     url: fileUrl,
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'Access-Control-Allow-Origin': '*',
+                //         'Accept': 'application/json',
+                //         "key": "TestSecret12345",
+                //     },
+                //     data: null,
+                // })
+                //     .then((response) => {
+                //         console.log(response);
+                //     })
+                //     .catch((error) => {
+                //         console.log(error);
+                //     })
                 fetch(fileUrl)
                     .then(res => res.blob())
                     .then(data => {
