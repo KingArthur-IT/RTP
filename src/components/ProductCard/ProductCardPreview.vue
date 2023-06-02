@@ -9,14 +9,14 @@
           >
               <img :src="img" alt="img">
           </div>
-          <div class="preview__small" @click="isPreviewImage = false">
+          <!-- <div class="preview__small" @click="isPreviewImage = false">
               <img src="@/assets/product-card/preview-icon.png" alt="preview">
               <div class="video-wrap">
                   <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 6.29297V18.293L17 12.293L7 6.29297Z" fill="white"/>
                   </svg>
               </div>
-          </div>
+          </div> -->
       </div>
       <div class="preview__wrapper">
           <div class="preview__sale">
@@ -29,7 +29,7 @@
           </div>
           <img v-if="!photoes.length && isPreviewImage" src="@/assets/card-no-img.jpg" alt="preview">
           <img v-else-if="isPreviewImage" :src="photoes[currentActiveImage]" alt="preview">
-          <video v-else src="@/assets/product-card/video.mp4" controls></video>
+          <!-- <video v-else src="@/assets/product-card/video.mp4" controls></video> -->
       </div>
   </div>
 </template>

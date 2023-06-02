@@ -4,7 +4,7 @@
         <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.NAME" />
         <div class="product-head">
             <div class="product-head__head">
-                <h1 class="product-head__title">{{ productCardInfo?.arFields?.NAME }}</h1>
+                <h1 class="product-head__title" v-html="productCardInfo?.arFields?.NAME"></h1>
                 <div class="product-head__icons">
                     <div class="product-head__icon" @click="copyCurrentLink">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

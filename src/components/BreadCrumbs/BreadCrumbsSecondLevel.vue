@@ -20,7 +20,7 @@
             <path d="M0.292969 1.70703L4.58597 6.00003L0.292969 10.293L1.70697 11.707L7.41397 6.00003L1.70697 0.293031L0.292969 1.70703Z" fill="#224386"/>
           </svg>
       </div>
-      <div v-if="thirdLevel" class="breadcrumbs__item">{{ thirdLevel }}</div>
+      <div v-if="thirdLevel" class="breadcrumbs__item" v-html="thirdLevel"></div>
   </div>
 </template>
 
