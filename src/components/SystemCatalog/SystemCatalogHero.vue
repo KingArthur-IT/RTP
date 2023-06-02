@@ -1,91 +1,93 @@
 <template>
   <div class="catalog-hero">
-      <!-- baner -->
-      <div class="catalog-baner" :class="banerInfo.name">
-            <img :src="getImageUrl('baner-bg', banerInfo.name)" :alt="pageName" class="catalog-baner__bg">
-            <div class="catalog-baner__hero">
-                <div class="catalog-baner__label">
-                    <img :src="getImageUrl('logos', banerInfo.name)" :alt="pageName" class="catalog-baner__logo">
-                    <span>{{ banerInfo.title }}</span>
+        <!-- baner -->
+        <div class="catalog-baner" :class="banerInfo.name">
+                <img :src="getImageUrl('baner-bg', banerInfo.name)" :alt="pageName" class="catalog-baner__bg">
+                <div class="catalog-baner__hero">
+                    <div class="catalog-baner__label">
+                        <img :src="getImageUrl('logos', banerInfo.name)" :alt="pageName" class="catalog-baner__logo">
+                        <span>{{ banerInfo.title }}</span>
+                    </div>
+                    <h2 class="catalog-baner__title" v-html="banerInfo.catalogBanerTitleHtml"></h2>
+                    <p class="catalog-baner__text" v-html="banerInfo.catalogBanerTextHtml"></p>
                 </div>
-                <h2 class="catalog-baner__title" v-html="banerInfo.catalogBanerTitleHtml"></h2>
-                <p class="catalog-baner__text" v-html="banerInfo.catalogBanerTextHtml"></p>
-            </div>
-      </div>
-      <!-- often buy -->
-      <!-- <div class="often-buy">
-          <div class="often-buy__title">Часто оказывается в корзине</div>
-          <div class="often-buy__hero">
-              <div 
-                v-for="(item, index) in oftenBuyList" :key="index" 
-                class="often-buy__item"
-                @click="goToCard"
-              >{{ item }}</div>
-          </div>
-      </div> -->
-      <!-- loader -->
-      <div v-if="!isLoaded">
-          <Loader />
-      </div>
-      <!-- filters -->
-      <div v-if="filteredList.length" class="filters">
-          <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
-      </div>
-      <!-- products list -->
-      <p v-if="!filteredList.length && isLoaded" class="no-products">По заданным критериям товары не найдены</p>
-        <div v-if="dispayModeValue === 'col'" class="list-col">
-            <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
-                <ProductCard 
-                    v-model:count="item.count"
-                    :hasShadow="false"
-                    :id="item.ID" 
-                    :description="item.PREVIEW_TEXT"
-                    :newPrice="item.PRICE"
-                    :oldPrice="'0'"
-                    :isBenefitShown="false"
-                    :photoes="item.photoes"
-                    :isInCart="item.isInCart"
-                    @addedToCart="addedToCart"
-                    @updateCountInCart="updateCountInCart"
-                    @deleteFromCart="deleteFromCart"
-                />
-            </div>
-            <div class="list-col__gather">
-                <GatherBusket @showModal="isModalShow = true" />
-            </div>
-            <div v-for="item in filteredList.slice(8, filteredList.length)" :key="item.ID" class="list-col__card">
-                <ProductCard 
-                    :id="item.ID" 
-                    :description="item.PREVIEW_TEXT"
-                    :newPrice="item.PRICE"
-                    :oldPrice="'0'"
-                    :isBenefitShown="false"
-                    :photoes="item.photoes"
-                    :isInCart="item.isInCart"
-                    @addedToCart="addedToCart"
-                    v-model:count="item.count"
-                    @updateCountInCart="updateCountInCart"
-                    @deleteFromCart="deleteFromCart"
-                />
-            </div>
         </div>
-        <div v-else class="list-row">
-            <div v-for="(item, index) in filteredList" :key="item.ID" class="list-row__card">
-                <ProductHorizontalCard 
-                    v-model:count="item.count"
-                    :id="item.ID" 
-                    :title="item.NAME"
-                    :price="item.PRICE"
-                    :photoes="item.photoes"
-                    :description="item.PREVIEW_TEXT"
-                    :infoList="item.info"
-                    :isInCart="item.isInCart"
-                    @addedToCart="addedToCart"
-                    @updateCountInCart="updateCountInCart"
-                    @deleteFromCart="deleteFromCart"
-                />
-                <div v-if="index === 1" class="list-row__gather">
-                    <GatherBusket @showModal="isModalShow = true"  />
+        <!-- often buy -->
+        <!-- <div class="often-buy">
+            <div class="often-buy__title">Часто оказывается в корзине</div>
+            <div class="often-buy__hero">
+                <div 
+                    v-for="(item, index) in oftenBuyList" :key="index" 
+                    class="often-buy__item"
+                    @click="goToCard"
+                >{{ item }}</div>
+            </div>
+        </div> -->
+        <!-- filters -->
+        <div v-if="filteredList.length" class="filters">
+            <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
+        </div>
+        <!-- loader -->
+        <div v-if="!filteredList.length && !isLoaded">
+            <Loader />
+        </div>
+        <!-- products list -->
+        <p v-if="!filteredList.length && isLoaded" class="no-products">По заданным критериям товары не найдены</p>
+        <div>
+            <div v-if="dispayModeValue === 'col'" class="list-col">
+                <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
+                    <ProductCard 
+                        v-model:count="item.count"
+                        :hasShadow="false"
+                        :id="item.ID" 
+                        :description="item.PREVIEW_TEXT"
+                        :newPrice="item.PRICE"
+                        :oldPrice="'0'"
+                        :isBenefitShown="false"
+                        :photoes="item.photoes"
+                        :isInCart="item.isInCart"
+                        @addedToCart="addedToCart"
+                        @updateCountInCart="updateCountInCart"
+                        @deleteFromCart="deleteFromCart"
+                    />
+                </div>
+                <div class="list-col__gather">
+                    <GatherBusket @showModal="isModalShow = true" />
+                </div>
+                <div v-for="item in filteredList.slice(8, filteredList.length)" :key="item.ID" class="list-col__card">
+                    <ProductCard 
+                        :id="item.ID" 
+                        :description="item.PREVIEW_TEXT"
+                        :newPrice="item.PRICE"
+                        :oldPrice="'0'"
+                        :isBenefitShown="false"
+                        :photoes="item.photoes"
+                        :isInCart="item.isInCart"
+                        @addedToCart="addedToCart"
+                        v-model:count="item.count"
+                        @updateCountInCart="updateCountInCart"
+                        @deleteFromCart="deleteFromCart"
+                    />
+                </div>
+            </div>
+            <div v-else class="list-row">
+                <div v-for="(item, index) in filteredList" :key="item.ID" class="list-row__card">
+                    <ProductHorizontalCard 
+                        v-model:count="item.count"
+                        :id="item.ID" 
+                        :title="item.NAME"
+                        :price="item.PRICE"
+                        :photoes="item.photoes"
+                        :description="item.PREVIEW_TEXT"
+                        :infoList="item.info"
+                        :isInCart="item.isInCart"
+                        @addedToCart="addedToCart"
+                        @updateCountInCart="updateCountInCart"
+                        @deleteFromCart="deleteFromCart"
+                    />
+                    <div v-if="index === 1" class="list-row__gather">
+                        <GatherBusket @showModal="isModalShow = true"  />
+                    </div>
                 </div>
             </div>
         </div>

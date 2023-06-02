@@ -120,14 +120,18 @@ export default {
     console.log('this.allProducts', this.allProducts);
 
     //применить фильтр категорий если есть активная 
-    if (activeCatId) {
-      this.filteredProducts = this.allProducts.filter(p => p.IBLOCK_SECTION_ID === activeCatId)
+    this.filteredProducts = this.allProducts
+    setTimeout(() => {
       this.isLoaded = true
-    }
-    else {
-      this.filteredProducts = this.allProducts
-      this.isLoaded = true
-    }
+    }, 1000);
+    // if (activeCatId) {
+    //   this.filteredProducts = this.allProducts.filter(p => p.IBLOCK_SECTION_ID === activeCatId)
+    //   this.isLoaded = true
+    // }
+    // else {
+    //   this.filteredProducts = this.allProducts
+    //   this.isLoaded = true
+    // }
   },
   methods: {
     getAllCategoriesCount, 

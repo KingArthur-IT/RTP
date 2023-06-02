@@ -4,7 +4,10 @@
       <div class="breadcrumbs">
         <BreadCrumbs />
       </div>
-      <div class="catalog">
+      <div v-if="!isLoaded" class="loader">
+          <Loader />
+      </div>
+      <div v-if="isLoaded" class="catalog">
         <div v-for="card in catalogList" :key="card.ID" class="catalog__card">
           <GeneralCatalogCard
             :title="card.NAME"
@@ -22,16 +25,19 @@ import GeneralCatalogCard from '../components/Catalog/GeneralCatalogCard.vue'
 import { getPageName } from '@/use/helpers.js'
 import { getCatalog, getAllCategoriesCount } from '@/use/middleware.js'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
+import Loader from '../components/UIKit/Loader.vue'
 
 export default {
   components: {
     GeneralCatalogCard,
-    BreadCrumbs
+    BreadCrumbs,
+    Loader
   },
   data() {
     return {
       catalogList: [],
-      sectionIdCounts: []
+      sectionIdCounts: [],
+      isLoaded: false
     }
   },
   async mounted(){
@@ -44,6 +50,8 @@ export default {
         subcat.count = this.sectionIdCounts[subcat.ID] || 0
       })
     })
+
+    this.isLoaded = true
   },
   methods: {
     getCatalog, 
@@ -54,6 +62,8 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.loader
+  margin-top: 40px
 .catalog
   margin: 33px 0 74px
   width: calc( 100% + 20px )

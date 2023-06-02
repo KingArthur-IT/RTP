@@ -32,6 +32,9 @@ export default {
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
 .catalog
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+  min-height: 100vh
+  display: flex
+  flex-direction: column
 .catalog-system
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
 .basket

@@ -64,6 +64,7 @@ export default {
   font-size: 16px
   border: none
   margin-top: -1px
+  margin-top: auto
   &__hero
     padding: 43px 0px 43px 7px
   

@@ -132,7 +132,10 @@
         </div>
       </div>
     </div>
-    <AcceptOrderModal v-model:open="isModalShown" />
+    <AcceptOrderModal 
+      v-model:open="isModalShown" 
+      @closeModal="closeAcceptModal"
+    />
   </main>
 </template>
 
@@ -248,7 +251,12 @@ export default {
       this.message = ''
       this.email = ''
       this.callMePhone = ''
-    }
+    },
+    closeAcceptModal() {
+      setTimeout(() => {
+        this.$router.push({ name: 'home' })
+      }, 500);
+    },
   },
   computed: {
     selectedDate() {

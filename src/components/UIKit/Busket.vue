@@ -41,7 +41,7 @@ export default {
     getBacketProducts,
     goToCart() {
       if (this.cartCount > 0)
-        this.$router.push({ name: 'basket' })
+        this.$router.push({ name: 'cart' })
     }
   }
 }

@@ -5,7 +5,7 @@
               <BreadCrumbs />
           </div>
           <div class="delivery">
-              <h1 class="delivery__title">«Правила доставки»</h1>
+              <div class="delivery__title">«Правила доставки»</div>
               <div class="delivery__text">
                   Для доставки заказов используются услуги транспортной компании СДЭК. Клиент может выбрать один из двух вариантов доставки:
               </div>

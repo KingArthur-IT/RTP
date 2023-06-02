@@ -47,8 +47,8 @@ const router = createRouter({
       component: () => import('../views/ProductCardView.vue'),
     },
     {
-      path: '/basket',
-      name: 'basket',
+      path: '/cart',
+      name: 'cart',
       component: () => import('../views/BasketView.vue'),
       meta: { name: 'Корзина' }
     },

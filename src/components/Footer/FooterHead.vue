@@ -29,7 +29,7 @@
             <div class="nav__item" @click="goToPage('catalog')">Каталог</div>
             <div class="nav__item" @click="goToPage('services')">Услуги</div>
             <div class="nav__item" @click="goToPage('payment-methods')">Оплата</div>
-            <div class="nav__item" @click="goToPage('basket')">Корзина</div>
+            <div class="nav__item" @click="goToPage('cart')">Корзина</div>
         </div>
         <div class="nav">
             <div class="nav__item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
