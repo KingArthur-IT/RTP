@@ -5,7 +5,7 @@
             <div v-if="isLoaded" class="search">
                 <h1 class="search__title">Результаты поиска</h1>
                 <div class="search__text">{{ resultText }}</div>
-                <div v-if="!searchResults.length" class="search__no-results-btn" @click="$router.push({ name: 'catalog' })">
+                <div v-if="!searchResults?.length" class="search__no-results-btn" @click="$router.push({ name: 'catalog' })">
                     <button>Перейти в каталог</button>
                 </div>
                 <div v-else class="filters-wrapper">
@@ -17,7 +17,7 @@
                 <Loader />
             </div>
             <div v-if="dispayModeValue === 'col'" class="search-hero-col">
-                <div v-for="item in filteredResults.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
+                <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
                     <ProductCard 
                         v-model:count="item.count"
                             :id="item.ID" 
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div v-else class="search-hero-row">
-                <div v-for="item in filteredResults.slice(0, currentCardsCount)" :key="item.id" class="search-hero-row__card">
+                <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-row__card">
                     <ProductHorizontalCard 
                         v-model:count="item.count"
                         :id="item.ID" 
@@ -129,7 +129,8 @@ export default {
             rootMargin: '-200px',
         });
 
-        showMoreObserver.observe(suggestionBlock);
+        if (suggestionBlock)
+            showMoreObserver.observe(suggestionBlock);
     },
     computed: {
         resultText() {
@@ -152,11 +153,11 @@ export default {
             this.cartId = localStorage.getItem('cartId') || 0
             //получить товары из корзины
             const cartPrd = await this.getBacketProducts(this.cartId)
-            this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
+            this.productsInCart = cartPrd?.map(p => { return { id: p.prod_id, count: p.count} })
 
             //трансформировать данные из массива продуктов
             const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
-            this.searchResults = cardsList.map(el => { 
+            this.searchResults = cardsList?.map(el => { 
                 const infoList = []
                 propsArray.forEach((propName) => {
                     if (el.arProps[propName].VALUE)

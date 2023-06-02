@@ -9,7 +9,7 @@
                   <span>Каталог товаров</span>
               </button>
               <RoundSearchButton class="head__search" />
-              <Busket @click="$router.push({ name: 'basket' })" />
+              <Busket />
           </div>
       </div>
   </div>

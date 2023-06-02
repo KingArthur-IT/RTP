@@ -48,12 +48,20 @@ export default {
     },
     watch: {
         async search() {
-            if (this.search.length > 3 && !this.isUsedHint) {
+            if (this.search.length > 2 && !this.isUsedHint) {
                 const hintArr = await this.searchProducts(this.search)
-                this.hintArr = hintArr.slice(0, 5)
-                if (this.hintArr?.length)
+                if (hintArr?.length) {
+                    this.hintArr = hintArr.slice(0, 5)
                     this.isHindShow = true
-                else this.isHindShow = false
+                }
+                else {
+                    this.isHindShow = false
+                    this.hintArr = []
+                }
+            }
+            if (this.search.length < 3) {
+                this.isHindShow = false
+                this.hintArr = []
             }
         }
     }
@@ -91,7 +99,7 @@ export default {
         left: 0
         right: 0
         background: #fff
-        z-index: 1
+        z-index: 12
         border: 1px solid transparent
         border-radius: 12px
         overflow: hidden
@@ -100,7 +108,7 @@ export default {
         opacity: 0
         pointer-events: none
         &.active
-            border-color: var(--primary-color)
+            filter: drop-shadow(0px 4px 7px rgba(0, 0, 0, 0.15))
             opacity: 1
             transform: translateY(0px)
             pointer-events: all

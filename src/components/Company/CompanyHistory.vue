@@ -2,7 +2,7 @@
   <div class="history">
       <div class="container">
         <div class="stages">
-          <div class="stages__title">Этапы разваития компании</div>
+          <div class="stages__title">Этапы развития компании</div>
           <div class="stages__hero">
               <div class="stages__list">
                   <CompanyHistoryCol 
@@ -12,7 +12,7 @@
               </div>
               <div class="stages__list">
                   <CompanyHistoryCol 
-                      :years="['2014 г.', '20015 г.', '2016 г.', '2017 г.']"
+                      :years="['2014 г.', '2015 г.', '2016 г.', '2017 г.']"
                       :description="secondDescription"
                   />
               </div>

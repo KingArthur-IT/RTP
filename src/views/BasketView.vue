@@ -489,6 +489,7 @@ export default {
   & svg
     position: absolute
     right: 24px
+    pointer-events: none
 
 .delivery-adress
   display: flex
