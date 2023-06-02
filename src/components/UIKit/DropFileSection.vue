@@ -21,7 +21,7 @@
                 <span class="dropdown__title">Загрузка файлов</span>
                 <span class="dropdown__text">Перетащите ваши файлы в эту область!</span>
             </div>
-            <input type="file" @change="onChange">
+            <!-- <input type="file" @change="onChange"> -->
         </div>
         <div v-else class="dropdown__uploaded">
           <div class="dropdown__info">
@@ -83,6 +83,7 @@ export default {
     display: flex
     justify-content: center
     overflow: hidden
+    cursor: pointer
     &__empty
         width: 100%
         background: transparent
