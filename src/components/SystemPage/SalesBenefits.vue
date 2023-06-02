@@ -238,8 +238,7 @@ export default {
         margin-right: 17px
         width: 25px
         height: 25px
-        & svg path
-            transition: fill .3s ease
+        transform: translateY(6px)
     &__text
         font-weight: 500
         font-size: 22px
@@ -267,6 +266,7 @@ export default {
             margin-right: 10px
             width: 15px
             height: 15px
+            transform: translateY(3px)
             & svg
                 width: 15px
                 height: 15px
