@@ -201,7 +201,7 @@ export default {
         el['title'] = productData[0]?.arFields.NAME || ''
         el['description'] = productData[0]?.arFields.PREVIEW_TEXT || ''
         el['count'] = Number(el.count)
-        el['photo'] = productData[0]?.arPhoto[0] || ''
+        el['photo'] = productData[0]?.arPhotoPrew[0] || ''
       })
     }
   },

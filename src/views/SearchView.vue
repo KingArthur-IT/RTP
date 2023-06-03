@@ -176,7 +176,7 @@ export default {
                     PRICE: el.arPrice.PRICE,
                     CREATED_DATE: el.arFields.DATE_CREATE_UNIX,
                     info: infoList,
-                    photoes: el.arPhoto
+                    photoes: el.arPhotoPrew
                 }
             })
 

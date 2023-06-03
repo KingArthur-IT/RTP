@@ -42,6 +42,14 @@
 
 <script>
 export default {
+    data() {
+        return {
+            cartCount: 0
+        }
+    },
+    async mounted() {
+        const cartId = localStorage.getItem('cartId') || 0
+    },
     methods: {
         goToPage(name) {
             if (name === 'cart' && !this.isCartActive) return
@@ -57,9 +65,17 @@ export default {
             return this.$route.name === 'home'
         },
         isCartActive() {
-            return this.$cartCount?.value > 0
+            return this.cartCount > 0
         }
-    }
+    },
+    watch: {
+        '$cartCount.value': {
+            handler: function() {
+                this.cartCount = this.$cartCount.value
+            },
+            deep: true
+            }
+    },
 }
 </script>
 

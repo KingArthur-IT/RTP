@@ -45,6 +45,7 @@ export default {
     bottom: 0
     left: 0
     right: 0
+    z-index: 100
     &__hero
         display: flex
         align-items: center

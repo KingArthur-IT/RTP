@@ -115,11 +115,9 @@ export default {
         PRICE: pr.arPrice.PRICE,
         info: infoList,
         hidden: hiddenList,
-        photoes: pr.arPhoto
+        photoes: pr.arPhotoPrew
       }
     })
-
-    console.log('this.allProducts', this.allProducts);
 
     //применить фильтр категорий если есть активная 
     this.filteredProducts = this.allProducts
@@ -205,7 +203,7 @@ export default {
           PRICE: pr.arPrice.PRICE,
           info: infoList,
           hidden: hiddenList,
-          photoes: pr.arPhoto
+          photoes: pr.arPhotoPrew
         }
       })
 
