@@ -220,7 +220,7 @@ export const sendFile = async (file) => {
 
 //получить товар по id
 export const getProductById = async (id) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': id })
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': id, 'get_all_no_null_prop': 'Y' })
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
             console.log('id', Object.values(res.data.get_catalog_prod.data)[0]);

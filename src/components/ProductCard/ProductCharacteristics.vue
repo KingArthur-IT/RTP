@@ -2,24 +2,24 @@
     <div>
         <div v-if="!hasTwoColumns" class="features">
             <div v-for="(item, index) in list" :key="index" class="features__row">
-                <div class="features__name">{{ item.name }}:</div>
+                <div class="features__name">{{ item.NAME }}:</div>
                 <div class="features__empty"></div>
-                <div class="features__value">{{ item.value }}</div>
+                <div class="features__value">{{ item.VALUE.replace(/\s/g, '') }}</div>
             </div>
         </div>
         <div v-else class="features d-flex">
             <div class="features__col">
                 <div v-for="(item, index) in firstColList" :key="index" class="features__row">
-                    <div class="features__name">{{ item.name }}:</div>
+                    <div class="features__name">{{ item.NAME }}:</div>
                     <div class="features__empty"></div>
-                    <div class="features__value">{{ item.value }}</div>
+                    <div class="features__value">{{ item.VALUE.replace(/\s/g, '') }}</div>
                 </div>
             </div>
             <div v-if="hasTwoCols" class="features__col">
                 <div v-for="(item, index) in secondColList" :key="index" class="features__row">
-                    <div class="features__name">{{ item.name }}:</div>
+                    <div class="features__name">{{ item.NAME }}:</div>
                     <div class="features__empty"></div>
-                    <div class="features__value">{{ item.value }}</div>
+                    <div class="features__value">{{ item.VALUE.replace(/\s/g, '') }}</div>
                 </div>
             </div>
         </div>

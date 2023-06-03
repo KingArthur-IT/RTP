@@ -1,10 +1,10 @@
 <template>
   <main>
     <div class="container product-card">
-        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.NAME" :thirdLevelPage="pageName" />
+        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.PREVIEW_TEXT" :thirdLevelPage="pageName" />
         <div class="product-head">
             <div class="product-head__head">
-                <h1 class="product-head__title" v-html="productCardInfo?.arFields?.NAME"></h1>
+                <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
                 <div class="product-head__icons">
                     <div class="product-head__icon" @click="copyCurrentLink">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,8 +45,8 @@
                     <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
                 </div>
                 <div class="subhead__info">
-                    <div>Артикул {{ productCardInfo?.arProps?.ARKTIKUL_POSTAVSHCHIKA.VALUE }}</div>
-                    <div>Код {{ productCardInfo?.arProps?.CML2_BAR_CODE.VALUE }}</div>
+                    <div>Артикул {{ productCardInfo?.arProps?.CML2_ARTICLE.VALUE }}</div>
+                    <div>Код {{ code }}</div>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                 <div class="product-hero__characteristics mobile">
                     <div class="product-hero__title">Характеристики:</div>
                     <ProductCharacteristics :list="characteristics" />
-                    <a href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
+                    <a v-if="mainDescription" href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
                 </div>
             </div>
             <div class="product-hero__card">
@@ -99,11 +99,11 @@
                 </div>
             </div>
         </div> -->
-        <div id="description" class="description">
+        <div v-if="mainDescription" id="description" class="description">
             <div class="section-title description__title">
                 <div class="section-title-text">Описание</div>
             </div>
-            <div class="description__text" v-html="productCardInfo?.arProps?.OPISANIE.VALUE"></div>
+            <div class="description__text" v-html="mainDescription"></div>
         </div>
         <div class="characteristic-section">
             <div class="section-title characteristic-section__title">
@@ -164,17 +164,7 @@ export default {
                 { value: 'Белый', isSelected: true, color: '#fff' },
                 { value: 'Серый', isSelected: false, color: '#C3D3E5' },
             ],
-            characteristics: [
-                { name: 'Тип', value: 'Труба из полипропилена' },
-                { name: 'Материал', value: 'Полипропилен' },
-                { name: 'Длинна, м', value: '4' },
-                { name: 'DN номинальный диаметр, мм', value: '20' },
-                { name: 'Толщина стенок, мм', value: '1,9' },
-                { name: 'Макс. давление, бар', value: '10' },
-                { name: 'Кол-во в упаковке м/шт', value: '100/25' },
-                { name: 'Макс. раб. температура 0С', value: '60' },
-                { name: 'Цвет', value: 'Белый' },
-            ],
+            characteristics: [],
             productCount: 1
         }
     },
@@ -186,6 +176,11 @@ export default {
         const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
 
         this.pageName = this.getPageName(parentSectName)
+
+        this.characteristics = Object.values(this.productCardInfo.arPropsNoNull)
+            .filter(el => !el.NAME.includes('Адрес') && !el.NAME.includes('Артикул') && !el.NAME.includes('Реквизиты') && !el.NAME.includes('налогов') &&
+                    !el.NAME.includes('Alpha') && !el.NAME.includes('Betta') && !el.NAME.includes('Gamma') && !el.NAME.includes('Delta') && !el.NAME.includes('Sigma')
+            )
     },
     methods: {
         getProductById,
@@ -208,6 +203,17 @@ export default {
             navigator.clipboard.writeText(window.location.href);
         }
     },
+    computed: {
+        code() {
+            const val = this.productCardInfo?.arProps?.CML2_TRAITS.VALUE
+            if (val && val.length > 2)
+                return val[2]
+            else return ''
+        },
+        mainDescription() {
+            return this.productCardInfo?.arProps?.OPISANIE.VALUE
+        }
+    }
 }
 </script>
 
