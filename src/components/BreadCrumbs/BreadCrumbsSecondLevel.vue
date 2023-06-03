@@ -33,6 +33,10 @@ export default {
         thirdLevel: {
             type: String,
             default: ''
+        },
+        thirdLevelPage: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -42,28 +46,29 @@ export default {
     },
     computed: {
         getPageDescription() {
-            if (this.pageName === 'alpha')
+            const page = !!this.thirdLevelPage ? this.thirdLevelPage : this.pageName
+            if (page === 'alpha')
                 return 'Трубы и фитинги из полипропилена'
-            if (this.pageName === 'sigma')
+            if (page === 'sigma')
                 return 'Запорная арматура и латунные резьбовые фитинги'
-            if (this.pageName === 'delta')
+            if (page === 'delta')
                 return 'Система DELTA - Трубы PE-Xa / EVOH и аксиальные фитинги'
-            if (this.pageName === 'omega')
+            if (page === 'omega')
                 return 'Трубы и комплектующие для теплого пола'
-            if (this.pageName === 'beta-elite')
+            if (page === 'beta-elite')
                 return 'Малошумная канализация'
-            if (this.pageName === 'beta-orange')
+            if (page === 'beta-orange')
                 return 'Наружная канализация'
-            if (this.pageName === 'beta')
+            if (page === 'beta')
                 return 'Внутренняя канализация'
-            if (this.pageName === 'gamma')
+            if (page === 'gamma')
                 return 'Трубы ПНД и компрессионные фитинги'
         }
     },
     methods: {
         goToPage() {
             if (this.thirdLevel)
-                this.$router.push({ name: 'catalog-system', params: this.$route.params })
+                this.$router.push({ name: 'catalog-system', params: this.pageName })
         }
     }
 }

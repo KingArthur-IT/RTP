@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="container product-card">
-        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.NAME" />
+        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.NAME" :thirdLevelPage="pageName" />
         <div class="product-head">
             <div class="product-head__head">
                 <h1 class="product-head__title" v-html="productCardInfo?.arFields?.NAME"></h1>
@@ -131,7 +131,8 @@ import ProductCardDetail from '../components/ProductCard/ProductCardDetail.vue';
 import ProductCardPreview from '../components/ProductCard/ProductCardPreview.vue';
 import ProductCharacteristics from '../components/ProductCard/ProductCharacteristics.vue';
 import ProductCard from '../components/UIKit/ProductCard.vue';
-import { getProductById } from '@/use/middleware.js'
+import { getProductById, getCatalog } from '@/use/middleware.js'
+import { getPageName } from '@/use/helpers.js'
 
 export default {
     components: {
@@ -144,6 +145,7 @@ export default {
     },
     data() {
         return {
+            pageName: '',
             productCardInfo: null,
             starsCount: 4,
             description: [
@@ -179,10 +181,16 @@ export default {
     async mounted(){
         window.scrollTo(0, 0);
         this.productCardInfo = await this.getProductById(this.$route.query.id)
-        console.log('productCardInfo', this.productCardInfo);
+    
+        this.catalogList = await this.getCatalog()
+        const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
+
+        this.pageName = this.getPageName(parentSectName)
     },
     methods: {
         getProductById,
+        getCatalog,
+        getPageName,
         updateSelectedInDetails(data) {
             this.description[data.arrIndex].selectedValueIndex = data.newSelected
         },
@@ -199,7 +207,7 @@ export default {
         copyCurrentLink() {
             navigator.clipboard.writeText(window.location.href);
         }
-    }
+    },
 }
 </script>
 
