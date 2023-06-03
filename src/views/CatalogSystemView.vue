@@ -11,6 +11,7 @@
             :typesList="typesForFilter"
             :rangeMaximum="maxPrice" 
             @applyFilters="applyFilters"
+            @updateMaximum="updateMaximum"
           />
         </div>
         <div class="catalog-system__hero">
@@ -222,6 +223,9 @@ export default {
             })
           return isSelected
         })
+    },
+    updateMaximum(max) {
+      this.maxPrice = max
     }
   },
 }

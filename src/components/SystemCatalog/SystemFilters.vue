@@ -117,6 +117,10 @@ export default {
         rangeMaximum() {
             this.rangeMaxValue = this.rangeMaximum
         },
+        rangeMaxValue() {
+            if (this.rangeMaxValue > this.rangeMaximum)
+                this.$emit('updateMaximum', this.rangeMaxValue)
+        },
         typesList() {
             this.typesArray = JSON.parse(JSON.stringify(this.typesList))
         },

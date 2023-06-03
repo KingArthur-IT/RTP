@@ -123,6 +123,10 @@ export default {
     },
     maxValue() {
       this.sliderMaxValue = this.maxValue
+    },
+    max() {
+      this.sliderMaxValue = this.max
+      this.change()
     }
   }
 }
