@@ -92,6 +92,9 @@ export default {
                 this.$emit('updateList', { propName: this.dataList.propName, newList: this.list })
             },
             deep: true
+        },
+        dataList() {
+            this.list = this.dataList.list
         }
     }
 }

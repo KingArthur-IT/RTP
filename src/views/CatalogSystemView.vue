@@ -42,7 +42,7 @@ export default {
       filteredProducts: [],
       maxPrice: 100,
       isLoaded: false,
-      categoriesList: {}
+      categoriesList: {},
     }
   },
   async mounted() {
@@ -75,6 +75,7 @@ export default {
 
     //сформировать массив типов для секции фильтров с галочками
     const typesPropsList = ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY']
+    this.typesForFilter = []
     this.allProducts.forEach(product => {
       typesPropsList.forEach(prop => {
         if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
@@ -146,6 +147,7 @@ export default {
 
       //сформировать массив типов для секции фильтров с галочками
       const typesPropsList = ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY']
+      this.typesForFilter = []
       this.allProducts.forEach(product => {
         typesPropsList.forEach(prop => {
           if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
@@ -159,6 +161,24 @@ export default {
               this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
           }
         })
+      })
+
+      //перезаписать isChecked
+      selectedTypes.forEach(el => {
+        el.list.forEach(l => {
+          const type = this.typesForFilter.find(t => t.propName === el.propName)
+          if (type) {
+            const listEl = type.list.find(p => p.value === l.value)
+            if (listEl)
+              listEl.isChecked = l.isChecked
+          }
+        })
+      })
+
+      //посчитать мах цену
+      this.allProducts.forEach(el => {
+        if (el.arPrice.PRICE > this.maxPrice)
+          this.maxPrice = Math.ceil(el.arPrice.PRICE)
       })
 
       //трансформировать данные из массива продуктов
@@ -188,19 +208,20 @@ export default {
         }
       })
 
-      console.log(this.allProducts);
-
       //ост фильры
+      this.filteredProducts = []
       this.filteredProducts = this.allProducts 
         .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
-        // .filter(p => {
-        //   let isSelected = false
-        //   selectedTypes.forEach(prop => { //фикс цвет
-        //     const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
-        //     isSelected = isSelected || prop.list.some(el => el.value === productPropValue && el.isChecked || !el.isChecked)
-        //   })
-        //   return isSelected
-        // })
+        .filter(p => {
+          let isSelected = false
+          selectedTypes
+            .filter(el => el.list.some(ch => ch.isChecked))
+            .forEach(prop => { //фикс цвет
+              const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
+              isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
+            })
+          return isSelected
+        })
     }
   },
 }

@@ -72,7 +72,7 @@ export default {
         typesList: {
             type: Array,
             default: []
-        }
+        },
     },
     data() {
         return {
@@ -118,8 +118,8 @@ export default {
             this.rangeMaxValue = this.rangeMaximum
         },
         typesList() {
-            this.typesArray = this.typesList
-        }
+            this.typesArray = JSON.parse(JSON.stringify(this.typesList))
+        },
     }
 }
 </script>
