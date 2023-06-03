@@ -21,7 +21,7 @@
                 <span class="dropdown__title">Загрузка файлов</span>
                 <span class="dropdown__text">Перетащите ваши файлы в эту область!</span>
             </div>
-            <input type="file" @change="onChange">
+            <input type="file" @change="onChange" accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png, image/jpeg,.pdf">
         </div>
         <div v-else class="dropdown__uploaded">
           <div class="dropdown__info">
@@ -64,9 +64,11 @@ export default {
             this.createFile(files[0]);
         },
         createFile(file) {
-            this.file = file;
-            this.dragging = false;
-            this.$emit('update:modelValue', this.file)
+            if (file.size < 100000000) {
+                this.file = file;
+                this.dragging = false;
+                this.$emit('update:modelValue', this.file)
+            }
         },
         removeFile() {
             this.file = '';

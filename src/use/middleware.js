@@ -184,7 +184,7 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
       'data_email': email,
       'data_theme': theme,
       'data_mess': message,
-      'file': fileUrl,
+      'files': fileUrl,
       'data_dop_mess': additional_message,
     }
   )
@@ -200,14 +200,16 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
 };
 
 //отправка файла для формы
-export const sendFile = async (type, file) => {
+export const sendFile = async (file) => {
   let formData = new FormData();
-  formData.append("file[image]", file, file.name);
+  formData.append("file", file, file.name);
 
-  return await sendFileRequest('', 'POST', { 'file': formData })
+  return await sendFileRequest('', 'POST', formData)
     .then((res) => {
         if (res.status === 200) {
-          return res.data.form_send.isSuccess === 1
+          if (res.data && res.data.data)
+            return res.data.data[0]
+          else console.log('Error while send form data', res);
         } else {
             console.log('Error while send form data', res);
             return false
@@ -268,16 +270,3 @@ export const hintSearchProducts = async (search_text) => {
       })
       .catch((err) => console.log('Error while getBestPropositions', err))
 };
-
-//поиск
-// export const searchProducts = async (search_text) => {
-//   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text })
-//       .then((res) => {
-//           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-//             return Object.values(res.data.get_catalog_prod.data)
-//           } else {
-//               console.log('Error while getBestPropositions', res);
-//           }
-//       })
-//       .catch((err) => console.log('Error while getBestPropositions', err))
-// };

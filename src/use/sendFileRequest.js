@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://bitrix.rtp.ru/api/'
+const baseUrl = 'https://bitrix.rtp.ru/api-send/'
 
 async function sendFileRequest(url, method = 'GET', data = null){
     return await axios({
@@ -8,9 +8,6 @@ async function sendFileRequest(url, method = 'GET', data = null){
         url: baseUrl + url,
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*',
-            'Accept': 'application/json',
-            "key": "TestSecret12345",
         },
         data: data,
         })

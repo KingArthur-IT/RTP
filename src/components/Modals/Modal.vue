@@ -132,7 +132,7 @@ import CustomInput from '../UIKit/CustomInput.vue'
 import DropFileSection from '../UIKit/DropFileSection.vue';
 import CustomRectButton from '../UIKit/LightRectButton.vue';
 import { validateEmail } from '@/use/helpers.js'
-import { sendFormData } from '@/use/middleware.js'
+import { sendFormData, sendFile } from '@/use/middleware.js'
 import { VueRecaptcha } from 'vue-recaptcha';
 import AcceptOrderModalVue from './AcceptOrderModal.vue';
 
@@ -188,6 +188,7 @@ export default {
     methods: {
         validateEmail,
         sendFormData,
+        sendFile,
         recaptchaVerified(response) {
             this.recaptchaResponse = response
         },
@@ -200,10 +201,16 @@ export default {
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 18
 
-            if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid)
+            if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid || !this.isRecaptchaChecked)
                 return
 
-            const rez = await this.sendFormData(this.type, this.formInfo, window.location.href, this.name, this.surname, this.phone, this.email, this.theme, this.message, this.file)
+            let fileRez = ''
+            if (this.file)
+                fileRez = await this.sendFile(this.file)
+
+            console.log('fileRez', fileRez);
+
+            const rez = await this.sendFormData(this.type, this.formInfo, window.location.href, this.name, this.surname, this.phone, this.email, this.theme, this.message, fileRez)
             if (rez) {
                 this.isAcceptedModalShown = true
             }
@@ -218,6 +225,7 @@ export default {
             this.email = ''
             this.message = ''
             this.theme = ''
+            this.file = null
             this.isRecaptchaChecked = true
             this.recaptchaResponse = null
             this.isEmailValid = true
