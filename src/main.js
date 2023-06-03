@@ -12,5 +12,6 @@ app.use(store)
 
 app.config.globalProperties.$cartCount = ref(0)
 app.config.globalProperties.$cartId = ref(0)
+app.config.globalProperties.$showHint = ref(false)
 
 app.mount('#app')

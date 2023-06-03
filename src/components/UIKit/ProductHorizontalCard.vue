@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="card__hero" @click="goToCard">
-            <div class="card__title">{{ title }}</div>
+            <div class="card__title" v-html="title"></div>
             <p class="card__description" v-html="description"></p>
             <div class="card__content">
                 <div class="card__details">
@@ -205,7 +205,7 @@ export default {
         box-shadow: 0px 5px 50px rgba(0, 67, 101, 0.08), 0px 2px 6px rgba(130, 169, 188, 0.08)
     &__carousel
         position: relative
-        max-width: 274px
+        max-width: 174px
         margin-right: 30px
         &.no-dots
             padding-bottom: 33px
@@ -213,7 +213,6 @@ export default {
         width: 100%
         max-height: 216px
     &__img
-        width: 100%
         height: 100%
     &__hero
         width: 100%

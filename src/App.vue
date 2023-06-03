@@ -1,5 +1,5 @@
 <template>
-  <div :class="pageName">
+  <div :class="pageName" @click="globalClick">
     <main-header></main-header>
     <RouterView />
     <main-footer></main-footer>
@@ -22,6 +22,11 @@ export default {
     computed: {
       pageName() {
         return this.$route.name
+      }
+    },
+    methods: {
+      globalClick() {
+        this.$showHint.value = false
       }
     }
 }

@@ -236,7 +236,6 @@ export default {
         width: 100%
     &__img
         width: 100%
-        aspect-ratio: 1.7
     &__discount-label
         position: absolute
         top: 0
