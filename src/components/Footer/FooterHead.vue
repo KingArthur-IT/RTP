@@ -29,7 +29,7 @@
             <div class="nav__item" @click="goToPage('catalog')">Каталог</div>
             <div class="nav__item" @click="goToPage('services')">Услуги</div>
             <div class="nav__item" @click="goToPage('payment-methods')">Оплата</div>
-            <div class="nav__item" @click="goToPage('cart')">Корзина</div>
+            <div class="nav__item" @click="goToPage('cart')" :class="{'disabled': !isCartActive}">Корзина</div>
         </div>
         <div class="nav">
             <div class="nav__item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
@@ -44,6 +44,7 @@
 export default {
     methods: {
         goToPage(name) {
+            if (name === 'cart' && !this.isCartActive) return
             this.$router.push({ name })
         },
         logoClick() {
@@ -54,6 +55,9 @@ export default {
     computed: {
         isHomePage() {
             return this.$route.name === 'home'
+        },
+        isCartActive() {
+            return this.$cartCount?.value > 0
         }
     }
 }
@@ -106,6 +110,8 @@ export default {
     margin-bottom: 20px
     color: #fff
     cursor: pointer
+    &.disabled
+        cursor: default
 
 @media screen and (max-width: 1600px)
     .footer

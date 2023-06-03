@@ -126,8 +126,9 @@
         <div class="estimate-wrapper">
           <BasketProductsList 
             :cartList="cartList" 
-            @deleteCard="deleteCard" 
             :deliveryCost="0"
+            @deleteCard="deleteCard" 
+            @cannotDownloadFile="isEmptyCartModal = true"
           />
         </div>
       </div>
@@ -135,6 +136,10 @@
     <AcceptOrderModal 
       v-model:open="isModalShown" 
       @closeModal="closeAcceptModal"
+    />
+    <EmptyBasketModal 
+      v-model:open="isEmptyCartModal" 
+      @closeModal="closeEmptyCartModal"
     />
   </main>
 </template>
@@ -149,6 +154,7 @@ import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
 import { getBacketProducts, getAllProductsInCart, deleteCartItem, createOrder } from '@/use/middleware.js'
 import AdressAutocomplete from '../components/UIKit/AdressAutocomplete.vue';
+import EmptyBasketModal from '../components/Modals/EmptyBasketModal.vue';
 
 export default {
   components: {
@@ -157,7 +163,8 @@ export default {
     VueDatePicker,
     BasketProductsList,
     AcceptOrderModal,
-    AdressAutocomplete
+    AdressAutocomplete,
+    EmptyBasketModal
   },
   data() {
     return {
@@ -177,6 +184,7 @@ export default {
       cartList: [],
       cartId: 0,
       isOrderSended: true,
+      isEmptyCartModal: false,
     }
   },
   async mounted(){
@@ -212,9 +220,19 @@ export default {
         const cartCount = localStorage.getItem('cartCount')
         this.$cartCount.value = Number(cartCount) - 1
         localStorage.setItem('cartCount', cartCount - 1)
+
+        if (this.$cartCount.value < 1)
+          setTimeout(() => {
+            this.$router.push({ name: 'home' })
+          }, 1000);
       }
     },
     async submitBasket() {
+      if (!this.cartList.length) {
+        this.isEmptyCartModal = true
+        return
+      }
+
       this.isNameValid = !!this.name.length
       this.isEmailValid = this.validateEmail(this.email)
       this.isPhoneValid = this.phone.length === 18
@@ -229,6 +247,11 @@ export default {
         this.isOrderSended = false
     },
     async callMeEvent() {
+      if (!this.cartList.length) {
+        this.isEmptyCartModal = true
+        return
+      }
+
       this.isCallMePhoneValid = this.callMePhone.length === 18
 
       if (!this.isCallMePhoneValid) return
@@ -257,6 +280,11 @@ export default {
         this.$router.push({ name: 'home' })
       }, 500);
     },
+    closeEmptyCartModal() {
+      setTimeout(() => {
+        this.$router.push({ name: 'home' })
+      }, 500);
+    }
   },
   computed: {
     selectedDate() {

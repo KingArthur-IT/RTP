@@ -50,19 +50,19 @@ export default {
         },
         photoUrl: {
             type: String,
-            required: true
+            default: ''
         },
         title: {
             type: String,
-            required: true
+            default: ''
         },
         description: {
             type: String,
-            required: true
+            default: ''
         },
         price: {
             type: Number,
-            required: true
+            default: 0
         },
         count: {
             type: Number,

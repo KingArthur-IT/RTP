@@ -21,7 +21,7 @@
                 <span class="dropdown__title">Загрузка файлов</span>
                 <span class="dropdown__text">Перетащите ваши файлы в эту область!</span>
             </div>
-            <!-- <input type="file" @change="onChange"> -->
+            <input type="file" @change="onChange">
         </div>
         <div v-else class="dropdown__uploaded">
           <div class="dropdown__info">
@@ -39,11 +39,11 @@
 
 <script>
 export default {
-    emits: ['saveFile'],
+    emits: ['update:modelValue'],
     props: {
         modelValue: {
-            type: String,
-            default: ''
+            type: Object,
+            default: null
         },
     },
     data() {

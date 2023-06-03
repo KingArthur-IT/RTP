@@ -1,4 +1,5 @@
 import { sendRequest } from './useRequest' 
+import { sendFileRequest } from './sendFileRequest' 
 
 //Получить системы и категории 
 export const getCatalog = async () => {
@@ -169,7 +170,7 @@ export const printCart = async (cart_id) => {
 };
 
 //отправка данных формы
-export const sendFormData = async (type, formInfo, url, name, surname, phone, email, theme, message, additional_message = '') => {
+export const sendFormData = async (type, formInfo, url, name, surname, phone, email, theme, message, fileUrl, additional_message = '') => {
   const phoneOnlyDigits = phone.replaceAll(' ', '').replaceAll('-', '').replaceAll('(','').replaceAll(')','').replaceAll('+','')
   return await sendRequest('', 'POST', 
     { 
@@ -183,6 +184,7 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
       'data_email': email,
       'data_theme': theme,
       'data_mess': message,
+      'file': fileUrl,
       'data_dop_mess': additional_message,
     }
   )
@@ -195,6 +197,23 @@ export const sendFormData = async (type, formInfo, url, name, surname, phone, em
           }
       })
       .catch((err) => console.log('Error while send form data', err))
+};
+
+//отправка файла для формы
+export const sendFile = async (type, file) => {
+  let formData = new FormData();
+  formData.append("file[image]", file, file.name);
+
+  return await sendFileRequest('', 'POST', { 'file': formData })
+    .then((res) => {
+        if (res.status === 200) {
+          return res.data.form_send.isSuccess === 1
+        } else {
+            console.log('Error while send form data', res);
+            return false
+        }
+    })
+    .catch((err) => console.log('Error while send form data', err))
 };
 
 //получить товар по id

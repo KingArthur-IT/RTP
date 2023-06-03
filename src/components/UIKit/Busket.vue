@@ -24,7 +24,6 @@ export default {
     //если не найдено товаров по запросу из корзины то очистить данные в приложении
     if (cartId) {
       const cartProducts = await this.getBacketProducts(cartId)
-      console.log('moiunted', cartProducts);
       this.$cartCount.value = cartProducts?.length || 0
       localStorage.setItem('cartCount', cartProducts?.length || 0)
     }
