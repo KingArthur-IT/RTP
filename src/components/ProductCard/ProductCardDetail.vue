@@ -1,29 +1,35 @@
 <template>
   <div class="product-detail">
       <div v-for="(item, index) in list" :key="index">
-          <div class="product-detail__title">{{ item.title }}:</div>
-          <div class="product-detail__list">
-              <div v-for="(val, i) in item.values" :key="i" class="product-detail__item-wrap">
-                  <div 
-                    class="product-detail__item" 
-                    :class="{'active': i === item.selectedValueIndex}"
-                    @click="$emit('updateSelectedIndex', { arrIndex: index, newSelected: i })"
-                  >{{ val }}</div>
-              </div>
-          </div>
+        <div v-if="item.values.length">
+            <div class="product-detail__title">{{ item.title }}:</div>
+            <div class="product-detail__list">
+                <div v-for="(val, i) in item.values" :key="i" class="product-detail__item-wrap">
+                    <div 
+                      class="product-detail__item" 
+                      :class="{'active': i === item.selectedValueIndex}"
+                      @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: val.id } })"
+                    >{{ val.value }}</div>
+                </div>
+            </div>
+        </div>
       </div>
-      <div class="product-detail__title-wrap">
-          <div class="product-detail__title">Цвет:</div>
-          <span>{{ selectedColor }}</span>
-      </div>
-      <div class="product-detail__list">
-          <div v-for="(color, index) in colors" :key="index" class="product-detail__item-wrap">
-              <div 
-                class="product-detail__color" 
-                :style="`background: ${color.color}`"
-                @click="$emit('updateSelectedColor', color.value)"
-              ></div>
-          </div>
+      <!-- @click="$emit('updateSelectedIndex', { arrIndex: index, newSelected: i })" -->
+      <div v-if="colors.length">
+        <div class="product-detail__title-wrap">
+            <div class="product-detail__title">Цвет:</div>
+            <span>{{ selectedColor }}</span>
+        </div>
+        <div class="product-detail__list">
+            <div v-for="(color, index) in colors" :key="index" class="product-detail__item-wrap">
+                <div 
+                    class="product-detail__color" 
+                    :style="`background: ${color.color}`"
+                    @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: color.id } })"
+                ></div>
+                <!-- @click="$emit('updateSelectedColor', color.value)" -->
+            </div>
+        </div>
       </div>
   </div>
 </template>
@@ -40,15 +46,12 @@ export default {
             default: []
         }
     },
-    data() {
-        return {
-            diametrList: ['20/1,9', '25/2,3', '32/2,9', '40/3,7', '50/4,5', '63/5,8', '75/6,8', '90/8,2', '110/10', '125/11,4', '140/12,7', '160/14,6'],
-            counts: ['100/25', '50/25']
-        }
-    },
     computed: {
         selectedColor() {
-            return this.colors.find(c => c.isSelected).value
+            const currColor = this.colors.find(c => c.isSelected)
+            if (currColor)
+                return currColor.value
+            else return ''
         }
     }
 }

@@ -105,7 +105,7 @@
             </div>
             <div class="description__text" v-html="mainDescription"></div>
         </div>
-        <div class="characteristic-section">
+        <!-- <div class="characteristic-section">
             <div class="section-title characteristic-section__title">
                 <div class="section-title-text">Характеристики</div>
             </div>
@@ -119,7 +119,7 @@
                     <ProductCharacteristics :list="characteristics.slice(0,5)" :hasTwoColumns="true" />
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
   </main>
 </template>
@@ -151,36 +151,22 @@ export default {
             description: [
                 { 
                     title: 'Диаметр/толщина стенок, мм',
-                    values: ['20/1,9', '25/2,3', '32/2,9', '40/3,7', '50/4,5', '63/5,8', '75/6,8', '90/8,2', '110/10', '125/11,4', '140/12,7', '160/14,6'],
+                    values: [],
                     selectedValueIndex: 0
                 },
                 { 
                     title: 'Количество в упаковке, м/шт',
-                    values: ['100/25', '50/25'],
+                    values: [],
                     selectedValueIndex: 0
                 },
             ],
-            colors: [
-                { value: 'Белый', isSelected: true, color: '#fff' },
-                { value: 'Серый', isSelected: false, color: '#C3D3E5' },
-            ],
+            colors: [],
             characteristics: [],
             productCount: 1
         }
     },
     async mounted(){
-        window.scrollTo(0, 0);
-        this.productCardInfo = await this.getProductById(this.$route.query.id)
-    
-        this.catalogList = await this.getCatalog()
-        const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
-
-        this.pageName = this.getPageName(parentSectName)
-
-        this.characteristics = Object.values(this.productCardInfo.arPropsNoNull)
-            .filter(el => !el.NAME.includes('Адрес') && !el.NAME.includes('Артикул') && !el.NAME.includes('Реквизиты') && !el.NAME.includes('налогов') &&
-                    !el.NAME.includes('Alpha') && !el.NAME.includes('Betta') && !el.NAME.includes('Gamma') && !el.NAME.includes('Delta') && !el.NAME.includes('Sigma')
-            )
+        await this.mountedEvent()
     },
     methods: {
         getProductById,
@@ -201,7 +187,65 @@ export default {
         },
         copyCurrentLink() {
             navigator.clipboard.writeText(window.location.href);
-        }
+        },
+        async mountedEvent() {
+            window.scrollTo(0, 0);
+            this.productCardInfo = await this.getProductById(this.$route.query.id)
+        
+            this.catalogList = await this.getCatalog()
+            const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
+
+            this.pageName = this.getPageName(parentSectName)
+
+            this.characteristics = Object.values(this.productCardInfo.arPropsNoNull)
+                .filter(el => !el.NAME.includes('Адрес') && !el.NAME.includes('Артикул') && !el.NAME.includes('Реквизиты') && !el.NAME.includes('налогов') &&
+                        !el.NAME.includes('Alpha') && !el.NAME.includes('Betta') && !el.NAME.includes('Gamma') && !el.NAME.includes('Delta') && !el.NAME.includes('Sigma')
+                )
+
+            const currColorVal = this.productCardInfo.arPropsNoNull?.TSVET?.VALUE
+            if (currColorVal)
+                this.colors.push({ value: currColorVal, isSelected: true, color: currColorVal.trim() === 'Белый' ? '#fff' : '#C3D3E5', id: this.$route.query.id})
+            const currDiametr = this.productCardInfo.arPropsNoNull?.DIAMETR?.VALUE
+            if (currDiametr)
+                this.description[0].values.push({ value: currDiametr, id: this.$route.query.id })
+            const currKolvo = this.productCardInfo.arPropsNoNull?.KOLVO?.VALUE
+            if (currKolvo)
+                this.description[1].values.push({ value: currKolvo, id: this.$route.query.id })
+
+            const elWithColors = this.productCardInfo.arPodobnie?.color
+            const elWithDiametr = this.productCardInfo.arPodobnie?.diametr
+            const elWithKolvo = this.productCardInfo.arPodobnie?.kolvo
+
+            if (!!elWithColors)
+                for (let index = 0; index < elWithColors.length; index++) {
+                    const element = await this.getProductById(elWithColors[index])
+                    if (!this.colors.some(c => c.value === element.arPropsNoNull?.TSVET.VALUE)) {
+                        const colorVal = element.arPropsNoNull?.TSVET.VALUE
+                        if (colorVal)
+                            this.colors.push({ value: colorVal, isSelected: true, color: colorVal === 'Белый' ? 'fff' : '#C3D3E5', id: elWithColors[index]})
+                    }
+                }
+
+            if (!!elWithDiametr)
+                for (let index = 0; index < elWithDiametr.length; index++) {
+                    const element = await this.getProductById(elWithDiametr[index])
+                    if (!this.description[0].values.some(c => c.value === element.arPropsNoNull?.DIAMETR.VALUE)) {
+                        const diametrVal = element.arPropsNoNull?.DIAMETR.VALUE
+                        if (diametrVal)
+                            this.description[0].values.push({ value: diametrVal, prodId: elWithDiametr[index] })
+                    }
+                }
+
+            if (!!elWithKolvo)
+                for (let index = 0; index < elWithKolvo.length; index++) {
+                    const element = await this.getProductById(elWithKolvo[index])
+                    if (!this.description[0].values.some(c => c.value === element.arPropsNoNull?.KOLVO.VALUE)) {
+                        const diametrVal = element.arPropsNoNull?.KOLVO.VALUE
+                        if (diametrVal)
+                            this.description[1].values.push({ value: diametrVal, prodId: elWithKolvo[index] })
+                    }
+                }
+            }
     },
     computed: {
         code() {
@@ -212,6 +256,14 @@ export default {
         },
         mainDescription() {
             return this.productCardInfo?.arProps?.OPISANIE.VALUE
+        }
+    },
+    watch: {
+        '$route.query.id': {
+            handler() {
+                this.mountedEvent()
+            },
+            deep: true
         }
     }
 }
