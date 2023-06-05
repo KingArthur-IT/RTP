@@ -207,20 +207,25 @@ export default {
         }
       })
 
+      console.log('this.allProducts', this.allProducts, selectedTypes);
       //ост фильры
       this.filteredProducts = []
       this.filteredProducts = this.allProducts 
         .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
-        .filter(p => {
-          let isSelected = false
-          selectedTypes
-            .filter(el => el.list.some(ch => ch.isChecked))
-            .forEach(prop => { //фикс цвет
-              const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
-              isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
-            })
-          return isSelected
-        })
+
+      if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
+        this.filteredProducts = this.filteredProducts
+          .filter(p => {
+            let isSelected = false
+            selectedTypes
+              .filter(el => el.list.some(ch => ch.isChecked))
+              .forEach(prop => { //фикс цвет
+                const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
+                isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
+              })
+            return isSelected
+          })
+      }
     },
     updateMaximum(max) {
       this.maxPrice = max

@@ -32,6 +32,8 @@ export default {
     '$cartCount.value': {
       handler: function() {
         this.cartCount = this.$cartCount.value
+        if (this.cartCount < 0)
+          this.cartCount = 0
       },
       deep: true
     }
