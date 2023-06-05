@@ -42,8 +42,11 @@ export default {
   flex-direction: column
 .catalog-system
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
-.basket
+.cart
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
+  min-height: 100vh
+  display: flex
+  flex-direction: column
 .card
   background: linear-gradient(180deg, #F6F6FA 0%, rgba(237, 237, 237, 0) 100%)
 .search

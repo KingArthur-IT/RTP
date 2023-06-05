@@ -1,7 +1,7 @@
 <template>
     <div class="filters">
         <div class="filters__hero">
-            <div 
+            <!-- <div 
                 class="filters__item" 
                 :class="{'active': activeFilter === 'popular'}"
                 @click="selectFilter('popular')"
@@ -10,7 +10,7 @@
                 class="filters__item" 
                 :class="{'active': activeFilter === 'new'}"
                 @click="selectFilter('new')"
-            >Новинки</div>
+            >Новинки</div> -->
             <div 
                 class="filters__item" 
                 :class="{'active': activeFilter === 'cheap'}"

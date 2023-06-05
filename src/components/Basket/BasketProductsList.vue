@@ -49,7 +49,8 @@
                 </div>
             </div>
             <div class="resume__btn" @click="downloadFile">
-                <button>Скачать смету</button>
+                <button v-if="!isSmetaLoading">Скачать смету</button>
+                <Loader v-else />
             </div>
         </div>
     </div>
@@ -58,10 +59,12 @@
 <script>
 import BasketCard from './BasketCard.vue'
 import { addProductToBacket, printCart } from '@/use/middleware.js'
+import Loader from '../UIKit/Loader.vue'
 
 export default {
     components: {
         BasketCard,
+        Loader
     },
     props: {
         cartList: {
@@ -73,6 +76,11 @@ export default {
             default: 0
         }
     },
+    data() {
+        return {
+            isSmetaLoading: false
+        }
+    },
     computed: {
         productsTotalCost() {
             return this.cartList.reduce((acc, el) => acc += el.price * el.count, 0).toFixed(2)
@@ -81,10 +89,11 @@ export default {
             return this.cartList.reduce((acc, el) => acc += el.count, 0)
         },
         taxes() {
-            return (this.productsTotalCost / 5).toFixed(2)
+            const nds = 20
+            return Number(this.productsTotalCost * nds / (nds + 100)).toFixed(2)
         },
         totalForPay() {
-            return (this.productsTotalCost * 1. + this.deliveryCost).toFixed(2)
+            return Number(this.productsTotalCost + this.deliveryCost).toFixed(2)
         }
     },
     methods: {
@@ -100,11 +109,13 @@ export default {
         },
         async downloadFile() {
             if (this.cartList?.length) {
+                this.isSmetaLoading = true
                 const cartId = localStorage.getItem('cartId')
     
                 const fileUrl = await this.printCart(cartId)
                 if (fileUrl) {
                     window.open(fileUrl, '_blank');
+                    this.isSmetaLoading = false
                 }
             } else this.$emit('cannotDownloadFile')
         }
