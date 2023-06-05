@@ -211,8 +211,9 @@ export default {
       //ост фильры
       this.filteredProducts = []
       this.filteredProducts = this.allProducts 
-        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
+        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
 
+      console.log(selectedTypes.some(t => t.list.some(l => !l.isChecked)))
       if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
         this.filteredProducts = this.filteredProducts
           .filter(p => {
