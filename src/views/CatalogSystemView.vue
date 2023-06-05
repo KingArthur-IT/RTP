@@ -174,6 +174,7 @@ export default {
         })
       })
 
+      this.maxPrice = 0
       //посчитать мах цену
       this.allProducts.forEach(el => {
         if (el.arPrice.PRICE > this.maxPrice)
