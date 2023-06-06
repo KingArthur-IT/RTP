@@ -1,9 +1,9 @@
 <template>
   <div class="card" :class="{'has-shadow': hasShadow}">
-        <div v-if="!photoes.length" class="card__carousel card__slide no-dots">
+        <div v-if="!photoes.length" class="card__carousel card__slide no-dots" @click="goToCard">
             <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
         </div>
-        <div v-else-if="photoes.length === 1" class="card__carousel card__slide no-dots">
+        <div v-else-if="photoes.length === 1" class="card__carousel card__slide no-dots" @click="goToCard">
             <img :src="photoes[0]" alt="img" class="card__img">
         </div>
         <div v-else class="card__carousel">
@@ -165,7 +165,7 @@ export default {
             }
         },
         goToCard() {
-            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: this.id } })
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: this.id } })
         },
         async addToBasket() {
             if (this.isInCart) return
@@ -212,6 +212,7 @@ export default {
     &__slide
         width: 100%
         max-height: 216px
+        cursor: pointer
     &__img
         height: 100%
     &__hero

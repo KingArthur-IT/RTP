@@ -71,6 +71,13 @@ export default {
                 this.isHindShow = this.$showHint.value
             },
             deep: true
+        },
+        '$route': {
+            handler: function() {
+                if (this.$route.name !== 'search')
+                    this.search = ''
+            },
+            deep: true
         }
     }
 }

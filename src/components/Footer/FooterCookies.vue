@@ -5,7 +5,7 @@
               <div class="cookies__text">
                   Мы используем файлы cookie для вашего удобства пользования сайтом и повышения качества рекомендаций.
               </div>
-              <div @click="$router.push({ name: 'confidence' })" class="cookies__details">Подробнее</div>
+              <div @click="$router.push({ name: 'terms-of-use' })" class="cookies__details">Подробнее</div>
               <div class="cookies__btn" @click="acceptCookies">
                   <LightRectButton :isAgreeBtn="true" :text="'Я согласен'" />
               </div>

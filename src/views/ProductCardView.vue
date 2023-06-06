@@ -27,7 +27,7 @@
             </div>
             <div class="subhead">
                 <div class="subhead__hero">
-                    <div class="subhead__item stars">
+                    <!-- <div class="subhead__item stars">
                         <div v-for="i in 5" :key="i" class="subhead__star" :class="{'active': i <= starsCount}">
                             <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97047 12.2464L11.0769 13.5131C11.8347 13.9688 12.7675 13.2891 12.5659 12.4282L12.0083 10.0464L13.8621 8.44631C14.5325 7.86765 14.1754 6.76744 13.2929 6.69285L10.8507 6.48641L9.89068 4.22961C9.54551 3.4182 8.39544 3.4182 8.05027 4.22961L7.09025 6.48641L4.64801 6.69285C3.76555 6.76744 3.40842 7.86765 4.07884 8.44631L5.93268 10.0464L5.37501 12.4282C5.17343 13.2891 6.10629 13.9688 6.86402 13.5131L8.97047 12.2464Z" fill="#A6ACB3"/>
@@ -39,7 +39,7 @@
                                 </g>
                             </svg>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="subhead__item">19 отзывов</div>
                     <div class="subhead__item">23 вопроса</div> -->
                     <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
@@ -190,12 +190,17 @@ export default {
         },
         async mountedEvent() {
             window.scrollTo(0, 0);
+            
             this.productCardInfo = await this.getProductById(this.$route.query.id)
         
-            this.catalogList = await this.getCatalog()
-            const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
-
-            this.pageName = this.getPageName(parentSectName)
+            if (this.$route.params.name === 'all') {
+                this.catalogList = await this.getCatalog()
+                const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
+    
+                this.pageName = this.getPageName(parentSectName)
+            } else {
+                this.pageName = this.getPageName(this.$route.params.name)
+            }
 
             this.characteristics = Object.values(this.productCardInfo.arPropsNoNull)
                 .filter(el => !el.NAME.includes('Адрес') && !el.NAME.includes('Артикул') && !el.NAME.includes('Реквизиты') && !el.NAME.includes('налогов') &&

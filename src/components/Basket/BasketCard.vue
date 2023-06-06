@@ -113,7 +113,7 @@ export default {
     max-height: 181px
     &__img
         margin-right: 26px
-        max-width: 188px
+        max-width: 149px
         & img
             width: 100%
             height: 100%

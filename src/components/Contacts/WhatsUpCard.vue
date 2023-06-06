@@ -2,7 +2,7 @@
   <div class="whatsup">
       <div class="whatsup__hero">
           <div class="whatsup__title">WhatsApp</div>
-          <div class="whatsup__phone">+7 (925) 740 52 62</div>
+          <a href="https://wa.me/79257405262" class="whatsup__phone">+7 (925) 740 52 62</a>
       </div>
       <img src="@/assets/contacts/whatsup.png" alt="" class="whatsup__logo">
   </div>

@@ -2,10 +2,10 @@
   <div class="card" :class="{'has-shadow': hasShadow}">
       <div class="card__hero">
           <div>
-              <div v-if="!photoes.length" class="card__slide">
+              <div v-if="!photoes.length" class="card__slide" @click="goToCard">
                   <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
               </div>
-              <div v-else-if="photoes.length === 1" class="card__slide">
+              <div v-else-if="photoes.length === 1" class="card__slide" @click="goToCard">
                   <img :src="photoes[0]" alt="img" class="card__img">
               </div>
               <div v-else class="card__carousel">
@@ -179,7 +179,7 @@ export default {
             }
         },
         goToCard() {
-            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: this.id } })
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: this.id } })
         },
         async addToBasket() {
             if (this.isInCart) return
@@ -234,6 +234,7 @@ export default {
         position: relative
     &__slide
         width: 100%
+        cursor: pointer
     &__img
         width: 100%
     &__discount-label

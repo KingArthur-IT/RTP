@@ -4,13 +4,17 @@
       <div @click="clearFilters" class="filters__clear">очистить</div>
     </div>
     <div class="filters__inputs">
-        <input type="number" :step="step" v-model="sliderMinValue" placeholder="от"/>
+        <div class="input-wrapper">
+          <input type="number" :step="step" v-model="sliderMinValue" placeholder="от"/>
+        </div>
         <div class="filters__dash">
             <svg width="14" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="13" height="1" fill="#42474D"/>
             </svg>
         </div>
-        <input type="number" :step="step" v-model="sliderMaxValue" placeholder="до"/>
+         <div class="input-wrapper">
+           <input type="number" :step="step" v-model="sliderMaxValue" placeholder="до"/>
+        </div>
       </div>
     <div ref="slider" class="custom-slider minmax">
         <input
@@ -158,6 +162,18 @@ export default {
     justify-content: space-between;
     margin-bottom: 24px;
 }
+.filter-wrapper {
+  position: relative;
+}
+.input-wrapper::after {
+  content: 'руб.';
+  position: absolute;
+  right: 7px;
+  top: 11px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #A6ACB3;
+}
 .filters__inputs input {
     background: rgba(166, 172, 179, 0.17);
     border: 1px solid rgba(166, 172, 179, 0.17);
@@ -168,6 +184,13 @@ export default {
     caret-color: #42474D;
     outline-color: rgba(166, 172, 179, 0.17);
     width: 144px;
+    padding-right: 40px;
+}
+.filters__inputs input::-webkit-outer-spin-button,
+.filters__inputs input::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+    margin: 0; 
 }
 .filters__inputs input::placeholder {
     font-size: 16px;

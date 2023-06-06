@@ -237,7 +237,10 @@ export default {
       this.isEmailValid = this.validateEmail(this.email)
       this.isPhoneValid = this.phone.length === 18
 
-      if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid) return
+      if (!this.isNameValid || !this.isEmailValid || !this.isPhoneValid) {
+        document.querySelector('.basket__input-wrapper').scrollIntoView({ behavior: 'smooth' });
+        return
+      }
 
       const rez = await this.createOrder(this.name, this.phone, this.email, this.selectedDate, this.adress, this.message, this.cartId)
       if (rez) {
