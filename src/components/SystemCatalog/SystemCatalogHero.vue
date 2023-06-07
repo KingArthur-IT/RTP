@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="hasMoreProducts" class="more-btn">
+            <div v-if="hasMoreProducts && filteredList.length" class="more-btn">
                 <DarkRectButton v-if="!isMoreBtnLoaderShown" :text="'Показать еще'" @click="showMore"/>
                 <Loader v-else />
             </div>

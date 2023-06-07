@@ -42,7 +42,7 @@ export default {
   },
   data() {
     return {
-      activeCatId: '',
+      activeCatIdsArr: [],
       categories: [],
       allProductsIds: [],
       allProducts: [],
@@ -65,7 +65,7 @@ export default {
 
     await this.addProductsFromIds()
 
-    this.countMaxPtice()
+    this.countMaxPrice()
     this.createTypesForFilter()
     
     //применить фильтр категорий если есть активная 
@@ -84,7 +84,8 @@ export default {
 
     //определить выбранную кагорию и добавить в фильтры вместе с неактивными
     async findAndApplyCategory() { 
-      this.activeCatId = this.$route.query.ID //выбранная система
+      if (this.$route.query.ID)
+        this.activeCatIdsArr = [this.$route.query.ID] //выбранная система
 
       const catalog = await this.getCatalog() //Получить системы и категории 
       const catalogCount = await this.getAllCategoriesCount()
@@ -95,14 +96,14 @@ export default {
       //если в категории есть товары, то добавить ее и сделать активной выбранную если кликали по ней в каталоге
       this.categoriesList.list.forEach(element => {
         if (catalogCount[element.ID])
-          this.categories.push({ isSelected: this.activeCatId === element.ID, ...element })
+          this.categories.push({ isSelected: this.activeCatIdsArr[0] === element.ID, ...element })
       });
     },
 
     async getProductsIds() {
       //все id продуктов из категорий этой системы
-      if (this.activeCatId)
-        this.allProductsIds = await this.getIdsOfSelectedSystem([this.activeCatId])
+      if (this.activeCatIdsArr.length)
+        this.allProductsIds = await this.getIdsOfSelectedSystem(this.activeCatIdsArr)
       else this.allProductsIds = await this.getIdsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
     },
 
@@ -118,7 +119,7 @@ export default {
     },
 
      //посчитать мах цену
-    countMaxPtice() {
+    countMaxPrice() {
       this.allProducts.forEach(el => {
         if (el.PRICE > this.maxPrice)
           this.maxPrice = Math.ceil(el.PRICE)
@@ -174,28 +175,108 @@ export default {
       })
     },
 
-    async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
-      //получить продукты по выбранным категориям
-      if (selectedCategories.length)
-        this.allProducts = await this.getProductsOfSelectedSystem(selectedCategories.map(el => el.ID))
-      else this.allProducts = await this.getProductsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
+    // async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+    //   //получить продукты по выбранным категориям
+    //   if (selectedCategories.length)
+    //     this.allProducts = await this.getProductsOfSelectedSystem(selectedCategories.map(el => el.ID))
+    //   else this.allProducts = await this.getProductsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
 
-      //сформировать массив типов для секции фильтров с галочками
-      this.typesForFilter = []
-      this.allProducts.forEach(product => {
-        this.typesPropsList.forEach(prop => {
-          if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
-            const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
-            if (propInTypes) { //если уже есть такой тип
-              const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
-              if (findVal) 
-                findVal.count += 1
-              else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: true})
-            } else
-              this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
-          }
-        })
-      })
+    //   //сформировать массив типов для секции фильтров с галочками
+    //   this.typesForFilter = []
+    //   this.allProducts.forEach(product => {
+    //     this.typesPropsList.forEach(prop => {
+    //       if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
+    //         const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
+    //         if (propInTypes) { //если уже есть такой тип
+    //           const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
+    //           if (findVal) 
+    //             findVal.count += 1
+    //           else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: true})
+    //         } else
+    //           this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
+    //       }
+    //     })
+    //   })
+
+    //   //перезаписать isChecked
+    //   selectedTypes.forEach(el => {
+    //     el.list.forEach(l => {
+    //       const type = this.typesForFilter.find(t => t.propName === el.propName)
+    //       if (type) {
+    //         const listEl = type.list.find(p => p.value === l.value)
+    //         if (listEl)
+    //           listEl.isChecked = l.isChecked
+    //       }
+    //     })
+    //   })
+
+    //   this.maxPrice = 0
+    //   //посчитать мах цену
+    //   this.allProducts.forEach(el => {
+    //     if (el.arPrice.PRICE > this.maxPrice)
+    //       this.maxPrice = Math.ceil(el.arPrice.PRICE)
+    //   })
+
+    //   //трансформировать данные из массива продуктов
+    //   this.allProducts = this.allProducts.map(pr => {
+    //     const infoList = []
+    //     const hiddenList = []
+    //     this.propsArray.forEach((propName) => {
+    //       if (pr.arProps[propName].VALUE)
+    //         infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
+    //     })
+    //     this.typesPropsList.forEach((propName) => {
+    //       hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
+    //     })
+
+    //     return {
+    //       ID: pr.arFields.ID,
+    //       IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
+    //       NAME: pr.arFields.NAME,
+    //       PREVIEW_PICTURE: pr.arFields.PREVIEW_PICTURE,
+    //       PREVIEW_TEXT: pr.arFields.PREVIEW_TEXT,
+    //       CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
+    //       PRICE: pr.arPrice.PRICE,
+    //       info: infoList,
+    //       hidden: hiddenList,
+    //       photoes: pr.arPhotoPrew
+    //     }
+    //   })
+
+    //   //ост фильры
+    //   this.filteredProducts = []
+    //   this.filteredProducts = this.allProducts 
+    //     .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
+
+    //   console.log(selectedTypes.some(t => t.list.some(l => !l.isChecked)))
+    //   if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
+    //     this.filteredProducts = this.filteredProducts
+    //       .filter(p => {
+    //         let isSelected = false
+    //         selectedTypes
+    //           .filter(el => el.list.some(ch => ch.isChecked))
+    //           .forEach(prop => { //фикс цвет
+    //             const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
+    //             isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
+    //           })
+    //         return isSelected
+    //       })
+    //   }
+    // },
+    async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+      this.isLoaded = false
+      this.activeCatIdsArr = []
+      this.activeCatIdsArr = selectedCategories.filter(cat => cat.isSelected).map(cat => cat.ID)
+      this.filteredProducts = []
+      this.currentPage = 0
+      this.maxPrice = 0
+      this.allProducts = []
+
+      await this.getProductsIds()
+      await this.addProductsFromIds()
+
+      this.createTypesForFilter()
+      this.countMaxPrice()
 
       //перезаписать isChecked
       selectedTypes.forEach(el => {
@@ -209,45 +290,15 @@ export default {
         })
       })
 
-      this.maxPrice = 0
-      //посчитать мах цену
-      this.allProducts.forEach(el => {
-        if (el.arPrice.PRICE > this.maxPrice)
-          this.maxPrice = Math.ceil(el.arPrice.PRICE)
-      })
-
-      //трансформировать данные из массива продуктов
-      this.allProducts = this.allProducts.map(pr => {
-        const infoList = []
-        const hiddenList = []
-        this.propsArray.forEach((propName) => {
-          if (pr.arProps[propName].VALUE)
-            infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
-        })
-        this.typesPropsList.forEach((propName) => {
-          hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
-        })
-
-        return {
-          ID: pr.arFields.ID,
-          IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
-          NAME: pr.arFields.NAME,
-          PREVIEW_PICTURE: pr.arFields.PREVIEW_PICTURE,
-          PREVIEW_TEXT: pr.arFields.PREVIEW_TEXT,
-          CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
-          PRICE: pr.arPrice.PRICE,
-          info: infoList,
-          hidden: hiddenList,
-          photoes: pr.arPhotoPrew
-        }
-      })
-
       //ост фильры
-      this.filteredProducts = []
       this.filteredProducts = this.allProducts 
         .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
 
-      console.log(selectedTypes.some(t => t.list.some(l => !l.isChecked)))
+      if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
+        this.filteredProducts = []
+        this.isLoaded = true
+        return
+      }
       if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
         this.filteredProducts = this.filteredProducts
           .filter(p => {
@@ -261,6 +312,10 @@ export default {
             return isSelected
           })
       }
+
+      setTimeout(() => {
+        this.isLoaded = true
+      }, 1000);
     },
     updateMaximum(max) {
       this.maxPrice = max
@@ -268,7 +323,7 @@ export default {
     async showMoreProducts() {
       this.currentPage ++
       await this.addProductsFromIds()
-      this.countMaxPtice()
+      this.countMaxPrice()
       this.createTypesForFilter()
       
       this.filteredProducts = []

@@ -103,7 +103,7 @@ export default {
         },
         applyCategories() {
             this.$emit('applyFilters', {
-                selectedCategories: this.categoriesList.filter(c => c.isSelected),
+                selectedCategories: this.categoriesList, //.filter(c => c.isSelected),
                 minPrice: this.rangeMinValue,
                 maxPrice: this.rangeMaxValue,
                 selectedTypes: this.typesArray
