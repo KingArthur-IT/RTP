@@ -90,6 +90,10 @@
                     </div>
                 </div>
             </div>
+            <div v-if="hasMoreProducts" class="more-btn">
+                <DarkRectButton v-if="!isMoreBtnLoaderShown" :text="'Показать еще'" @click="showMore"/>
+                <Loader v-else />
+            </div>
         </div>
   </div>
   <Modal 
@@ -111,6 +115,7 @@ import FiltersRow from '../Search/FiltersRow.vue'
 import Modal from '../Modals/Modal.vue'
 import { getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
 import Loader from '../UIKit/Loader.vue'
+import DarkRectButton from '../UIKit/DarkRectButton.vue'
 
 export default {
     components: {
@@ -119,8 +124,10 @@ export default {
         ProductCard,
         FiltersRow,
         Modal,
-        Loader
+        Loader,
+        DarkRectButton
     },
+    emits: ['showMoreProducts'],
     props: {
         cardsList: {
             type: Array,
@@ -129,6 +136,10 @@ export default {
         isLoaded: {
             type: Boolean,
             default: true
+        },
+        hasMoreProducts: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -142,6 +153,7 @@ export default {
             oftenBuyList: ['Труба PN10 SDR 11-25мм для ХВС', 'Труба PN16 SDR 7.4 -25мм для ГВС', 'Уголок 90гр', 'Муфта'],
             filteredList: [],
             productsInCart: [],
+            isMoreBtnLoaderShown: false
         }
     },
     async mounted() {
@@ -150,7 +162,6 @@ export default {
         // this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
 
         this.pageName = this.$route.params.name;
-        console.log('this.systemList', this.systemList);
         this.banerInfo = this.systemList.find(el => el.name === this.pageName)
 
         //все товары + данные о том есть ли в корзине и кол-во
@@ -197,6 +208,10 @@ export default {
                 this.$cartCount.value = Number(cartCount) - 1
                 localStorage.setItem('cartCount', cartCount - 1)
             }
+        },
+        showMore() {
+            this.isMoreBtnLoaderShown = true
+            this.$emit('showMoreProducts')
         }
     },
     watch: {
@@ -239,8 +254,12 @@ export default {
             if (this.filterValue === 'new')
                 this.filteredList.sort(compareDate)
         },
-        async cardsList() {
-            await this.setFilteredList()
+        cardsList: {
+            async handler() {
+                await this.setFilteredList()
+                this.isMoreBtnLoaderShown = false
+            },
+            deep: true
         }
     }
 }
@@ -379,6 +398,10 @@ export default {
             margin-bottom: 20px
         &__gather
             margin-top: 20px
+.more-btn
+    margin: 0 auto
+    margin-top: 8px
+    height: 30px
 
 @media screen and (max-width: 1600px)
     .catalog-baner

@@ -15,7 +15,12 @@
           />
         </div>
         <div class="catalog-system__hero">
-          <SystemCatalogHero :isLoaded="isLoaded" :cardsList="filteredProducts" />
+          <SystemCatalogHero 
+            :isLoaded="isLoaded" 
+            :cardsList="filteredProducts" 
+            :hasMoreProducts="hasMoreProducts"
+            @showMoreProducts="showMoreProducts"
+          />
         </div>
       </div>
     </div>
@@ -105,7 +110,9 @@ export default {
     async addProductsFromIds() {
       const start = this.currentPage * this.productsPerPage
       const end = (this.currentPage + 1) * this.productsPerPage
+      console.log(start, end, this.allProductsIds.length, this.allProductsIds.slice(start, end));
       const newProducts = await this.getProductsByIdArr(this.allProductsIds.slice(start, end))
+      console.log(newProducts);
       if (newProducts) {
         const transformed = this.transformProductData(newProducts)
         this.allProducts.push(...transformed)
@@ -133,8 +140,9 @@ export default {
               if (findVal) 
                 findVal.count += 1
               else propInTypes.list.push({ value: findProp.value, count: 1, isChecked: true})
-            } else
-              this.typesForFilter.push({ name: findProp.name, propName: prop, list: [ { value: findProp.value, count: 1, isChecked: true} ] })
+            } else {
+              this.typesForFilter.push({ name: findProp.name, description: findProp.description, propName: prop, list: [ { value: findProp.value, count: 1, isChecked: true} ] })
+            }
           }
         })
       })
@@ -150,7 +158,7 @@ export default {
             infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
         this.typesPropsList.forEach((propName) => {
-          hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
+          hiddenList.push({ name: propName, description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
 
         return {
@@ -236,7 +244,6 @@ export default {
         }
       })
 
-      console.log('this.allProducts', this.allProducts, selectedTypes);
       //ост фильры
       this.filteredProducts = []
       this.filteredProducts = this.allProducts 
@@ -259,8 +266,24 @@ export default {
     },
     updateMaximum(max) {
       this.maxPrice = max
+    },
+    async showMoreProducts() {
+      this.currentPage ++
+      await this.addProductsFromIds()
+      this.countMaxPtice()
+      this.createTypesForFilter()
+      
+      this.filteredProducts = []
+      this.filteredProducts = this.allProducts
     }
   },
+  computed: {
+    hasMoreProducts() {
+      const max = (this.currentPage + 1) * this.productsPerPage
+      return this.allProductsIds.length > max
+      // return this.allProductsIds.length !== this.filteredProducts.length
+    }
+  }
 }
 </script>
 

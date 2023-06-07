@@ -43,7 +43,7 @@ export default {
     },
     mounted() {
         this.currentCount = this.dataList.length
-        this.typeName = this.dataList.name
+        this.typeName = this.dataList.description
         this.list = this.dataList.list
     },
     data() {

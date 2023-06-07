@@ -245,7 +245,7 @@ export const getProductById = async (id) => {
 
 //получить товары по массиву id
 export const getProductsByIdArr = async (idsArr) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': idsArr.join(';')})
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': idsArr.join(';') + ';'})
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
