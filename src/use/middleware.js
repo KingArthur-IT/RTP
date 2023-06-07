@@ -15,7 +15,6 @@ export const getCatalog = async () => {
                 acc.find(item => item.ID === el.IBLOCK_SECTION_ID).list.push({ count: 0, ...el })
               return acc
             }, [])
-          console.log('catList = ', list);
           return list
         } else {
           console.log('Error while get catalog list', res);
@@ -43,6 +42,19 @@ export const getProductsOfSelectedSystem = async (idsArr) => {
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while getProductsOfSelectedSystem', res);
+          }
+      })
+      .catch((err) => console.log('Error while getProductsOfSelectedSystem', err))
+};
+
+//получить только id заданных катогория по массиву id этих категорий
+export const getIdsOfSelectedSystem = async (idsArr) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod_id', 'section_id': idsArr.join(';') })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod_id && res.data.get_catalog_prod_id.data) {
+              return Object.values(res.data.get_catalog_prod_id.data)
           } else {
               console.log('Error while getProductsOfSelectedSystem', res);
           }
@@ -103,7 +115,6 @@ export const addProductToBacket = async (id, count, backet_id) => {
 export const getBacketProducts = async (backet_id) => {
   return await sendRequest('', 'POST', { 'method': 'cart_get', 'fuser_id': backet_id})
       .then((res) => {
-        console.log(res);
           if (res.status === 200) {
               if (res.data.cart_get.isSuccess === 1) {
                 return res.data.cart_get.data
@@ -218,7 +229,7 @@ export const sendFile = async (file) => {
     .catch((err) => console.log('Error while send form data', err))
 };
 
-//получить товар по id
+//получить товар по id для карточки
 export const getProductById = async (id) => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': id, 'get_all_no_null_prop': 'Y', 'get_podob': "Y" })
       .then((res) => {
@@ -230,6 +241,19 @@ export const getProductById = async (id) => {
           }
       })
       .catch((err) => console.log('Error while getProductById', err))
+};
+
+//получить товары по массиву id
+export const getProductsByIdArr = async (idsArr) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': idsArr.join(';')})
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+          } else {
+              console.log('Error while getProductsByIdArr', res);
+          }
+      })
+      .catch((err) => console.log('Error while getProductsByIdArr', err))
 };
 
 //получить лучшие предложения
