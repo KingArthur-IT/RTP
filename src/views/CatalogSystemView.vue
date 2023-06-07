@@ -47,7 +47,7 @@ export default {
       allProductsIds: [],
       allProducts: [],
       currentPage: 0,
-      productsPerPage: 10,
+      productsPerPage: 12,
       filteredProducts: [],
       maxPrice: 100,
       isLoaded: false,
@@ -110,9 +110,7 @@ export default {
     async addProductsFromIds() {
       const start = this.currentPage * this.productsPerPage
       const end = (this.currentPage + 1) * this.productsPerPage
-      console.log(start, end, this.allProductsIds.length, this.allProductsIds.slice(start, end));
       const newProducts = await this.getProductsByIdArr(this.allProductsIds.slice(start, end))
-      console.log(newProducts);
       if (newProducts) {
         const transformed = this.transformProductData(newProducts)
         this.allProducts.push(...transformed)
