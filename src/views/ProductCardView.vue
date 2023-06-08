@@ -1,81 +1,86 @@
 <template>
   <main>
     <div class="container product-card">
-        <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.PREVIEW_TEXT" :thirdLevelPage="pageName" />
-        <div class="product-head">
-            <div class="product-head__head">
-                <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
-                <div class="product-head__icons">
-                    <div class="product-head__icon">
-                        <CopyLink />
+        <div v-if="!isLoading">
+            <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.PREVIEW_TEXT" :thirdLevelPage="pageName" />
+            <div class="product-head">
+                <div class="product-head__head">
+                    <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
+                    <div class="product-head__icons">
+                        <div class="product-head__icon">
+                            <CopyLink />
+                        </div>
+                        <div class="product-head__icon">
+                            <ShareBtn />
+                        </div>
+                        <div class="product-head__icon" @click="printDoc">
+                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5801 7.41406H18.5801V2.41406H6.58008V7.41406H5.58008C3.92608 7.41406 2.58008 8.76006 2.58008 10.4141V17.4141C2.58008 18.5171 3.47708 19.4141 4.58008 19.4141H6.58008V22.4141H18.5801V19.4141H20.5801C21.6831 19.4141 22.5801 18.5171 22.5801 17.4141V10.4141C22.5801 8.76006 21.2341 7.41406 19.5801 7.41406ZM8.58008 4.41406H16.5801V7.41406H8.58008V4.41406ZM16.5801 20.4141H8.58008V16.4141H16.5801V20.4141ZM20.5801 17.4141H18.5801V14.4141H6.58008V17.4141H4.58008V10.4141C4.58008 9.86306 5.02908 9.41406 5.58008 9.41406H19.5801C20.1321 9.41406 20.5801 9.86306 20.5801 10.4141V17.4141Z" fill="#828D99"/>
+                                <path d="M14.5801 10.4141H18.5801V12.4141H14.5801V10.4141Z" fill="#828D99"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="product-head__icon">
-                        <ShareBtn />
+                </div>
+                <div class="subhead">
+                    <div class="subhead__hero">
+                        <!-- <div class="subhead__item stars">
+                            <div v-for="i in 5" :key="i" class="subhead__star" :class="{'active': i <= starsCount}">
+                                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97047 12.2464L11.0769 13.5131C11.8347 13.9688 12.7675 13.2891 12.5659 12.4282L12.0083 10.0464L13.8621 8.44631C14.5325 7.86765 14.1754 6.76744 13.2929 6.69285L10.8507 6.48641L9.89068 4.22961C9.54551 3.4182 8.39544 3.4182 8.05027 4.22961L7.09025 6.48641L4.64801 6.69285C3.76555 6.76744 3.40842 7.86765 4.07884 8.44631L5.93268 10.0464L5.37501 12.4282C5.17343 13.2891 6.10629 13.9688 6.86402 13.5131L8.97047 12.2464Z" fill="#A6ACB3"/>
+                                    <mask id="mask0_1201_13047" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="3" width="12" height="11">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97047 12.2464L11.0769 13.5131C11.8347 13.9688 12.7675 13.2891 12.5659 12.4282L12.0083 10.0464L13.8621 8.44631C14.5325 7.86765 14.1754 6.76744 13.2929 6.69285L10.8507 6.48641L9.89068 4.22961C9.54551 3.4182 8.39544 3.4182 8.05027 4.22961L7.09025 6.48641L4.64801 6.69285C3.76555 6.76744 3.40842 7.86765 4.07884 8.44631L5.93268 10.0464L5.37501 12.4282C5.17343 13.2891 6.10629 13.9688 6.86402 13.5131L8.97047 12.2464Z" fill="white"/>
+                                    </mask>
+                                    <g mask="url(#mask0_1201_13047)">
+                                        <rect x="0.941406" y="0.0664062" width="16.0588" height="16" fill="#C3D3E5"/>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div> -->
+                        <!-- <div class="subhead__item">19 отзывов</div>
+                        <div class="subhead__item">23 вопроса</div> -->
+                        <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
                     </div>
-                    <div class="product-head__icon" @click="printDoc">
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.5801 7.41406H18.5801V2.41406H6.58008V7.41406H5.58008C3.92608 7.41406 2.58008 8.76006 2.58008 10.4141V17.4141C2.58008 18.5171 3.47708 19.4141 4.58008 19.4141H6.58008V22.4141H18.5801V19.4141H20.5801C21.6831 19.4141 22.5801 18.5171 22.5801 17.4141V10.4141C22.5801 8.76006 21.2341 7.41406 19.5801 7.41406ZM8.58008 4.41406H16.5801V7.41406H8.58008V4.41406ZM16.5801 20.4141H8.58008V16.4141H16.5801V20.4141ZM20.5801 17.4141H18.5801V14.4141H6.58008V17.4141H4.58008V10.4141C4.58008 9.86306 5.02908 9.41406 5.58008 9.41406H19.5801C20.1321 9.41406 20.5801 9.86306 20.5801 10.4141V17.4141Z" fill="#828D99"/>
-                            <path d="M14.5801 10.4141H18.5801V12.4141H14.5801V10.4141Z" fill="#828D99"/>
-                        </svg>
+                    <div class="subhead__info">
+                        <div>Артикул {{ productCardInfo?.arProps?.CML2_ARTICLE.VALUE }}</div>
+                        <div>Код {{ code }}</div>
                     </div>
                 </div>
             </div>
-            <div class="subhead">
-                <div class="subhead__hero">
-                    <!-- <div class="subhead__item stars">
-                        <div v-for="i in 5" :key="i" class="subhead__star" :class="{'active': i <= starsCount}">
-                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97047 12.2464L11.0769 13.5131C11.8347 13.9688 12.7675 13.2891 12.5659 12.4282L12.0083 10.0464L13.8621 8.44631C14.5325 7.86765 14.1754 6.76744 13.2929 6.69285L10.8507 6.48641L9.89068 4.22961C9.54551 3.4182 8.39544 3.4182 8.05027 4.22961L7.09025 6.48641L4.64801 6.69285C3.76555 6.76744 3.40842 7.86765 4.07884 8.44631L5.93268 10.0464L5.37501 12.4282C5.17343 13.2891 6.10629 13.9688 6.86402 13.5131L8.97047 12.2464Z" fill="#A6ACB3"/>
-                                <mask id="mask0_1201_13047" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="3" width="12" height="11">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.97047 12.2464L11.0769 13.5131C11.8347 13.9688 12.7675 13.2891 12.5659 12.4282L12.0083 10.0464L13.8621 8.44631C14.5325 7.86765 14.1754 6.76744 13.2929 6.69285L10.8507 6.48641L9.89068 4.22961C9.54551 3.4182 8.39544 3.4182 8.05027 4.22961L7.09025 6.48641L4.64801 6.69285C3.76555 6.76744 3.40842 7.86765 4.07884 8.44631L5.93268 10.0464L5.37501 12.4282C5.17343 13.2891 6.10629 13.9688 6.86402 13.5131L8.97047 12.2464Z" fill="white"/>
-                                </mask>
-                                <g mask="url(#mask0_1201_13047)">
-                                    <rect x="0.941406" y="0.0664062" width="16.0588" height="16" fill="#C3D3E5"/>
-                                </g>
-                            </svg>
+            <div class="product-hero">
+                <div class="product-hero__about">
+                    <div class="product-hero__preview">
+                        <ProductCardPreview :photoes="productCardInfo?.arPhoto" />
+                    </div>
+                    <div class="product-hero__detail">
+                        <ProductCardDetail 
+                            :list="description" 
+                            :colors="colors" 
+                            @updateSelectedIndex="updateSelectedInDetails"
+                            @updateSelectedColor="updateSelectedColor"
+                        />
+                        <div class="product-hero__characteristics desctop">
+                            <div class="product-hero__title">Характеристики:</div>
+                            <ProductCharacteristics :list="characteristics"/>
+                            <a v-if="mainDescription" href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
                         </div>
-                    </div> -->
-                    <!-- <div class="subhead__item">19 отзывов</div>
-                    <div class="subhead__item">23 вопроса</div> -->
-                    <div class="subhead__item"><span class="fw-normal">Остаток на складе:</span> <span class="count">Много</span> </div>
+                    </div>
+                    <div class="product-hero__characteristics mobile">
+                        <div class="product-hero__title">Характеристики:</div>
+                        <ProductCharacteristics :list="characteristics" />
+                        <a v-if="mainDescription" href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
+                    </div>
                 </div>
-                <div class="subhead__info">
-                    <div>Артикул {{ productCardInfo?.arProps?.CML2_ARTICLE.VALUE }}</div>
-                    <div>Код {{ code }}</div>
+                <div class="product-hero__card">
+                    <PriceCard 
+                        :prodId="$route.query.id"
+                        :price="Number(productCardInfo?.arPrice?.PRICE) || 0" 
+                        v-model:productCount="productCount" 
+                    />
                 </div>
             </div>
         </div>
-        <div class="product-hero">
-            <div class="product-hero__about">
-                <div class="product-hero__preview">
-                    <ProductCardPreview :photoes="productCardInfo?.arPhoto" />
-                </div>
-                <div class="product-hero__detail">
-                    <ProductCardDetail 
-                        :list="description" 
-                        :colors="colors" 
-                        @updateSelectedIndex="updateSelectedInDetails"
-                        @updateSelectedColor="updateSelectedColor"
-                    />
-                    <div class="product-hero__characteristics desctop">
-                        <div class="product-hero__title">Характеристики:</div>
-                        <ProductCharacteristics :list="characteristics"/>
-                        <div class="product-hero__go-to-details">Перейти к описанию</div>
-                    </div>
-                </div>
-                <div class="product-hero__characteristics mobile">
-                    <div class="product-hero__title">Характеристики:</div>
-                    <ProductCharacteristics :list="characteristics" />
-                    <a v-if="mainDescription" href="#description" class="product-hero__go-to-details">Перейти к описанию</a>
-                </div>
-            </div>
-            <div class="product-hero__card">
-                <PriceCard 
-                    :prodId="$route.query.id"
-                    :price="Number(productCardInfo?.arPrice?.PRICE) || 0" 
-                    v-model:productCount="productCount" 
-                />
-            </div>
+        <div v-else class="product-card__loader">
+            <Loader />
         </div>
         <!-- <div class="often-buy">
             <div class="section-title often-buy__title">
@@ -130,6 +135,7 @@ import { getProductById, getCatalog } from '@/use/middleware.js'
 import { getPageName } from '@/use/helpers.js'
 import ShareBtn from '../components/UIKit/ShareBtn.vue';
 import CopyLink from '../components/UIKit/CopyLink.vue';
+import Loader from '../components/UIKit/Loader.vue';
 
 export default {
     components: {
@@ -140,10 +146,12 @@ export default {
         ProductCharacteristics,
         ProductCard,
         ShareBtn,
-        CopyLink
+        CopyLink,
+        Loader
     },
     data() {
         return {
+            isLoading: true,
             pageName: '',
             productCardInfo: null,
             starsCount: 4,
@@ -245,6 +253,10 @@ export default {
                         this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
                     }
                 })
+
+            setTimeout(() => {
+                this.isLoading = false
+            }, 500);
             },
             getColorHex(text) {
                 switch (text) {
@@ -288,6 +300,8 @@ export default {
 <style scoped lang="sass">
 .product-card
     margin-top: 10px
+    &__loader
+        margin-top: 50px
 .product-head
     margin-top: 40px
     &__head

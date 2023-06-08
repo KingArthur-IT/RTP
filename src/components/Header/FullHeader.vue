@@ -30,7 +30,7 @@
         </div>
         <div class="header__contacts">
             <button class="header__btn" @click="isModalShow = true">Заказать обратный звонок</button>
-            <a href="mailto:sales@rtp.ru" class="header__mail">sale@rtp.ru</a>
+            <a href="mailto:sale@rtp.ru" class="header__mail">sale@rtp.ru</a>
         </div>
     </div>
     <Modal 
