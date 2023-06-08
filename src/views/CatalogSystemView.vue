@@ -20,6 +20,7 @@
             :cardsList="filteredProducts" 
             :hasMoreProducts="hasMoreProducts"
             @showMoreProducts="showMoreProducts"
+            @updateSortVal="updateSortVal"
           />
         </div>
       </div>
@@ -55,6 +56,7 @@ export default {
       categoriesList: {},
       typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
+      sortVal: {}
     }
   },
   async mounted() {
@@ -112,6 +114,9 @@ export default {
           }
         })
       }
+      if (Object.keys(this.sortVal).length)
+        filters['sort'] = this.sortVal.sort
+
       //все id продуктов из категорий этой системы
       //если массив заполнен, то берем его, если нет берем все категории секции
       const activeCatalogArray = this.activeCatIdsArr.length ? this.activeCatIdsArr : this.categoriesList.list.map(el => el.ID)
@@ -177,6 +182,8 @@ export default {
           })
         })
       }
+
+      console.log(selectedTypes, this.typesForFilter);
     },
 
     //трансформировать данные из массива продуктов
@@ -213,7 +220,6 @@ export default {
       const isCategoriesChanged = this.activeCatIdsArr.join(';') !== selectedCategories.filter(c => c.isSelected).map(c => c.ID).join(';') ||
             !(!this.activeCatIdsArr.length && selectedCategories.every(c => !c.isSelected))
 
-      console.log('isCategoriesChanged', isCategoriesChanged);
       this.isLoaded = false
       this.activeCatIdsArr = []
       this.activeCatIdsArr = selectedCategories.filter(cat => cat.isSelected).map(cat => cat.ID)
@@ -242,6 +248,18 @@ export default {
         .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
 
       
+      if (selectedTypes) {
+        selectedTypes.forEach(el => {
+          el.list.forEach(l => {
+            const type = this.typesForFilter.find(t => t.propName === el.propName)
+            if (type) {
+              const listEl = type.list.find(p => p.value === l.value)
+              if (listEl)
+                listEl.isChecked = l.isChecked
+            }
+          })
+        })
+      }
       this.filteredProducts = this.allProducts
 
       setTimeout(() => {
@@ -258,6 +276,37 @@ export default {
       
       this.filteredProducts = []
       this.filteredProducts = this.allProducts
+    },
+
+    async updateSortVal(data) {
+      this.sortVal = data
+      
+      this.isLoaded = false
+      this.allProducts = []
+      this.filteredProducts = []
+      this.currentPage = 0
+
+      //никаких галок не выбрано
+      if (this.typesForFilter.every(t => t.list.every(l => !l.isChecked))) {
+        this.filteredProducts = []
+        this.isLoaded = true
+        return
+      }
+
+      console.log(this.typesForFilter);
+      //хотя бы одна отменена иначе не фильтруем
+      if (this.typesForFilter.some(t => t.list.some(l => !l.isChecked)))
+        await this.getProductsIds(this.typesForFilter, false)
+      else
+        await this.getProductsIds()
+
+      await this.addProductsFromIds()    
+
+      this.filteredProducts = this.allProducts
+
+      setTimeout(() => {
+        this.isLoaded = true
+      }, 1000);
     }
   },
   computed: {

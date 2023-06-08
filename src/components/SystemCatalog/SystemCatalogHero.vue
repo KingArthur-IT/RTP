@@ -127,7 +127,7 @@ export default {
         Loader,
         DarkRectButton
     },
-    emits: ['showMoreProducts'],
+    emits: ['showMoreProducts', 'updateSortVal'],
     props: {
         cardsList: {
             type: Array,
@@ -216,43 +216,47 @@ export default {
     },
     watch: {
         filterValue() {
-            const compareFromCheap = ( a, b ) => {
-                if ( Number(a.PRICE) < Number(b.PRICE) )
-                    return -1;
-                if ( Number(a.PRICE) > Number(b.PRICE) )
-                    return 1;
-                return 0;
-            }
-            const compareFromExpansive = ( a, b ) => {
-                if ( Number(a.PRICE) > Number(b.PRICE) )
-                    return -1;
-                if ( Number(a.PRICE) < Number(b.PRICE) )
-                    return 1;
-                return 0;
-            }
-            const compareStars = ( a, b ) => {
-                if ( a.startsCount > b.startsCount )
-                    return -1;
-                if ( a.startsCount < b.startsCount )
-                    return 1;
-                return 0;
-            }
-            const compareDate = ( a, b ) => {
-                if ( Number(a.CREATED_DATE) > Number(b.CREATED_DATE) )
-                    return -1;
-                if ( Number(a.CREATED_DATE) < Number(b.CREATED_DATE) )
-                    return 1;
-                return 0;
-            }
+            // const compareFromCheap = ( a, b ) => {
+            //     if ( Number(a.PRICE) < Number(b.PRICE) )
+            //         return -1;
+            //     if ( Number(a.PRICE) > Number(b.PRICE) )
+            //         return 1;
+            //     return 0;
+            // }
+            // const compareFromExpansive = ( a, b ) => {
+            //     if ( Number(a.PRICE) > Number(b.PRICE) )
+            //         return -1;
+            //     if ( Number(a.PRICE) < Number(b.PRICE) )
+            //         return 1;
+            //     return 0;
+            // }
+            // const compareStars = ( a, b ) => {
+            //     if ( a.startsCount > b.startsCount )
+            //         return -1;
+            //     if ( a.startsCount < b.startsCount )
+            //         return 1;
+            //     return 0;
+            // }
+            // const compareDate = ( a, b ) => {
+            //     if ( Number(a.CREATED_DATE) > Number(b.CREATED_DATE) )
+            //         return -1;
+            //     if ( Number(a.CREATED_DATE) < Number(b.CREATED_DATE) )
+            //         return 1;
+            //     return 0;
+            // }
 
+            // if (this.filterValue === 'cheap')
+            //     this.filteredList.sort(compareFromCheap)
+            // if (this.filterValue === 'expansive')
+            //     this.filteredList.sort(compareFromExpansive)
+            // if (this.filterValue === 'popular')
+            //     this.filteredList.sort(compareStars)
+            // if (this.filterValue === 'new')
+            //     this.filteredList.sort(compareDate)
             if (this.filterValue === 'cheap')
-                this.filteredList.sort(compareFromCheap)
+                this.$emit('updateSortVal', { 'sort': 'A'})
             if (this.filterValue === 'expansive')
-                this.filteredList.sort(compareFromExpansive)
-            if (this.filterValue === 'popular')
-                this.filteredList.sort(compareStars)
-            if (this.filterValue === 'new')
-                this.filteredList.sort(compareDate)
+                this.$emit('updateSortVal', { 'sort': 'Z'})
         },
         cardsList: {
             async handler() {

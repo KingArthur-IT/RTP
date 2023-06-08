@@ -212,8 +212,10 @@ export default {
             if (currColorVal)
                 this.colors.push({ value: currColorVal, isSelected: true, color: this.getColorHex(currColorVal.trim()), id: this.$route.query.id})
             const currDiametr = this.productCardInfo.arPropsNoNull?.DIAMETR?.VALUE
-            if (currDiametr)
-                this.description[0].values.push({ value: currDiametr, id: this.$route.query.id })
+            if (currDiametr) {
+                const val = this.productCardInfo.arPropsNoNull?.TOLSHCHINA_STENKI?.VALUE ? `${String(currDiametr).replace(/\D/g, "")}/${this.productCardInfo.arPropsNoNull?.TOLSHCHINA_STENKI?.VALUE}` : currDiametr
+                this.description[0].values.push({ value: val, id: this.$route.query.id })
+            }
             const currDlina = this.productCardInfo.arPropsNoNull?.DLINA?.VALUE
             if (currDlina)
                 this.description[1].values.push({ value: currDlina, id: this.$route.query.id })
@@ -231,8 +233,9 @@ export default {
 
             if (!!elWithDiametr)
                 elWithDiametr.forEach(diam => {
-                    if (!this.description[0].values.some(c => c.value === diam.prop_val)) {
-                        this.description[0].values.push({ value: diam.prop_val, id: diam.prod_id })
+                    const val = diam.prop_val_2 ? `${String(diam.prop_val).replace(/\D/g, "")}/${diam.prop_val_2}` : diam.prop_val
+                    if (!this.description[0].values.some(c => c.value === val)) {
+                        this.description[0].values.push({ value: val, id: diam.prod_id })
                     }
                 })
 
@@ -242,8 +245,6 @@ export default {
                         this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
                     }
                 })
-
-            console.log(this.description);
             },
             getColorHex(text) {
                 switch (text) {
