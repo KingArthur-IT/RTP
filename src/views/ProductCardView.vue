@@ -154,7 +154,7 @@ export default {
                     selectedValueIndex: 0
                 },
                 { 
-                    title: 'Количество в упаковке, м/шт',
+                    title: 'Длина, м',
                     values: [],
                     selectedValueIndex: 0
                 },
@@ -203,48 +203,62 @@ export default {
                         !el.NAME.includes('Alpha') && !el.NAME.includes('Betta') && !el.NAME.includes('Gamma') && !el.NAME.includes('Delta') && !el.NAME.includes('Sigma')
                 )
 
+            //текущие хар-ки товара
+            this.colors = []
+            this.description[0].values = []
+            this.description[1].values = []
+
             const currColorVal = this.productCardInfo.arPropsNoNull?.TSVET?.VALUE
             if (currColorVal)
-                this.colors.push({ value: currColorVal, isSelected: true, color: currColorVal.trim() === 'Белый' ? '#fff' : '#C3D3E5', id: this.$route.query.id})
+                this.colors.push({ value: currColorVal, isSelected: true, color: this.getColorHex(currColorVal.trim()), id: this.$route.query.id})
             const currDiametr = this.productCardInfo.arPropsNoNull?.DIAMETR?.VALUE
             if (currDiametr)
                 this.description[0].values.push({ value: currDiametr, id: this.$route.query.id })
-            const currKolvo = this.productCardInfo.arPropsNoNull?.KOLVO?.VALUE
-            if (currKolvo)
-                this.description[1].values.push({ value: currKolvo, id: this.$route.query.id })
+            const currDlina = this.productCardInfo.arPropsNoNull?.DLINA?.VALUE
+            if (currDlina)
+                this.description[1].values.push({ value: currDlina, id: this.$route.query.id })
 
-            const elWithColors = this.productCardInfo.arPodobnie?.color
+            const elWithColors = this.productCardInfo.arPodobnie?.color //[] arr
             const elWithDiametr = this.productCardInfo.arPodobnie?.diametr
-            const elWithKolvo = this.productCardInfo.arPodobnie?.kolvo
+            const elWithDlina = this.productCardInfo.arPodobnie?.dlina
 
             if (!!elWithColors)
-                for (let index = 0; index < elWithColors.length; index++) {
-                    const element = await this.getProductById(elWithColors[index])
-                    if (!this.colors.some(c => c.value === element.arPropsNoNull?.TSVET.VALUE)) {
-                        const colorVal = element.arPropsNoNull?.TSVET.VALUE
-                        if (colorVal)
-                            this.colors.push({ value: colorVal, isSelected: true, color: colorVal === 'Белый' ? 'fff' : '#C3D3E5', id: elWithColors[index]})
+                elWithColors.forEach(color => {
+                    if (!this.colors.some(c => c.value === color.prop_val)) {
+                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_id})
                     }
-                }
+                })
 
             if (!!elWithDiametr)
-                for (let index = 0; index < elWithDiametr.length; index++) {
-                    const element = await this.getProductById(elWithDiametr[index])
-                    if (!this.description[0].values.some(c => c.value === element.arPropsNoNull?.DIAMETR.VALUE)) {
-                        const diametrVal = element.arPropsNoNull?.DIAMETR.VALUE
-                        if (diametrVal)
-                            this.description[0].values.push({ value: diametrVal, prodId: elWithDiametr[index] })
+                elWithDiametr.forEach(diam => {
+                    if (!this.description[0].values.some(c => c.value === diam.prop_val)) {
+                        this.description[0].values.push({ value: diam.prop_val, id: diam.prod_id })
                     }
-                }
+                })
 
-            if (!!elWithKolvo)
-                for (let index = 0; index < elWithKolvo.length; index++) {
-                    const element = await this.getProductById(elWithKolvo[index])
-                    if (!this.description[0].values.some(c => c.value === element.arPropsNoNull?.KOLVO.VALUE)) {
-                        const diametrVal = element.arPropsNoNull?.KOLVO.VALUE
-                        if (diametrVal)
-                            this.description[1].values.push({ value: diametrVal, prodId: elWithKolvo[index] })
+            if (!!elWithDlina)
+                elWithDlina.forEach(dlina => {
+                    if (!this.description[1].values.some(c => c.value === dlina.prop_val)) {
+                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
                     }
+                })
+
+            console.log(this.description);
+            },
+            getColorHex(text) {
+                switch (text) {
+                    case 'Белый':
+                        return '#fff'
+                    case 'Серый':
+                        return '#C3D3E5'
+                    case 'Зеленый':
+                        return '#00ff00'
+                    case 'Синий':
+                        return '#0000ff'
+                    case 'Красный':
+                        return '#ff0000'
+                    default:
+                        return '#fff'
                 }
             }
     },

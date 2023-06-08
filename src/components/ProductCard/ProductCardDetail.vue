@@ -8,7 +8,7 @@
                     <div 
                       class="product-detail__item" 
                       :class="{'active': i === item.selectedValueIndex}"
-                      @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: val.id } })"
+                      @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: val.id } })"
                     >{{ val.value }}</div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                 <div 
                     class="product-detail__color" 
                     :style="`background: ${color.color}`"
-                    @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'alpha' }, query: { id: color.id } })"
+                    @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: color.id } })"
                 ></div>
                 <!-- @click="$emit('updateSelectedColor', color.value)" -->
             </div>
