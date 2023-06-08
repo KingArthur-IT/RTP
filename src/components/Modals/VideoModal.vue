@@ -24,6 +24,12 @@ export default {
             isVisible: false
         }
     },
+    mounted() {
+        document.querySelector('body').addEventListener('click', () => {
+            if (this.open)
+                this.closeModal()
+        })
+    },
     methods: {
         closeModal() {
             this.$emit('update:open', false)
@@ -32,7 +38,6 @@ export default {
     watch: {
         open() {
             if (this.open) {
-                document.body.classList.add('overflow-hidden')
                 this.isShown = true
                 setTimeout(() => {
                     this.isVisible = true
@@ -40,7 +45,6 @@ export default {
             } else {
                 const src = this.$refs.modalHero.querySelector('iframe').getAttribute('src')
                 this.$refs.modalHero.querySelector('iframe').setAttribute('src', src)
-                document.body.classList.remove('overflow-hidden')
                 this.isVisible = false
                 setTimeout(() => {
                     this.isShown = false

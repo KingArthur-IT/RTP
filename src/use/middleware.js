@@ -50,11 +50,15 @@ export const getProductsOfSelectedSystem = async (idsArr) => {
 };
 
 //получить только id заданных катогория по массиву id этих категорий
-export const getIdsOfSelectedSystem = async (idsArr) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod_id', 'section_id': idsArr.join(';') })
+export const getIdsOfSelectedSystem = async (idsArr, filters = null) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod_id', 'section_id': idsArr.join(';'), ...filters })
       .then((res) => {
-          if (res.status === 200 && res.data && res.data.get_catalog_prod_id && res.data.get_catalog_prod_id.data) {
-              return Object.values(res.data.get_catalog_prod_id.data)
+          if (res.status === 200 && res.data && res.data.get_catalog_prod_id && res.data.get_catalog_prod_id.data && res.data.get_catalog_prod_id.data_prop && res.data.get_catalog_prod_id.data_price_max) {
+              return {
+                data: res.data.get_catalog_prod_id.data,
+                props: res.data.get_catalog_prod_id.data_prop,
+                max_price: res.data.get_catalog_prod_id.data_price_max
+              }
           } else {
               console.log('Error while getProductsOfSelectedSystem', res);
           }

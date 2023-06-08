@@ -1,5 +1,5 @@
 <template>
-  <div class="video-section">
+  <div class="video-section" @click.stop>
       <div class="video-section__hero">
           <div class="video-section__icon" @click="isModalOpened = true">
               <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,6 +49,7 @@ export default {
         flex-direction: column
         justify-content: center
         align-items: center
+        width: fit-content
     &__icon
         margin-bottom: 40px
         cursor: pointer

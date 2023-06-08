@@ -65,8 +65,7 @@ export default {
 
     await this.addProductsFromIds()
 
-    this.countMaxPrice()
-    this.createTypesForFilter()
+    // this.countMaxPrice()
     
     //применить фильтр категорий если есть активная 
     this.filteredProducts = this.allProducts
@@ -100,11 +99,30 @@ export default {
       });
     },
 
-    async getProductsIds() {
+    async getProductsIds(selectedTypes = null, isCategoriesChanged = true) {
+      let filters = {}
+      let inx = 0
+      if (selectedTypes) {
+        selectedTypes.forEach(item => {
+          const checkedVals = item.list.filter(i => i.isChecked).map(i => i.value).join(';')
+          if (checkedVals) {
+            inx ++
+            filters[`filter_prop_${inx}`] = item.propName
+            filters[`filter_prop_${inx}_val`] = checkedVals
+          }
+        })
+      }
       //все id продуктов из категорий этой системы
-      if (this.activeCatIdsArr.length)
-        this.allProductsIds = await this.getIdsOfSelectedSystem(this.activeCatIdsArr)
-      else this.allProductsIds = await this.getIdsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
+      //если массив заполнен, то берем его, если нет берем все категории секции
+      const activeCatalogArray = this.activeCatIdsArr.length ? this.activeCatIdsArr : this.categoriesList.list.map(el => el.ID)
+      const getIdsResult = await this.getIdsOfSelectedSystem(activeCatalogArray, filters)
+
+      if (getIdsResult && getIdsResult.data && getIdsResult.props) {
+        this.allProductsIds = getIdsResult.data
+        this.maxPrice = Math.ceil(getIdsResult.max_price)
+        if (isCategoriesChanged)
+          this.createTypesForFilter(getIdsResult.props, null)
+      }
     },
 
     //получить currentProductsCount товаров по их id
@@ -127,24 +145,38 @@ export default {
     },
 
     //сформировать массив типов для секции фильтров с галочками
-    createTypesForFilter() {
+    createTypesForFilter(data, selectedTypes) {
       this.typesForFilter = []
-      this.allProducts.forEach(product => {
+      const allProducts = Object.values(data)
+      allProducts.forEach(product => {
         this.typesPropsList.forEach(prop => {
-          const findProp = product.hidden.find(p => p.name === prop)
-          if (findProp && findProp.value) { //если значение такого пропа у продукта есть
-            const propInTypes = this.typesForFilter.find(t => t.name === findProp.name) //если он есть уже в типах фильтров
+          const findProp = product[prop] //product.hidden.find(p => p.name === prop)
+          if (findProp && findProp.VALUE) { //если значение такого пропа у продукта есть
+            const propInTypes = this.typesForFilter.find(t => t.name === prop) //если он есть уже в типах фильтров
             if (propInTypes) { //если уже есть такой тип
-              const findVal = propInTypes.list.find(v => v.value === findProp.value) //добавлено ли в него такое значение?
+              const findVal = propInTypes.list.find(v => v.value === findProp.VALUE) //добавлено ли в него такое значение?
               if (findVal) 
                 findVal.count += 1
-              else propInTypes.list.push({ value: findProp.value, count: 1, isChecked: true})
+              else propInTypes.list.push({ value: findProp.VALUE, count: 1, isChecked: true})
             } else {
-              this.typesForFilter.push({ name: findProp.name, description: findProp.description, propName: prop, list: [ { value: findProp.value, count: 1, isChecked: true} ] })
+              this.typesForFilter.push({ name: prop, description: findProp.NAME, propName: prop, list: [ { value: findProp.VALUE, count: 1, isChecked: true} ] })
             }
           }
         })
       })
+
+      if (selectedTypes) {
+        selectedTypes.forEach(el => {
+          el.list.forEach(l => {
+            const type = this.typesForFilter.find(t => t.propName === el.propName)
+            if (type) {
+              const listEl = type.list.find(p => p.value === l.value)
+              if (listEl)
+                listEl.isChecked = l.isChecked
+            }
+          })
+        })
+      }
     },
 
     //трансформировать данные из массива продуктов
@@ -175,95 +207,13 @@ export default {
       })
     },
 
-    // async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
-    //   //получить продукты по выбранным категориям
-    //   if (selectedCategories.length)
-    //     this.allProducts = await this.getProductsOfSelectedSystem(selectedCategories.map(el => el.ID))
-    //   else this.allProducts = await this.getProductsOfSelectedSystem(this.categoriesList.list.map(el => el.ID))
-
-    //   //сформировать массив типов для секции фильтров с галочками
-    //   this.typesForFilter = []
-    //   this.allProducts.forEach(product => {
-    //     this.typesPropsList.forEach(prop => {
-    //       if (product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
-    //         const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
-    //         if (propInTypes) { //если уже есть такой тип
-    //           const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
-    //           if (findVal) 
-    //             findVal.count += 1
-    //           else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: true})
-    //         } else
-    //           this.typesForFilter.push({ name: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: true} ] })
-    //       }
-    //     })
-    //   })
-
-    //   //перезаписать isChecked
-    //   selectedTypes.forEach(el => {
-    //     el.list.forEach(l => {
-    //       const type = this.typesForFilter.find(t => t.propName === el.propName)
-    //       if (type) {
-    //         const listEl = type.list.find(p => p.value === l.value)
-    //         if (listEl)
-    //           listEl.isChecked = l.isChecked
-    //       }
-    //     })
-    //   })
-
-    //   this.maxPrice = 0
-    //   //посчитать мах цену
-    //   this.allProducts.forEach(el => {
-    //     if (el.arPrice.PRICE > this.maxPrice)
-    //       this.maxPrice = Math.ceil(el.arPrice.PRICE)
-    //   })
-
-    //   //трансформировать данные из массива продуктов
-    //   this.allProducts = this.allProducts.map(pr => {
-    //     const infoList = []
-    //     const hiddenList = []
-    //     this.propsArray.forEach((propName) => {
-    //       if (pr.arProps[propName].VALUE)
-    //         infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
-    //     })
-    //     this.typesPropsList.forEach((propName) => {
-    //       hiddenList.push({ name: propName, value: pr.arProps[propName].VALUE })
-    //     })
-
-    //     return {
-    //       ID: pr.arFields.ID,
-    //       IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
-    //       NAME: pr.arFields.NAME,
-    //       PREVIEW_PICTURE: pr.arFields.PREVIEW_PICTURE,
-    //       PREVIEW_TEXT: pr.arFields.PREVIEW_TEXT,
-    //       CREATED_DATE: pr.arFields.DATE_CREATE_UNIX,
-    //       PRICE: pr.arPrice.PRICE,
-    //       info: infoList,
-    //       hidden: hiddenList,
-    //       photoes: pr.arPhotoPrew
-    //     }
-    //   })
-
-    //   //ост фильры
-    //   this.filteredProducts = []
-    //   this.filteredProducts = this.allProducts 
-    //     .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
-
-    //   console.log(selectedTypes.some(t => t.list.some(l => !l.isChecked)))
-    //   if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
-    //     this.filteredProducts = this.filteredProducts
-    //       .filter(p => {
-    //         let isSelected = false
-    //         selectedTypes
-    //           .filter(el => el.list.some(ch => ch.isChecked))
-    //           .forEach(prop => { //фикс цвет
-    //             const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
-    //             isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
-    //           })
-    //         return isSelected
-    //       })
-    //   }
-    // },
     async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+      window.scrollTo({ top: 250, behavior: 'smooth' })
+
+      const isCategoriesChanged = this.activeCatIdsArr.join(';') !== selectedCategories.filter(c => c.isSelected).map(c => c.ID).join(';') ||
+            !(!this.activeCatIdsArr.length && selectedCategories.every(c => !c.isSelected))
+
+      console.log('isCategoriesChanged', isCategoriesChanged);
       this.isLoaded = false
       this.activeCatIdsArr = []
       this.activeCatIdsArr = selectedCategories.filter(cat => cat.isSelected).map(cat => cat.ID)
@@ -272,46 +222,27 @@ export default {
       this.maxPrice = 0
       this.allProducts = []
 
-      await this.getProductsIds()
-      await this.addProductsFromIds()
-
-      this.createTypesForFilter()
-      this.countMaxPrice()
-
-      //перезаписать isChecked
-      selectedTypes.forEach(el => {
-        el.list.forEach(l => {
-          const type = this.typesForFilter.find(t => t.propName === el.propName)
-          if (type) {
-            const listEl = type.list.find(p => p.value === l.value)
-            if (listEl)
-              listEl.isChecked = l.isChecked
-          }
-        })
-      })
-
-      //ост фильры
-      this.filteredProducts = this.allProducts 
-        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
-
+      //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
         this.filteredProducts = []
         this.isLoaded = true
         return
       }
-      if (selectedTypes.some(t => t.list.some(l => !l.isChecked))) {
-        this.filteredProducts = this.filteredProducts
-          .filter(p => {
-            let isSelected = false
-            selectedTypes
-              .filter(el => el.list.some(ch => ch.isChecked))
-              .forEach(prop => { //фикс цвет
-                const productPropValue = p.hidden.find(el => el.name === prop.propName).value //какой цвет у продукта
-                isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
-              })
-            return isSelected
-          })
-      }
+
+      //хотя бы одна отменена иначе не фильтруем
+      if (selectedTypes.some(t => t.list.some(l => !l.isChecked)))
+        await this.getProductsIds(selectedTypes, isCategoriesChanged)
+      else
+        await this.getProductsIds()
+
+      await this.addProductsFromIds()
+
+      //ост фильтры
+      this.filteredProducts = this.allProducts 
+        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
+
+      
+      this.filteredProducts = this.allProducts
 
       setTimeout(() => {
         this.isLoaded = true
@@ -323,8 +254,7 @@ export default {
     async showMoreProducts() {
       this.currentPage ++
       await this.addProductsFromIds()
-      this.countMaxPrice()
-      this.createTypesForFilter()
+      // this.countMaxPrice()
       
       this.filteredProducts = []
       this.filteredProducts = this.allProducts
@@ -333,6 +263,7 @@ export default {
   computed: {
     hasMoreProducts() {
       const max = (this.currentPage + 1) * this.productsPerPage
+      // return this.filteredProducts.length > max
       return this.allProductsIds.length > max
       // return this.allProductsIds.length !== this.filteredProducts.length
     }

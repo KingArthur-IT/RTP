@@ -19,14 +19,14 @@
           </div> -->
       </div>
       <div class="preview__wrapper">
-          <div class="preview__sale">
+          <!-- <div class="preview__sale">
                 <div>
                     <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.45205 0.964844L0.800781 12.0503H5.23496V18.7016L11.8862 7.61611H7.45205V0.964844Z" fill="white"/>
                     </svg>
                 </div>
                 <span>Распродажа</span>
-          </div>
+          </div> -->
           <img v-if="!photoes.length && isPreviewImage" src="@/assets/card-no-img.jpg" alt="preview">
           <img v-else-if="isPreviewImage" :src="photoes[currentActiveImage]" alt="preview">
           <!-- <video v-else src="@/assets/product-card/video.mp4" controls></video> -->
