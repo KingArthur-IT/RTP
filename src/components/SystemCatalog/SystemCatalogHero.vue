@@ -91,8 +91,7 @@
                 </div>
             </div>
             <div v-if="hasMoreProducts && filteredList.length" class="more-btn">
-                <DarkRectButton v-if="!isMoreBtnLoaderShown" :text="'Показать еще'" @click="showMore"/>
-                <Loader v-else />
+                <Loader v-if="isMoreBtnLoaderShown" />
             </div>
         </div>
   </div>
@@ -115,7 +114,6 @@ import FiltersRow from '../Search/FiltersRow.vue'
 import Modal from '../Modals/Modal.vue'
 import { getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
 import Loader from '../UIKit/Loader.vue'
-import DarkRectButton from '../UIKit/DarkRectButton.vue'
 
 export default {
     components: {
@@ -125,9 +123,8 @@ export default {
         FiltersRow,
         Modal,
         Loader,
-        DarkRectButton
     },
-    emits: ['showMoreProducts', 'updateSortVal'],
+    emits: ['showMoreProducts', 'updateSortVal', 'update:isMoreBtnLoaderShown'],
     props: {
         cardsList: {
             type: Array,
@@ -138,6 +135,10 @@ export default {
             default: true
         },
         hasMoreProducts: {
+            type: Boolean,
+            default: false
+        },
+        isMoreBtnLoaderShown: {
             type: Boolean,
             default: false
         }
@@ -153,7 +154,6 @@ export default {
             oftenBuyList: ['Труба PN10 SDR 11-25мм для ХВС', 'Труба PN16 SDR 7.4 -25мм для ГВС', 'Уголок 90гр', 'Муфта'],
             filteredList: [],
             productsInCart: [],
-            isMoreBtnLoaderShown: false
         }
     },
     async mounted() {
@@ -209,10 +209,6 @@ export default {
                 localStorage.setItem('cartCount', cartCount - 1)
             }
         },
-        showMore() {
-            this.isMoreBtnLoaderShown = true
-            this.$emit('showMoreProducts')
-        }
     },
     watch: {
         filterValue() {
@@ -261,7 +257,8 @@ export default {
         cardsList: {
             async handler() {
                 await this.setFilteredList()
-                this.isMoreBtnLoaderShown = false
+                // this.isMoreBtnLoaderShown = false
+                this.$emit('update:isMoreBtnLoaderShown', false)
             },
             deep: true
         }

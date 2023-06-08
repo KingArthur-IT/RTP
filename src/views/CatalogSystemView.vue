@@ -16,6 +16,7 @@
         </div>
         <div class="catalog-system__hero">
           <SystemCatalogHero 
+            v-model:isMoreBtnLoaderShown="isMoreBtnLoaderShown"
             :isLoaded="isLoaded" 
             :cardsList="filteredProducts" 
             :hasMoreProducts="hasMoreProducts"
@@ -56,7 +57,8 @@ export default {
       categoriesList: {},
       typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
-      sortVal: {}
+      sortVal: {},
+      isMoreBtnLoaderShown: false
     }
   },
   async mounted() {
@@ -74,6 +76,34 @@ export default {
     setTimeout(() => {
       this.isLoaded = true
     }, 1000);
+
+    //Scroll animation
+    let previousY = 0
+    let previousRatio = 0
+    const suggestionBlock = document.querySelector('.footer');
+    const showMoreObserver = new IntersectionObserver(entries => {
+        const currentY = entries[0].boundingClientRect.y
+        const currentRatio = entries[0].intersectionRatio
+        const isIntersecting = entries[0].isIntersecting
+
+        if (currentY < previousY)
+            if (currentRatio > previousRatio && isIntersecting) {
+                entries.forEach(entry => {
+                  if (this.hasMoreProducts) {
+                    this.isMoreBtnLoaderShown = true
+                    this.showMoreProducts()
+                  }
+                })
+            }
+
+        previousY = currentY
+        previousRatio = currentRatio
+    }, {
+        rootMargin: '0px',
+    });
+
+    if (suggestionBlock)
+        showMoreObserver.observe(suggestionBlock);
   },
   methods: {
     getAllCategoriesCount, 
@@ -182,8 +212,6 @@ export default {
           })
         })
       }
-
-      console.log(selectedTypes, this.typesForFilter);
     },
 
     //трансформировать данные из массива продуктов
