@@ -74,9 +74,9 @@
                                         Срок - {{ slide.term }}
                                     </span>
                                 </div>
-                                <div class="slide__btn">
+                                <!-- <div class="slide__btn">
                                     <DarkRectButton :text="'Хочу смету'" />
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
