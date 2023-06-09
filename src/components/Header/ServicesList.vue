@@ -92,7 +92,7 @@ export default {
             this.$emit('closeEvent')
             if (name !== 'alpha-system') {
                 if (this.$route.name.includes('catalog-system')) {
-                    this.$router.push({ name: 'home' })
+                    this.$router.push({ name: 'loader' })
                     setTimeout(() => {
                         this.$router.push({ name: 'catalog-system', params: { name: name } })
                     }, 10);

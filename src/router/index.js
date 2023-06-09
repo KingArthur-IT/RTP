@@ -89,6 +89,11 @@ const router = createRouter({
       meta: { name: 'Оплата' }
     },
     {
+      path: '/loader',
+      name: 'loader',
+      component: () => import('../views/LoaderView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: () => import('../views/NotFoundView.vue'),
       meta: { name: '404' }
