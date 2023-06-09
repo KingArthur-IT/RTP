@@ -69,9 +69,6 @@ export default {
 
     await this.addProductsFromIds()
 
-    // this.countMaxPrice()
-    
-    //применить фильтр категорий если есть активная 
     this.filteredProducts = this.allProducts
     setTimeout(() => {
       this.isLoaded = true
@@ -307,34 +304,34 @@ export default {
     },
 
     async updateSortVal(data) {
-      this.sortVal = data
+      // this.sortVal = data
       
-      this.isLoaded = false
-      this.allProducts = []
-      this.filteredProducts = []
-      this.currentPage = 0
+      // this.isLoaded = false
+      // this.allProducts = []
+      // this.filteredProducts = []
+      // this.currentPage = 0
 
-      //никаких галок не выбрано
-      if (this.typesForFilter.every(t => t.list.every(l => !l.isChecked))) {
-        this.filteredProducts = []
-        this.isLoaded = true
-        return
-      }
+      // //никаких галок не выбрано
+      // if (this.typesForFilter.every(t => t.list.every(l => !l.isChecked))) {
+      //   this.filteredProducts = []
+      //   this.isLoaded = true
+      //   return
+      // }
 
-      console.log(this.typesForFilter);
-      //хотя бы одна отменена иначе не фильтруем
-      if (this.typesForFilter.some(t => t.list.some(l => !l.isChecked)))
-        await this.getProductsIds(this.typesForFilter, false)
-      else
-        await this.getProductsIds()
+      // console.log(this.typesForFilter);
+      // //хотя бы одна отменена иначе не фильтруем
+      // if (this.typesForFilter.some(t => t.list.some(l => !l.isChecked)))
+      //   await this.getProductsIds(this.typesForFilter, false)
+      // else
+      //   await this.getProductsIds()
 
-      await this.addProductsFromIds()    
+      // await this.addProductsFromIds()    
 
-      this.filteredProducts = this.allProducts
+      // this.filteredProducts = this.allProducts
 
-      setTimeout(() => {
-        this.isLoaded = true
-      }, 1000);
+      // setTimeout(() => {
+      //   this.isLoaded = true
+      // }, 1000);
     }
   },
   computed: {
@@ -344,7 +341,7 @@ export default {
       return this.allProductsIds.length > max
       // return this.allProductsIds.length !== this.filteredProducts.length
     }
-  }
+  },
 }
 </script>
 

@@ -57,7 +57,7 @@ export default {
     getCatalog, 
     getAllCategoriesCount,
     getPageName
-  }
+  },
 }
 </script>
 
