@@ -10,7 +10,7 @@
         >
             <slide v-for="(slide, index) in systemList" :key="index">
                 <div class="slide" :class="slide.name">
-                    <img :src="getImageUrl('baner-bg', slide.name)" :alt="slide.name" class="slide__bg" loading="lazy">
+                    <img :src="getImageUrl('baner-bg', slide.name)" :alt="slide.name" class="slide__bg">
                     <div class="slide__hero">
                         <div class="slide__label">
                             <img :src="getImageUrl('logos', slide.name)" :alt="slide.name" class="slide__logo">
