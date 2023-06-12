@@ -50,7 +50,7 @@
                   </div>
                   <div class="input-wrapper">
                       <div class="input-label">Проверка*</div>
-                      <div>
+                      <div v-if="loadedRecaptchaKey">
                         <vue-recaptcha 
                             :sitekey="loadedRecaptchaKey"
                             size="normal" 
@@ -169,7 +169,7 @@ export default {
     data() {
         return {
             recaptchaKey: '6LcwCykmAAAAABP9W5phHOE9GWHkyvwca1y1B9hz',
-            loadedRecaptchaKey: '6LcwCykmAAAAABP9W5phHOE9GWHkyvwca1y1B9hz',
+            loadedRecaptchaKey: '',
             name: '',
             surname: '',
             phone: '+7 (',
@@ -186,9 +186,6 @@ export default {
             isVisible: false,
             isAcceptedModalShown: false,
         }
-    },
-    mounted() {
-        this.loadedRecaptchaKey = this.recaptchaKey
     },
     methods: {
         validateEmail,
@@ -243,8 +240,12 @@ export default {
     },
     watch: {
         open() {
-            this.recaptchaExpired()
+            if (!this.recaptchaKey)
+                this.recaptchaExpired()
             if (this.open) {
+                if (!this.loadedRecaptchaKey) {
+                    this.loadedRecaptchaKey = this.recaptchaKey
+                }
                 document.body.classList.add('overflow-hidden')
                 this.isShown = true
                 setTimeout(() => {
