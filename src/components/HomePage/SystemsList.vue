@@ -4,7 +4,7 @@
           <div class="card" @click="goToPage(item.name)" :class="item.name">
               <img :src="getImageUrl('systems-bg', item.name)" :alt="item.name" class="card__bg">
               <div class="card__label">
-                  <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo">
+                  <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo" loading="lazy">
                   <span>{{ item.title }}</span>
               </div>
               <p class="card__description">Система {{ item.title.toUpperCase() }} {{ item.description }}</p>
