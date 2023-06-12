@@ -1,6 +1,6 @@
 <template>
   <div class="systems-list">
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'alpha' } })">
           <div class="systems-list__card alpha">
               <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -12,7 +12,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'sigma' } })">
           <div class="systems-list__card sigma">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -24,7 +24,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'omega' } })">
           <div class="systems-list__card omega">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -36,7 +36,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'delta' } })">
           <div class="systems-list__card delta">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -48,7 +48,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'beta' } })">
           <div class="systems-list__card beta">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -60,7 +60,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'beta-elite' } })">
           <div class="systems-list__card beta-elite">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -72,7 +72,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'beta-orange' } })">
           <div class="systems-list__card beta-orange">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -84,7 +84,7 @@
               </div>
           </div>
       </div>
-      <div class="systems-list__item">
+      <div class="systems-list__item" @click="$router.push({ name: 'catalog-system', params: { name: 'gamma' } })">
           <div class="systems-list__card gamma">
                <div class="hover-bg"></div>
               <div class="systems-list__label">
@@ -114,6 +114,7 @@ export default {
     &__item
         padding: 4px
         flex-basis: 12.5%
+        cursor: pointer
     &__card
         position: relative
         border-radius: 17px

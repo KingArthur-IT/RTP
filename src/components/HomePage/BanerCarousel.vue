@@ -84,7 +84,8 @@ export default {
         slideDetailClick(name) {
             if (name === 'alpha')
                 this.$router.push({ name: 'alpha-system' })
-            else this.$router.push({ name: 'catalog' })
+            else this.$router.push({ name: 'catalog-system', params: { name: name } })
+            
         },
     },
 }

@@ -94,6 +94,8 @@ export default {
             deep: true
         },
         dataList() {
+            this.currentCount = this.dataList.length
+            this.typeName = this.dataList.description
             this.list = this.dataList.list
         }
     }

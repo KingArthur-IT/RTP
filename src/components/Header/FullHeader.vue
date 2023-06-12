@@ -56,6 +56,9 @@ export default {
             isModalShow: false
         }
     },
+    mounted() {
+        document.querySelector('body').addEventListener('click', () => { this.isServicesHeaderListShown = false })
+    },
     methods: {
         servicesListShownToogle() {
             this.isServicesHeaderListShown = !this.isServicesHeaderListShown

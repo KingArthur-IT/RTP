@@ -18,7 +18,7 @@
             @click="cat.isSelected = !cat.isSelected"
           >{{ cat.NAME }}</div>
       </div>
-      <div v-for="(type, index) in typesArray" :key="index" class="filters__accordeon">
+      <div v-for="(type, index) in typesArray" :key="type.NAME" class="filters__accordeon">
           <FilterCategoryAccordeon 
             :id="String(index)" 
             :dataList="type" 

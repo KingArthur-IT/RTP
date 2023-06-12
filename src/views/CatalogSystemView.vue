@@ -55,7 +55,7 @@ export default {
       isLoaded: false,
       typesForFilter: [],
       categoriesList: {},
-      typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
+      typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
       sortVal: {},
       isMoreBtnLoaderShown: false
@@ -152,6 +152,7 @@ export default {
       if (getIdsResult && getIdsResult.data && getIdsResult.props) {
         this.allProductsIds = getIdsResult.data
         this.maxPrice = Math.ceil(getIdsResult.max_price)
+        console.log(isCategoriesChanged);
         if (isCategoriesChanged)
           this.createTypesForFilter(getIdsResult.props, null)
       }
@@ -221,7 +222,8 @@ export default {
             infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
         this.typesPropsList.forEach((propName) => {
-          hiddenList.push({ name: propName, description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
+          if (pr.arProps[propName] && pr.arProps[propName].NAME && pr.arProps[propName].VALUE)
+            hiddenList.push({ name: propName, description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
 
         return {
