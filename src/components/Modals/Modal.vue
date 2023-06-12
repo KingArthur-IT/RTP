@@ -52,7 +52,7 @@
                       <div class="input-label">Проверка*</div>
                       <div>
                         <vue-recaptcha 
-                            sitekey="6LcwCykmAAAAABP9W5phHOE9GWHkyvwca1y1B9hz"
+                            :sitekey="loadedRecaptchaKey"
                             size="normal" 
                             theme="light"
                             @verify="recaptchaVerified"
@@ -168,6 +168,8 @@ export default {
     },
     data() {
         return {
+            recaptchaKey: '6LcwCykmAAAAABP9W5phHOE9GWHkyvwca1y1B9hz',
+            loadedRecaptchaKey: '6LcwCykmAAAAABP9W5phHOE9GWHkyvwca1y1B9hz',
             name: '',
             surname: '',
             phone: '+7 (',
@@ -184,6 +186,9 @@ export default {
             isVisible: false,
             isAcceptedModalShown: false,
         }
+    },
+    mounted() {
+        this.loadedRecaptchaKey = this.recaptchaKey
     },
     methods: {
         validateEmail,
