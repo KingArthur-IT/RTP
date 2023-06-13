@@ -2,7 +2,7 @@
   <main>
     <div class="container">
       <div class="breadcrumbs">
-        <BreadCrumbsSecondLevel />
+        <BreadCrumbsSecondLevel :thirdLevel="catalogBreadcrumbName" />
       </div>
       <div class="catalog-system">
         <div class="catalog-system__filters">
@@ -10,6 +10,7 @@
             :categoriesList="categories"
             :typesList="typesForFilter"
             :rangeMaximum="maxPrice" 
+            @updateSelectedCategory="updateSelectedCategory"
             @applyFilters="applyFilters"
             @updateMaximum="updateMaximum"
           />
@@ -35,6 +36,7 @@ import SystemCatalogHero from '../components/SystemCatalog/SystemCatalogHero.vue
 import SystemFilters from '../components/SystemCatalog/SystemFilters.vue';
 import { getAllCategoriesCount, getCatalog, getIdsOfSelectedSystem, getProductsOfSelectedSystem, getProductsByIdArr } from '@/use/middleware.js'
 import { isSelectedSystem } from '@/use/helpers.js'
+import { typesPropsList } from '@/data/data'
 
 export default {
   components: {
@@ -44,27 +46,28 @@ export default {
   },
   data() {
     return {
+      systemName: '',
       activeCatIdsArr: [],
       categories: [],
       allProductsIds: [],
       allProducts: [],
+      filteredProducts: [],
       currentPage: 0,
       productsPerPage: 12,
-      filteredProducts: [],
       maxPrice: 100,
       isLoaded: false,
       typesForFilter: [],
       categoriesList: {},
-      typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
+      typesPropsList,
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
       sortVal: {},
       isMoreBtnLoaderShown: false,
-      isFetching: false
     }
   },
   async mounted() {
     window.scrollTo(0, 0);
 
+    this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
     await this.getProductsIds()
 
@@ -78,7 +81,7 @@ export default {
     //Scroll animation
     let previousY = 0
     let previousRatio = 0
-    const suggestionBlock = document.querySelector('.footer');
+    const suggestionBlock = document.querySelector('.empty-block');
     const showMoreObserver = new IntersectionObserver(entries => {
         const currentY = entries[0].boundingClientRect.y
         const currentRatio = entries[0].intersectionRatio
@@ -87,7 +90,7 @@ export default {
         if (currentY < previousY)
             if (currentRatio > previousRatio && isIntersecting) {
                 entries.forEach(entry => {
-                  if (this.hasMoreProducts && !this.isFetching) {
+                  if (this.hasMoreProducts) {
                     this.isMoreBtnLoaderShown = true
                     this.showMoreProducts()
                   }
@@ -111,7 +114,7 @@ export default {
     isSelectedSystem,
     getProductsByIdArr,
 
-    //определить выбранную кагорию и добавить в фильтры вместе с неактивными
+    //определить выбранную кагорию и добавить в фильтры вместе с неактивными - вызывается в mounted
     async findAndApplyCategory() { 
       if (this.$route.query.ID)
         this.activeCatIdsArr = [this.$route.query.ID] //выбранная система
@@ -129,7 +132,7 @@ export default {
       });
     },
 
-    async getProductsIds(selectedTypes = null, isCategoriesChanged = true) {
+    async getProductsIds(selectedTypes = null) {
       let filters = {}
       let inx = 0
       if (selectedTypes) {
@@ -142,8 +145,8 @@ export default {
           }
         })
       }
-      if (Object.keys(this.sortVal).length)
-        filters['sort'] = this.sortVal.sort
+      // if (Object.keys(this.sortVal).length)
+      //   filters['sort'] = this.sortVal.sort
 
       //все id продуктов из категорий этой системы
       //если массив заполнен, то берем его, если нет берем все категории секции
@@ -153,7 +156,7 @@ export default {
       if (getIdsResult && getIdsResult.data && getIdsResult.props) {
         this.allProductsIds = getIdsResult.data
         this.maxPrice = Math.ceil(getIdsResult.max_price)
-        if (isCategoriesChanged)
+        if (!selectedTypes)
           this.createTypesForFilter(getIdsResult.props, null)
       }
     },
@@ -169,20 +172,35 @@ export default {
       }
     },
 
-     //посчитать мах цену
-    countMaxPrice() {
-      this.allProducts.forEach(el => {
-        if (el.PRICE > this.maxPrice)
-          this.maxPrice = Math.ceil(el.PRICE)
-      })
+    getFiltersPropArray() {
+      //подготовить массив св-в которые должны быть в фильтрах
+      let combinedPropsArray = [] 
+      if (this.categories.every(cat => !cat.isSelected))
+        this.categories.forEach(cat => {
+          const catName = String(cat.NAME).trim().toLowerCase()
+          const arr = this.typesPropsList[this.systemName][catName]
+          combinedPropsArray = Array.from(new Set(combinedPropsArray.concat(arr)));
+        })
+      else {
+        const activeCat = this.categories.find(cat => cat.isSelected).NAME
+        const catName = String(activeCat).trim().toLowerCase()
+        const arr = this.typesPropsList[this.systemName][catName]
+        combinedPropsArray = Array.from(new Set(combinedPropsArray.concat(arr)));
+      }
+
+      return combinedPropsArray
     },
 
     //сформировать массив типов для секции фильтров с галочками
     createTypesForFilter(data, selectedTypes) {
       this.typesForFilter = []
       const allProducts = Object.values(data)
+
+      //подготовить массив св-в которые должны быть в фильтрах
+      const combinedPropsArray = this.getFiltersPropArray()
+
       allProducts.forEach(product => {
-        this.typesPropsList.forEach(prop => {
+        combinedPropsArray.forEach(prop => {
           const findProp = product[prop] //product.hidden.find(p => p.name === prop)
           if (findProp && findProp.VALUE) { //если значение такого пропа у продукта есть
             const propInTypes = this.typesForFilter.find(t => t.name === prop) //если он есть уже в типах фильтров
@@ -221,7 +239,10 @@ export default {
           if (pr.arProps[propName].VALUE)
             infoList.push({ description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
-        this.typesPropsList.forEach((propName) => {
+
+        //подготовить массив св-в которые должны быть в фильтрах
+        const combinedPropsArray = this.getFiltersPropArray()
+        combinedPropsArray.forEach((propName) => {
           if (pr.arProps[propName] && pr.arProps[propName].NAME && pr.arProps[propName].VALUE)
             hiddenList.push({ name: propName, description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })
         })
@@ -241,20 +262,36 @@ export default {
       })
     },
 
-    async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
-      window.scrollTo({ top: 250, behavior: 'smooth' })
-      this.isFetching = true
+    //смена категории
+    async updateSelectedCategory(id) {
+      this.categories.forEach(cat => {
+        if (cat.ID !== id)
+          cat.isSelected = false
+        else cat.isSelected = true
+      })
 
-      const isCategoriesChanged = this.activeCatIdsArr.join(';') !== selectedCategories.filter(c => c.isSelected).map(c => c.ID).join(';') ||
-            !(!this.activeCatIdsArr.length && selectedCategories.every(c => !c.isSelected))
+      this.activeCatIdsArr = [id]
 
       this.isLoaded = false
-      this.activeCatIdsArr = []
-      this.activeCatIdsArr = selectedCategories.filter(cat => cat.isSelected).map(cat => cat.ID)
       this.filteredProducts = []
+      this.allProducts = []
+      await this.getProductsIds()
+      await this.addProductsFromIds()
+      this.filteredProducts = this.allProducts
+
+      setTimeout(() => {
+        this.isLoaded = true
+      }, 1000);
+    },
+
+    async applyFilters({ minPrice, maxPrice, selectedTypes }) {
+      window.scrollTo({ top: 250, behavior: 'smooth' })
+
+      this.isLoaded = false
+      this.filteredProducts = []
+      this.allProducts = []
       this.currentPage = 0
       this.maxPrice = 0
-      this.allProducts = []
 
       //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
@@ -263,12 +300,7 @@ export default {
         return
       }
 
-      //хотя бы одна отменена иначе не фильтруем
-      if (selectedTypes.some(t => t.list.some(l => !l.isChecked)))
-        await this.getProductsIds(selectedTypes, isCategoriesChanged)
-      else
-        await this.getProductsIds()
-
+      await this.getProductsIds(selectedTypes)
       await this.addProductsFromIds()
 
       //ост фильтры
@@ -293,9 +325,6 @@ export default {
       setTimeout(() => {
         this.isLoaded = true
       }, 1000);
-      setTimeout(() => {
-        this.isFetching = false
-      }, 4000);
     },
 
     updateMaximum(max) {
@@ -303,13 +332,9 @@ export default {
     },
 
     async showMoreProducts() {
-      if (this.isFetching) return
-
       this.currentPage ++
       await this.addProductsFromIds()
-      // this.countMaxPrice()
       
-      if (this.isFetching) return
       this.filteredProducts = []
       this.filteredProducts = this.allProducts
     },
@@ -348,9 +373,12 @@ export default {
   computed: {
     hasMoreProducts() {
       const max = (this.currentPage + 1) * this.productsPerPage
-      // return this.filteredProducts.length > max
       return this.allProductsIds.length > max
-      // return this.allProductsIds.length !== this.filteredProducts.length
+    },
+    catalogBreadcrumbName() {
+      if (this.categories.some(cat => cat.isSelected)) {
+        return this.categories.find(cat => cat.isSelected).NAME
+      } else return ''
     }
   },
 }

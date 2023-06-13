@@ -67,8 +67,9 @@ export default {
     },
     methods: {
         goToPage() {
-            if (this.thirdLevel)
-                this.$router.push({ name: 'catalog-system', params: this.pageName })
+            if (this.thirdLevel) {
+                this.$router.push({ name: 'catalog-system', params: { name: this.pageName } })
+            }
         }
     }
 }

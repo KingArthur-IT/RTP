@@ -12,10 +12,10 @@
       </div>
       <div class="filters__categories">
           <div 
-            v-for="(cat, index) in categoriesList" :key="index" 
+            v-for="cat in categoriesList" :key="cat.ID" 
             class="filters__cat-item"
             :class="{'active': cat.isSelected}"
-            @click="cat.isSelected = !cat.isSelected"
+            @click="updateCategory(cat.ID)"
           >{{ cat.NAME }}</div>
       </div>
       <div v-for="(type, index) in typesArray" :key="type.NAME" class="filters__accordeon">
@@ -25,25 +25,7 @@
             @updateList="updateTypesArray"
           />
       </div>
-      <!-- <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'2'" :dataList="fitingTypes" />
-      </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'3'" :dataList="connectionTypes" />
-      </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'4'" :dataList="threadTypes" />
-      </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'5'" :dataList="threadSize" />
-      </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'6'" :dataList="diametr" />
-      </div>
-      <div class="filters__accordeon">
-          <FilterCategoryAccordeon :id="'7'" :dataList="color" />
-      </div> -->
-      <div class="filters__btn" @click="applyCategories">
+      <div v-if="typesArray.length" class="filters__btn" @click="applyCategories">
           <DarkRectButton :text="'Применить'" />
       </div>
   </div>
@@ -86,24 +68,17 @@ export default {
         this.typesArray = this.typesList
     },
     methods: {
+        updateCategory(id) {
+            this.$emit('updateSelectedCategory', id)
+        },
         clearFilters() {
-            this.categoriesList.forEach(c => c.isSelected = false )
             this.typesArray.forEach(t => {
                 t.list.forEach(el => el.isChecked = true)
             })
-            // this.fiting.forEach(c => c.isChecked = true)
-            // this.fitingTypes.forEach(c => c.isChecked = true)
-            // this.connectionTypes.forEach(c => c.isChecked = true)
-            // this.threadTypes.forEach(c => c.isChecked = true)
-            // this.threadSize.forEach(c => c.isChecked = true)
-            // this.diametr.forEach(c => c.isChecked = true)
-            // this.color.forEach(c => c.isChecked = true)
-
             this.applyCategories()
         },
         applyCategories() {
             this.$emit('applyFilters', {
-                selectedCategories: this.categoriesList, //.filter(c => c.isSelected),
                 minPrice: this.rangeMinValue,
                 maxPrice: this.rangeMaxValue,
                 selectedTypes: this.typesArray

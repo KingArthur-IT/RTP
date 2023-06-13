@@ -73,13 +73,58 @@ export const systemList = [
     },
 ]
 
-// export const typesPropsList = {
-//     'alpha': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'DIAMETR', 'TSVET', 'OBLAST_PRIMENENIYA', 'ARMIROVANIE_TRUBY', 'RABOCHAYA_TEMPERATURA', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR'],
-//     'beta': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-//     'beta-orange': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-//     'beta-elite': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-//     'gamma': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-//     'delta': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-//     'sigma': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
-//     'omega': ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
-// }
+export const typesPropsList = {
+    'alpha': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'DIAMETR', 'TSVET'],
+        'запорная арматура': ['TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'DIAMETR', 'TSVET'],
+        'коллекторы': ['VID_REZBY', 'DIAMETR'],
+        'труба армированная': ['DIAMETR', 'TSVET', 'OBLAST_PRIMENENIYA', 'ARMIROVANIE_TRUBY', 'RABOCHAYA_TEMPERATURA', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR'],
+        'труба неармированная': ['DIAMETR', 'TSVET', 'OBLAST_PRIMENENIYA', 'RABOCHAYA_TEMPERATURA', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR'],
+        'оборудование для монтажа': [],
+        'материалы для монтажа': [],
+        'другое': [],
+    },
+    'sigma': {
+        'фитинги резьбовые никелированные': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
+        'запорная арматура': ['TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY'],
+        'коллекторы': ['RAZMER_REZBY'],
+        'другое': [],
+    },
+    'delta': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY'],
+        'труба': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'оборудование для монтажа': [],
+        'материалы для монтажа': [],
+        'другое': [],
+    },
+    'gamma': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'DIAMETR', 'VID_REZBY', 'RAZMER_REZBY'],
+        'труба': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR'],
+        'оборудование для монтажа': [],
+        'материалы для монтажа': [],
+        'другое': [],
+    },
+    'omega': {
+        'труба pe-xa': ['DIAMETR', 'DLINA'],
+        'труба pe-rt': ['DIAMETR', 'DLINA', 'TSVET', 'POKRYTIE'],
+        'материалы для монтажа': [],
+    },
+    'beta': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'DIAMETR'],
+        'труба baikal': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'труба пиарком': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'труба rtp': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'материалы для монтажа': [],
+    },
+    'beta-elite': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'DIAMETR'],
+        'труба': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'материалы для монтажа': [],
+    },
+    'beta-orange': {
+        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'DIAMETR'],
+        'труба': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'траба пиарком': ['DIAMETR', 'DLINA', 'TOLSHCHINA_STENKI'],
+        'материалы для монтажа': [],
+    }
+}

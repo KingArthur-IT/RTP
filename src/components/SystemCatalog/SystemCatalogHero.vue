@@ -94,6 +94,7 @@
                 <Loader v-if="isMoreBtnLoaderShown" />
             </div>
         </div>
+        <div class="empty-block"></div>
   </div>
   <Modal 
         v-model:open="isModalShow"
@@ -401,6 +402,11 @@ export default {
     margin: 0 auto
     margin-top: 8px
     height: 30px
+.empty-block
+    width: 100%
+    height: 10px
+    opacity: 0
+    pointer-events: none
 
 @media screen and (max-width: 1600px)
     .catalog-baner
