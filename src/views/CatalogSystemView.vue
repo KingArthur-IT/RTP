@@ -58,7 +58,8 @@ export default {
       typesPropsList: ['VID_FITINGA', 'TIP_FITINGA', 'DIAMETR', 'TSVET', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'METALLY', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'OBLAST_PRIMENENIYA', 'NOMINALNOE_DAVLENIE_PN_BAR', 'RABOCHAYA_TEMPERATURA', 'ARMIROVANIE_TRUBY', 'POKRYTIE'],
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
       sortVal: {},
-      isMoreBtnLoaderShown: false
+      isMoreBtnLoaderShown: false,
+      isFetching: false
     }
   },
   async mounted() {
@@ -86,7 +87,7 @@ export default {
         if (currentY < previousY)
             if (currentRatio > previousRatio && isIntersecting) {
                 entries.forEach(entry => {
-                  if (this.hasMoreProducts) {
+                  if (this.hasMoreProducts && !this.isFetching) {
                     this.isMoreBtnLoaderShown = true
                     this.showMoreProducts()
                   }
@@ -152,7 +153,6 @@ export default {
       if (getIdsResult && getIdsResult.data && getIdsResult.props) {
         this.allProductsIds = getIdsResult.data
         this.maxPrice = Math.ceil(getIdsResult.max_price)
-        console.log(isCategoriesChanged);
         if (isCategoriesChanged)
           this.createTypesForFilter(getIdsResult.props, null)
       }
@@ -243,6 +243,7 @@ export default {
 
     async applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
       window.scrollTo({ top: 250, behavior: 'smooth' })
+      this.isFetching = true
 
       const isCategoriesChanged = this.activeCatIdsArr.join(';') !== selectedCategories.filter(c => c.isSelected).map(c => c.ID).join(';') ||
             !(!this.activeCatIdsArr.length && selectedCategories.every(c => !c.isSelected))
@@ -292,15 +293,23 @@ export default {
       setTimeout(() => {
         this.isLoaded = true
       }, 1000);
+      setTimeout(() => {
+        this.isFetching = false
+      }, 4000);
     },
+
     updateMaximum(max) {
       this.maxPrice = max
     },
+
     async showMoreProducts() {
+      if (this.isFetching) return
+
       this.currentPage ++
       await this.addProductsFromIds()
       // this.countMaxPrice()
       
+      if (this.isFetching) return
       this.filteredProducts = []
       this.filteredProducts = this.allProducts
     },

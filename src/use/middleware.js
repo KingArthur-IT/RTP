@@ -53,7 +53,6 @@ export const getProductsOfSelectedSystem = async (idsArr) => {
 export const getIdsOfSelectedSystem = async (idsArr, filters = null) => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod_id', 'section_id': idsArr.join(';'), ...filters })
       .then((res) => {
-        console.log(res);
           if (res.status === 200 && res.data && res.data.get_catalog_prod_id && res.data.get_catalog_prod_id.data && res.data.get_catalog_prod_id.data_prop && res.data.get_catalog_prod_id.data_price_max) {
               return {
                 data: res.data.get_catalog_prod_id.data,
@@ -71,7 +70,6 @@ export const getIdsOfSelectedSystem = async (idsArr, filters = null) => {
 export const getAllProducts = async () => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod' })
       .then((res) => {
-          console.log(res);
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
           } else {

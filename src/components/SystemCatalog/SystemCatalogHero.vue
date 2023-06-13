@@ -194,13 +194,11 @@ export default {
         },
         async updateCountInCart({ delta, id }) {
             const cartId = localStorage.getItem('cartId') || 0
-            console.log('add');
             await this.addProductToBacket(id, delta, cartId)
         },
         async deleteFromCart(id) {
             const cartId = localStorage.getItem('cartId')
             const rez = await deleteCartItem(id, cartId)
-            console.log(rez);
             if (rez) {
                 this.filteredList.find(p => p.ID == id).isInCart = false
 
