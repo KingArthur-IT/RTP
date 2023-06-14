@@ -39,7 +39,7 @@ import BreadCrumbsSecondLevel from '../components/BreadCrumbs/BreadCrumbsSecondL
 import SystemCatalogHero from '../components/SystemCatalog/SystemCatalogHero.vue';
 import SystemFilters from '../components/SystemCatalog/SystemFilters.vue';
 import { getAllCategoriesCount, getCatalog, getIdsOfSelectedSystem, getProductsOfSelectedSystem, getProductsByIdArr } from '@/use/middleware.js'
-import { isSelectedSystem } from '@/use/helpers.js'
+import { isSelectedSystem, toggleStopper } from '@/use/helpers.js'
 import { typesPropsList } from '@/data/data'
 
 export default {
@@ -70,6 +70,7 @@ export default {
   },
   async mounted() {
     window.scrollTo(0, 0);
+    this.toggleStopper(true)
 
     this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
@@ -80,6 +81,7 @@ export default {
     this.filteredProducts = this.allProducts
     setTimeout(() => {
       this.isLoaded = true
+      this.toggleStopper(false)
     }, 1000);
 
     //Scroll animation
@@ -111,6 +113,7 @@ export default {
         showMoreObserver.observe(suggestionBlock);
   },
   methods: {
+    toggleStopper,
     getAllCategoriesCount, 
     getCatalog, 
     getProductsOfSelectedSystem,
@@ -269,6 +272,7 @@ export default {
 
     //смена категории
     async updateSelectedCategory(id) {
+      this.toggleStopper(true)
       this.categories.forEach(cat => {
         if (cat.ID !== id)
           cat.isSelected = false
@@ -283,17 +287,21 @@ export default {
       this.isLoaded = false
       this.filteredProducts = []
       this.allProducts = []
+      this.currentPage = 0
       await this.getProductsIds()
+
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
 
       setTimeout(() => {
         this.isLoaded = true
+        this.toggleStopper(false)
       }, 1000);
     },
 
     //вернуться на систему, сбросить выбранные категории
     async backToFullSystem() {
+      this.toggleStopper(true)
       this.categories.forEach(cat => {
         cat.isSelected = false
         this.$router.push({ name: 'catalog-system', params: { name: this.systemName } })
@@ -310,11 +318,13 @@ export default {
 
       setTimeout(() => {
         this.isLoaded = true
+        this.toggleStopper(false)
       }, 1000);
     },
 
     async applyFilters({ minPrice, maxPrice, selectedTypes }) {
       window.scrollTo({ top: 250, behavior: 'smooth' })
+      this.toggleStopper(true)
 
       this.isLoaded = false
       this.filteredProducts = []
@@ -353,6 +363,7 @@ export default {
 
       setTimeout(() => {
         this.isLoaded = true
+        this.toggleStopper(false)
       }, 1000);
     },
 
@@ -361,11 +372,16 @@ export default {
     },
 
     async showMoreProducts() {
+      if (!this.isLoaded) return
+
+      this.toggleStopper(false)
       this.currentPage ++
       await this.addProductsFromIds()
       
       this.filteredProducts = []
       this.filteredProducts = this.allProducts
+
+      this.toggleStopper(false)
     },
 
     async updateSortVal(data) {

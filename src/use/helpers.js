@@ -93,4 +93,10 @@ export const getMonthName = (val) => {
     return month
 }
 
+export const toggleStopper = (val) => {
+  if (val)
+    document.querySelector('.stopper').classList.add('show')
+  else document.querySelector('.stopper').classList.remove('show')
+}
+
 //new URL(`../assets/${folderName}/${imgName}.${extension}`, import.meta.url).href

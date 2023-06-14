@@ -26,6 +26,7 @@ import { getPageName } from '@/use/helpers.js'
 import { getCatalog, getAllCategoriesCount } from '@/use/middleware.js'
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import Loader from '../components/UIKit/Loader.vue'
+import { toggleStopper } from '@/use/helpers.js'
 
 export default {
   components: {
@@ -42,6 +43,8 @@ export default {
   },
   async mounted(){
     window.scrollTo(0, 0);
+    this.toggleStopper(true)
+
     this.catalogList = await this.getCatalog()
     this.sectionIdCounts = await this.getAllCategoriesCount()
 
@@ -52,8 +55,10 @@ export default {
     })
 
     this.isLoaded = true
+    this.toggleStopper(false)
   },
   methods: {
+    toggleStopper,
     getCatalog, 
     getAllCategoriesCount,
     getPageName
