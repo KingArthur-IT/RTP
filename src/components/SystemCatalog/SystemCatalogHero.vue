@@ -142,6 +142,10 @@ export default {
         isMoreBtnLoaderShown: {
             type: Boolean,
             default: false
+        },
+        banerTitle: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -163,7 +167,7 @@ export default {
         // this.productsInCart = cartPrd.map(p => { return { id: p.prod_id, count: p.count} })
 
         this.pageName = this.$route.params.name;
-        this.banerInfo = this.systemList.find(el => el.name === this.pageName)
+        this.banerInfo = JSON.parse(JSON.stringify(this.systemList.find(el => el.name === this.pageName)))
 
         //все товары + данные о том есть ли в корзине и кол-во
         await this.setFilteredList()
@@ -260,6 +264,15 @@ export default {
                 this.$emit('update:isMoreBtnLoaderShown', false)
             },
             deep: true
+        },
+        banerTitle() {
+            if (this.banerTitle) {
+                this.banerInfo.catalogBanerTitleHtml = this.banerTitle
+            } else {
+                const info = this.systemList.find(el => el.name === this.pageName)
+                this.banerInfo = {}
+                this.banerInfo = JSON.parse(JSON.stringify(info))
+            }
         }
     }
 }

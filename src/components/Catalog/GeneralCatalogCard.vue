@@ -9,9 +9,11 @@
           </div>
       </div>
       <div class="card__body">
-          <div class="card__row" v-for="item in data" :key="item.ID" @click="$router.push({ name: 'catalog-system', params: { name: pageName }, query: { ID: item.ID } })">
-              <div class="card__name">{{ item.NAME }}</div>
-              <div class="card__count">{{ item.count }}</div>
+          <div v-for="item in data" :key="item.ID" @click="$router.push({ name: 'catalog-system', params: { name: pageName, category: item.CODE } })">
+              <div v-if="item.count" class="card__row">
+                    <div class="card__name">{{ item.NAME }}</div>
+                    <div class="card__count">{{ item.count }}</div>
+              </div>
           </div>
       </div>
   </div>

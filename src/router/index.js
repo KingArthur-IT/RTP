@@ -37,7 +37,7 @@ const router = createRouter({
       meta: { name: 'Система ALPHA полипропиленовые трубы и фитинги PP-R' }
     },
     {
-      path: '/catalog-system/:name',
+      path: '/catalog-system/:name/:category?',
       name: 'catalog-system',
       component: () => import('../views/CatalogSystemView.vue'),
     },

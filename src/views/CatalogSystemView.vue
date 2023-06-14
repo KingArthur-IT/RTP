@@ -2,7 +2,10 @@
   <main>
     <div class="container">
       <div class="breadcrumbs">
-        <BreadCrumbsSecondLevel :thirdLevel="catalogBreadcrumbName" />
+        <BreadCrumbsSecondLevel 
+          :thirdLevel="catalogBreadcrumbName" 
+          @backToSystem="backToFullSystem"
+        />
       </div>
       <div class="catalog-system">
         <div class="catalog-system__filters">
@@ -21,6 +24,7 @@
             :isLoaded="isLoaded" 
             :cardsList="filteredProducts" 
             :hasMoreProducts="hasMoreProducts"
+            :banerTitle="catalogBreadcrumbName"
             @showMoreProducts="showMoreProducts"
             @updateSortVal="updateSortVal"
           />
@@ -116,14 +120,15 @@ export default {
 
     //определить выбранную кагорию и добавить в фильтры вместе с неактивными - вызывается в mounted
     async findAndApplyCategory() { 
-      if (this.$route.query.ID)
-        this.activeCatIdsArr = [this.$route.query.ID] //выбранная система
-
       const catalog = await this.getCatalog() //Получить системы и категории 
       const catalogCount = await this.getAllCategoriesCount()
 
       //выбрать из них выбранную систему с категориями
       this.categoriesList = catalog.find(c => this.isSelectedSystem(this.$route.params.name, c.NAME))
+
+      if (this.$route.params.category) {
+        this.activeCatIdsArr = [this.categoriesList.list.find(cat => cat.CODE === this.$route.params.category).ID] //выбранная система
+      }
 
       //если в категории есть товары, то добавить ее и сделать активной выбранную если кликали по ней в каталоге
       this.categoriesList.list.forEach(element => {
@@ -267,10 +272,34 @@ export default {
       this.categories.forEach(cat => {
         if (cat.ID !== id)
           cat.isSelected = false
-        else cat.isSelected = true
+        else {
+          this.$router.push({ name: 'catalog-system', params: { name: this.systemName, category: cat.CODE } })
+          cat.isSelected = true
+        }
       })
 
       this.activeCatIdsArr = [id]
+
+      this.isLoaded = false
+      this.filteredProducts = []
+      this.allProducts = []
+      await this.getProductsIds()
+      await this.addProductsFromIds()
+      this.filteredProducts = this.allProducts
+
+      setTimeout(() => {
+        this.isLoaded = true
+      }, 1000);
+    },
+
+    //вернуться на систему, сбросить выбранные категории
+    async backToFullSystem() {
+      this.categories.forEach(cat => {
+        cat.isSelected = false
+        this.$router.push({ name: 'catalog-system', params: { name: this.systemName } })
+      })
+
+      this.activeCatIdsArr = []
 
       this.isLoaded = false
       this.filteredProducts = []
@@ -379,7 +408,7 @@ export default {
       if (this.categories.some(cat => cat.isSelected)) {
         return this.categories.find(cat => cat.isSelected).NAME
       } else return ''
-    }
+    },
   },
 }
 </script>

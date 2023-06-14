@@ -7,7 +7,7 @@ export const getCatalog = async () => {
       .then((res) => {
         if (res.status === 200 && res.data && res.data.get_catalog_sections && res.data.get_catalog_sections.data) {
           const list = res.data.get_catalog_sections.data
-            .map(el => { return { ID: el.ID, NAME: el.NAME, IBLOCK_SECTION_ID: el.IBLOCK_SECTION_ID, list: []} }) //transform data
+            .map(el => { return { ID: el.ID, NAME: el.NAME, IBLOCK_SECTION_ID: el.IBLOCK_SECTION_ID, CODE: el.CODE, list: []} }) //transform data
             .reduce((acc, el) => { //collect categotiest to list []
               if (!el.IBLOCK_SECTION_ID) //если это не категория а верхний уровень
                 acc.push(el)

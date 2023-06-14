@@ -69,6 +69,7 @@ export default {
         goToPage() {
             if (this.thirdLevel) {
                 this.$router.push({ name: 'catalog-system', params: { name: this.pageName } })
+                this.$emit('backToSystem')
             }
         }
     }
