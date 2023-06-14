@@ -3,10 +3,10 @@
       <div class="mail__hero">
           <div class="mail__title">E-mail</div>
 
-          <a href="mailto:info@rosturplast.ru" class="mail__adress-first">info@rosturplast.ru</a>
+          <a href="mailto:info@rtp.ru" class="mail__adress-first">info@rtp.ru</a>
           <div class="mail__description mail__mb">по остальным вопросам</div>
           
-          <a href="mailto:zakaz@rosturplast.ru" class="mail__adress-second">zakaz@rosturplast.ru</a>
+          <a href="mailto:sale@rtp.ru" class="mail__adress-second">sale@rtp.ru</a>
           <div class="mail__description">по вопросам приобретения<br> продукции</div>
       </div>
       <img src="@/assets/contacts/mail.png" alt="" class="mail__logo">

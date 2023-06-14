@@ -332,6 +332,7 @@ export default {
       this.currentPage = 0
       this.maxPrice = 0
 
+
       //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
         this.filteredProducts = []
@@ -342,11 +343,8 @@ export default {
       await this.getProductsIds(selectedTypes)
       await this.addProductsFromIds()
 
-      //ост фильтры
-      this.filteredProducts = this.allProducts 
-        .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= Math.max(maxPrice, this.maxPrice))
+      this.maxPrice = Math.min(this.maxPrice, maxPrice)
 
-      
       if (selectedTypes) {
         selectedTypes.forEach(el => {
           el.list.forEach(l => {
@@ -359,7 +357,10 @@ export default {
           })
         })
       }
-      this.filteredProducts = this.allProducts
+
+      // this.filteredProducts = this.allProducts
+      this.filteredProducts = this.allProducts 
+        // .filter(p => Number(p.PRICE) >= Number(minPrice) && Number(p.PRICE) <= Number(maxPrice))
 
       setTimeout(() => {
         this.isLoaded = true
