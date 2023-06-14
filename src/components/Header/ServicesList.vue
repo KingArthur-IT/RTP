@@ -95,7 +95,7 @@ export default {
                     this.$router.push({ name: 'loader' })
                     setTimeout(() => {
                         this.$router.push({ name: 'catalog-system', params: { name: name } })
-                    }, 10);
+                    }, 100);
                 } else {
                     this.$router.push({ name: 'catalog-system', params: { name: name } })
                 }
