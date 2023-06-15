@@ -140,7 +140,7 @@ export default {
       });
     },
 
-    async getProductsIds(selectedTypes = null) {
+    async getProductsIds(selectedTypes = null, minPrice = null, maxPrice = null) {
       let filters = {}
       let inx = 0
       if (selectedTypes) {
@@ -153,6 +153,10 @@ export default {
           }
         })
       }
+      if (minPrice)
+        filters[`min_price`] = String(minPrice)
+      if (maxPrice)
+        filters[`max_price`] = String(maxPrice)
       // if (Object.keys(this.sortVal).length)
       //   filters['sort'] = this.sortVal.sort
 
@@ -340,10 +344,16 @@ export default {
         return
       }
 
-      await this.getProductsIds(selectedTypes)
-      await this.addProductsFromIds()
+      //все галки
+      if (selectedTypes.every(t => t.list.every(l => l.isChecked))) {
+        await this.getProductsIds(null, minPrice, maxPrice)
+        await this.addProductsFromIds()
+      } else {
+        await this.getProductsIds(selectedTypes, minPrice, maxPrice)
+        await this.addProductsFromIds()
+      }
 
-      this.maxPrice = Math.min(this.maxPrice, maxPrice)
+      this.maxPrice = maxPrice //Math.min(this.maxPrice, maxPrice)
 
       if (selectedTypes) {
         selectedTypes.forEach(el => {
