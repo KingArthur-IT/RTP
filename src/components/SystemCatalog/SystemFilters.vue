@@ -1,5 +1,5 @@
 <template>
-  <div class="filters">{{minPrice}}
+  <div class="filters">
       <div class="filters__range">
           <PriceRange
             ref="filterPriceRange"
@@ -46,10 +46,6 @@ export default {
         rangeMaximum: {
             type: Number,
             default: 500
-        },
-        minPrice: {
-            type: Number,
-            default: 0
         },
         categoriesList: {
             type: Array,
@@ -103,9 +99,6 @@ export default {
         typesList() {
             this.typesArray = JSON.parse(JSON.stringify(this.typesList))
         },
-        minPrice() {
-            this.rangeMinValue = this.minPrice
-        }
     }
 }
 </script>

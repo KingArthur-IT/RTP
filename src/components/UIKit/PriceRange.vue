@@ -131,11 +131,6 @@ export default {
     max() {
       this.sliderMaxValue = this.max
       this.change()
-    },
-    min() {
-      console.log(this.min);
-      this.sliderMinValue = this.min
-      this.change()
     }
   }
 }

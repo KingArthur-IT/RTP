@@ -13,7 +13,6 @@
             :categoriesList="categories"
             :typesList="typesForFilter"
             :rangeMaximum="maxPrice" 
-            :minPrice="minPrice"
             @updateSelectedCategory="updateSelectedCategory"
             @applyFilters="applyFilters"
             @updateMaximum="updateMaximum"
@@ -60,7 +59,6 @@ export default {
       currentPage: 0,
       productsPerPage: 12,
       maxPrice: 100,
-      minPrice: 0,
       isLoaded: false,
       typesForFilter: [],
       categoriesList: {},
@@ -170,7 +168,6 @@ export default {
       if (getIdsResult && getIdsResult.data && getIdsResult.props) {
         this.allProductsIds = getIdsResult.data
         this.maxPrice = Math.ceil(getIdsResult.max_price)
-        this.minPrice = 0
         if (!selectedTypes)
           this.createTypesForFilter(getIdsResult.props, null)
       }
@@ -337,7 +334,8 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       this.currentPage = 0
-      // this.maxPrice = 0
+      this.maxPrice = 0
+
 
       //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
@@ -356,8 +354,6 @@ export default {
       }
 
       this.maxPrice = maxPrice //Math.min(this.maxPrice, maxPrice)
-      this.minPrice = minPrice
-      console.log(this.minPrice, minPrice);
 
       if (selectedTypes) {
         selectedTypes.forEach(el => {
