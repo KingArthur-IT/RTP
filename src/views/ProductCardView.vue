@@ -273,6 +273,7 @@ export default {
             }, 500);
         },
         async updateCard(id) {
+            this.productCount = 1
             this.$router.replace({ query: { id: id } });
             this.toggleStopper(true)
 
