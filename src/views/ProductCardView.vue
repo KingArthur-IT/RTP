@@ -136,6 +136,7 @@ import { getPageName } from '@/use/helpers.js'
 import ShareBtn from '../components/UIKit/ShareBtn.vue';
 import CopyLink from '../components/UIKit/CopyLink.vue';
 import Loader from '../components/UIKit/Loader.vue';
+import { toggleStopper } from '@/use/helpers.js'
 
 export default {
     components: {
@@ -179,20 +180,33 @@ export default {
         getProductById,
         getCatalog,
         getPageName,
-        updateSelectedInDetails(data) {
-            this.description[data.arrIndex].selectedValueIndex = data.newSelected
+        toggleStopper,
+        updateSelectedInDetails({ arrIndex, newSelected, id }) {
+            const oldSelectedId = this.description[arrIndex].values[this.description[arrIndex].selectedValueIndex].id
+            
+            this.description[arrIndex].selectedValueIndex = newSelected
+
+            if (oldSelectedId !== id)
+                this.updateCard(id)
         },
-        updateSelectedColor(val) {
+        updateSelectedColor({ value, id}) {
+            const oldSelectedId = this.colors.find(c => c.value === value).id
+
             this.colors.forEach(c => {
-                if (c.value !== val)
+                if (c.value !== value)
                     c.isSelected = false
                 else c.isSelected = true
             })
+
+            if (oldSelectedId !== id)
+                this.updateCard(id)
         },
         printDoc() {
             window.print()
         },
         async mountedEvent() {
+            if (!this.isLoading) return
+
             window.scrollTo(0, 0);
             
             this.productCardInfo = await this.getProductById(this.$route.query.id)
@@ -257,23 +271,78 @@ export default {
             setTimeout(() => {
                 this.isLoading = false
             }, 500);
-            },
-            getColorHex(text) {
-                switch (text) {
-                    case 'Белый':
-                        return '#fff'
-                    case 'Серый':
-                        return '#C3D3E5'
-                    case 'Зеленый':
-                        return '#00ff00'
-                    case 'Синий':
-                        return '#0000ff'
-                    case 'Красный':
-                        return '#ff0000'
-                    default:
-                        return '#fff'
-                }
+        },
+        async updateCard(id) {
+            this.$router.replace({ query: { id: id } });
+            this.toggleStopper(true)
+
+            this.productCardInfo = await this.getProductById(id)
+        
+            if (this.$route.params.name === 'all') {
+                this.catalogList = await this.getCatalog()
+                const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
+    
+                this.pageName = this.getPageName(parentSectName)
+            } else {
+                this.pageName = this.getPageName(this.$route.params.name)
             }
+
+            this.characteristics = Object.values(this.productCardInfo.arPropsNoNull)
+                .filter(el => !el.NAME.includes('Адрес') && !el.NAME.includes('Артикул') && !el.NAME.includes('Реквизиты') && !el.NAME.includes('налогов') &&
+                        !el.NAME.includes('Alpha') && !el.NAME.includes('Betta') && !el.NAME.includes('Gamma') && !el.NAME.includes('Delta') && !el.NAME.includes('Sigma')
+                )
+
+            //хар-ки товара
+            // this.colors = []
+            // this.description[0].values = []
+            // this.description[1].values = []
+
+            const elWithColors = this.productCardInfo.arPodobnie?.color //[] arr
+            const elWithDiametr = this.productCardInfo.arPodobnie?.diametr
+            const elWithDlina = this.productCardInfo.arPodobnie?.dlina
+
+            if (!!elWithColors)
+                elWithColors.forEach(color => {
+                    if (!this.colors.some(c => c.value === color.prop_val)) {
+                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_id})
+                    }
+                })
+
+            if (!!elWithDiametr)
+                elWithDiametr.forEach(diam => {
+                    const val = diam.prop_val_2 ? `${String(diam.prop_val).replace(/\D/g, "")}/${diam.prop_val_2}` : diam.prop_val
+                    if (!this.description[0].values.some(c => c.value === val)) {
+                        this.description[0].values.push({ value: val, id: diam.prod_id })
+                    }
+                })
+
+            if (!!elWithDlina)
+                elWithDlina.forEach(dlina => {
+                    if (!this.description[1].values.some(c => c.value === dlina.prop_val)) {
+                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
+                    }
+                })
+
+            setTimeout(() => {
+                this.toggleStopper(false)
+            }, 500);
+        },
+        getColorHex(text) {
+            switch (text) {
+                case 'Белый':
+                    return '#fff'
+                case 'Серый':
+                    return '#C3D3E5'
+                case 'Зеленый':
+                    return '#00ff00'
+                case 'Синий':
+                    return '#0000ff'
+                case 'Красный':
+                    return '#ff0000'
+                default:
+                    return '#fff'
+            }
+        },
     },
     computed: {
         code() {

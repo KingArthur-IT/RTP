@@ -155,6 +155,25 @@ export default {
     watch: {
         productCount() {
             this.count = this.productCount
+        },
+        '$route.query': {
+            immediate: true,
+            async handler(newQuery, oldQuery) {
+                // console.log('New query:', newQuery)
+                // console.log('Old query:', oldQuery)
+
+                this.count = 1
+
+                this.cartId = localStorage.getItem('cartId') || 0
+                if (this.cartId) {
+                    const cartPrd = await this.getBacketProducts(this.cartId)
+                    this.isInCart = cartPrd.some(p => p.prod_id == this.prodId)
+                    if (this.isInCart) {
+                        this.count = cartPrd.find(p => p.prod_id == this.prodId).count
+                        this.$emit('update:productCount', this.count)
+                    }
+                }
+            }
         }
     }
 }

@@ -8,13 +8,12 @@
                     <div 
                       class="product-detail__item" 
                       :class="{'active': i === item.selectedValueIndex}"
-                      @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: val.id } })"
+                      @click="$emit('updateSelectedIndex', { arrIndex: index, newSelected: i, id: val.id })"
                     >{{ val.value }}</div>
                 </div>
             </div>
         </div>
       </div>
-      <!-- @click="$emit('updateSelectedIndex', { arrIndex: index, newSelected: i })" -->
       <div v-if="colors.length">
         <div class="product-detail__title-wrap">
             <div class="product-detail__title">Цвет:</div>
@@ -25,9 +24,8 @@
                 <div 
                     class="product-detail__color" 
                     :style="`background: ${color.color}`"
-                    @click="$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: color.id } })"
+                    @click="$emit('updateSelectedColor', { value: color.value, id: color.id })"
                 ></div>
-                <!-- @click="$emit('updateSelectedColor', color.value)" -->
             </div>
         </div>
       </div>
@@ -93,6 +91,7 @@ export default {
         border-radius: 4px
         text-align: center
         &.active
+            cursor: default
             background: var(--primary-color)
             color: #fff
     &__color
