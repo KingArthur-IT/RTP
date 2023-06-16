@@ -189,8 +189,8 @@ export default {
             if (oldSelectedId !== id)
                 this.updateCard(id)
         },
-        updateSelectedColor({ value, id}) {
-            const oldSelectedId = this.colors.find(c => c.value === value).id
+        updateSelectedColor({ value, id }) {
+            const oldSelectedId = this.$route.query.id
 
             this.colors.forEach(c => {
                 if (c.value !== value)
