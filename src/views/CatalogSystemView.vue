@@ -74,7 +74,12 @@ export default {
 
     this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
-    await this.getProductsIds()
+
+    if (this.systemName === 'alpha' && (this.$route.params.category === '' || this.$route.params.category === 'fitingi')) {
+      await this.getCatalogFromFile()
+    }
+    else
+      await this.getProductsIds()
 
     await this.addProductsFromIds()
 
@@ -82,7 +87,7 @@ export default {
     setTimeout(() => {
       this.isLoaded = true
       this.toggleStopper(false)
-    }, 1000);
+    }, 500);
 
     //Scroll animation
     let previousY = 0
@@ -276,13 +281,16 @@ export default {
 
     //смена категории
     async updateSelectedCategory(id) {
+      let catCode = ''
       this.toggleStopper(true)
+
       this.categories.forEach(cat => {
         if (cat.ID !== id)
           cat.isSelected = false
         else {
           this.$router.push({ name: 'catalog-system', params: { name: this.systemName, category: cat.CODE } })
           cat.isSelected = true
+          catCode = cat.CODE
         }
       })
 
@@ -292,7 +300,13 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       this.currentPage = 0
-      await this.getProductsIds()
+
+      if (this.systemName === 'alpha' && catCode === 'fitingi') {
+        console.log('from file');
+        await this.getCatalogFromFile()
+      }
+      else
+        await this.getProductsIds()
 
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
@@ -300,7 +314,7 @@ export default {
       setTimeout(() => {
         this.isLoaded = true
         this.toggleStopper(false)
-      }, 1000);
+      }, 500);
     },
 
     //вернуться на систему, сбросить выбранные категории
@@ -316,14 +330,20 @@ export default {
       this.isLoaded = false
       this.filteredProducts = []
       this.allProducts = []
-      await this.getProductsIds()
+      
+      if (this.systemName === 'alpha' && (this.$route.params.category === '' || this.$route.params.category === 'fitingi')) {
+        await this.getCatalogFromFile()
+      }
+      else
+        await this.getProductsIds()
+
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
 
       setTimeout(() => {
         this.isLoaded = true
         this.toggleStopper(false)
-      }, 1000);
+      }, 500);
     },
 
     async applyFilters({ minPrice, maxPrice, selectedTypes }) {
@@ -424,6 +444,34 @@ export default {
       // setTimeout(() => {
       //   this.isLoaded = true
       // }, 1000);
+    },
+
+    async getCatalogFromFile() {
+      const fileName = this.$route.params.category === '' ? '' : '_fitings'
+      
+      await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static/get_catalog_prod_id_alpha${fileName}.txt`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке файла: ' + response.status);
+          }
+          return response.text();
+        })
+        .then(data => {
+          if (!data) {
+            console.log(`getCatalogFromFile - file data is ${data}`);
+            return
+          }
+          const getIdsResult = JSON.parse(data)
+          
+          if (getIdsResult && getIdsResult.get_catalog_prod_id && getIdsResult.get_catalog_prod_id.data) {
+            this.allProductsIds = getIdsResult.get_catalog_prod_id.data
+            this.maxPrice = Math.ceil(getIdsResult.get_catalog_prod_id.data_price_max)
+            this.createTypesForFilter(getIdsResult.get_catalog_prod_id.data_prop)
+          }
+        })
+        .catch(error => {
+          console.error('Произошла ошибка:', error);
+        });
     }
   },
   computed: {
