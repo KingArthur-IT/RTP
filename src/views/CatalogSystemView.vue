@@ -75,7 +75,9 @@ export default {
     this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
 
-    if (this.systemName === 'alpha' && (this.$route.params.category === '' || this.$route.params.category === 'fitingi')) {
+    console.log(this.systemName === 'alpha', !this.$route.params.category);
+    if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+      console.log('mounted from file');
       await this.getCatalogFromFile()
     }
     else
@@ -331,7 +333,7 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       
-      if (this.systemName === 'alpha' && (this.$route.params.category === '' || this.$route.params.category === 'fitingi')) {
+      if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
         await this.getCatalogFromFile()
       }
       else
