@@ -75,7 +75,6 @@ export default {
     this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
 
-    console.log(this.systemName === 'alpha', !this.$route.params.category);
     if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
       console.log('mounted from file');
       await this.getCatalogFromFile()
@@ -251,6 +250,8 @@ export default {
 
     //трансформировать данные из массива продуктов
     transformProductData(data) {
+      const combinedPropsArray = this.getFiltersPropArray()
+
       return data.map(pr => {
         const infoList = []
         const hiddenList = []
@@ -260,7 +261,6 @@ export default {
         })
 
         //подготовить массив св-в которые должны быть в фильтрах
-        const combinedPropsArray = this.getFiltersPropArray()
         combinedPropsArray.forEach((propName) => {
           if (pr.arProps[propName] && pr.arProps[propName].NAME && pr.arProps[propName].VALUE)
             hiddenList.push({ name: propName, description: pr.arProps[propName].NAME, value: pr.arProps[propName].VALUE })

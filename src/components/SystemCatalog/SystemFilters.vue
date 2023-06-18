@@ -65,7 +65,20 @@ export default {
     },
     mounted() {
         this.rangeMaxValue = this.rangeMaximum
-        this.typesArray = this.typesList
+
+        if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+            let priorityNames = ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY']; 
+            
+            let filteredObjects = []
+            priorityNames.forEach(name => {
+                const type = this.typesList.find(obj => obj.name === name)
+                if (type)
+                    filteredObjects.push(type)
+            })
+            let remainingObjects = this.typesList.filter(obj => !priorityNames.includes(obj.name));
+
+            this.typesArray = filteredObjects.concat(remainingObjects);
+        } else this.typesArray = this.typesList
     },
     methods: {
         updateCategory(id) {
@@ -97,7 +110,20 @@ export default {
                 this.$emit('updateMaximum', this.rangeMaxValue)
         },
         typesList() {
-            this.typesArray = JSON.parse(JSON.stringify(this.typesList))
+            // this.typesArray = JSON.parse(JSON.stringify(this.typesList))
+
+            if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+                let priorityNames = ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY']; 
+                let filteredObjects = []
+                priorityNames.forEach(name => {
+                    const type = this.typesList.find(obj => obj.name === name)
+                    if (type)
+                        filteredObjects.push(type)
+                })
+                let remainingObjects = this.typesList.filter(obj => !priorityNames.includes(obj.name));
+
+                this.typesArray = filteredObjects.concat(remainingObjects);
+            } else this.typesArray = JSON.parse(JSON.stringify(this.typesList))
         },
     }
 }

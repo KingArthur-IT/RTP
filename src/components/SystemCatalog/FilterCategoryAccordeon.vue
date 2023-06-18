@@ -45,6 +45,14 @@ export default {
         this.currentCount = this.dataList.length
         this.typeName = this.dataList.description
         this.list = this.dataList.list
+
+        if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+            const props = ['Вид фитинга', 'Диаметр', 'Цвет', 'Размер резьбы']
+            if (!props.includes(this.typeName))
+                setTimeout(() => {
+                    this.showHideAccordeon(false)
+                }, 500);
+        }
     },
     data() {
         return {
@@ -84,7 +92,17 @@ export default {
                 } else {
                     bodyWrapper.style.maxHeight = bodyWrapper.scrollHeight + "px";
                 };
-        }
+        },
+        showAccordeon() {
+            this.isBodyShown = true
+            const bodyWrapper = this.$refs[`accordeon${this.id}`].querySelector('.accordeon__body')
+            bodyWrapper.style.maxHeight = bodyWrapper.scrollHeight + "px";
+        },
+        hideAccordeon() {
+            this.isBodyShown = false
+            const bodyWrapper = this.$refs[`accordeon${this.id}`].querySelector('.accordeon__body')
+            bodyWrapper.style.maxHeight = 0;
+        },
     },
     watch: {
         list: {
@@ -97,6 +115,14 @@ export default {
             this.currentCount = this.dataList.length
             this.typeName = this.dataList.description
             this.list = this.dataList.list
+            
+            if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+                const props = ['Вид фитинга', 'Диаметр', 'Цвет', 'Размер резьбы']
+                if (!props.includes(this.typeName))
+                    setTimeout(() => {
+                        this.hideAccordeon()
+                    }, 500);
+            } else this.showAccordeon()
         }
     }
 }

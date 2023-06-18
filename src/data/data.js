@@ -75,7 +75,7 @@ export const systemList = [
 
 export const typesPropsList = {
     'alpha': {
-        'фитинги': ['VID_FITINGA', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'DIAMETR', 'TSVET'],
+        'фитинги': ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY'],
         'запорная арматура': ['TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'RAZMER_REZBY', 'DIAMETR', 'TSVET'],
         'коллекторы': ['VID_REZBY', 'DIAMETR'],
         'труба армированная': ['DIAMETR', 'TSVET', 'OBLAST_PRIMENENIYA', 'ARMIROVANIE_TRUBY', 'RABOCHAYA_TEMPERATURA', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR'],
