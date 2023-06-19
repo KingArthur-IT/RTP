@@ -148,8 +148,13 @@ export default {
                     this.$emit('updateCountInCart', { delta: -1, id: this.id })
                 }
             }
-            if (this.productCount === 1 && this.isInCart)
+            if (this.productCount === 1 && this.isInCart && this.isAddingEnable) {
+                this.isAddingEnable = false
                 this.$emit('deleteFromCart', this.id)
+                setTimeout(() => {
+                    this.isAddingEnable = true
+                }, 200);
+            }
         },
         incrementProductCount() {
             this.$emit('update:count', this.productCount + 1)

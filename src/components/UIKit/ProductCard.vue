@@ -162,8 +162,15 @@ export default {
                 if (this.isInCart) {
                     this.$emit('updateCountInCart', { delta: -1, id: this.id })
                 }
-            } else if (this.productCount === 1 && this.isInCart)
-                this.$emit('deleteFromCart', this.id)
+            } else {
+                if (this.productCount === 1 && this.isInCart && this.isAddingEnable) {
+                    this.isAddingEnable = false
+                    this.$emit('deleteFromCart', this.id)
+                    setTimeout(() => {
+                        this.isAddingEnable = true
+                    }, 200);
+                }
+            }
         },
         incrementProductCount() {
             this.$emit('update:count', this.productCount + 1)
