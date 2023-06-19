@@ -75,12 +75,13 @@ export default {
     this.systemName = this.$route.params.name
     await this.findAndApplyCategory()
 
-    if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
-      console.log('mounted from file');
-      await this.getCatalogFromFile()
-    }
-    else
-      await this.getProductsIds()
+    await this.getCatalogFromFile()
+    // if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+    //   console.log('mounted from file');
+    //   await this.getCatalogFromFile()
+    // }
+    // else
+    //   await this.getProductsIds()
 
     await this.addProductsFromIds()
 
@@ -300,15 +301,17 @@ export default {
 
       this.isLoaded = false
       this.filteredProducts = []
+      this.filteredProducts = []
       this.allProducts = []
       this.currentPage = 0
 
-      if (this.systemName === 'alpha' && catCode === 'fitingi') {
-        console.log('from file');
-        await this.getCatalogFromFile()
-      }
-      else
-        await this.getProductsIds()
+      await this.getCatalogFromFile(catCode)
+      // if (this.systemName === 'alpha' && catCode === 'fitingi') {
+      //   console.log('from file');
+      //   await this.getCatalogFromFile()
+      // }
+      // else
+      //   await this.getProductsIds()
 
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
@@ -333,11 +336,12 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       
-      if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
-        await this.getCatalogFromFile()
-      }
-      else
-        await this.getProductsIds()
+      await this.getCatalogFromFile()
+      // if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
+      //   await this.getCatalogFromFile()
+      // }
+      // else
+      //   await this.getProductsIds()
 
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
@@ -448,10 +452,14 @@ export default {
       // }, 1000);
     },
 
-    async getCatalogFromFile() {
-      const fileName = this.$route.params.category === '' ? '' : '_fitings'
+    async getCatalogFromFile(catCode = null) {
+      let catParam = !this.$route.params.category ? '' : `_${this.$route.params.category}`
+      if (catCode)
+        catParam = `_${catCode}`
+      const fileName = `${this.$route.params.name}${catParam}`
+      console.log('filename', fileName);
       
-      await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static/get_catalog_prod_id_alpha${fileName}.txt`)
+      await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static/get_catalog_prod_id_${fileName}.txt`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Ошибка при загрузке файла: ' + response.status);
