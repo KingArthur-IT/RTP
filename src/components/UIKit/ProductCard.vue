@@ -137,6 +137,7 @@ export default {
         return {
             slideIndex: 1,
             productCount: 1,
+            isAddingEnable: true
         }
     },
     mounted() {
@@ -183,6 +184,9 @@ export default {
         },
         async addToBasket() {
             if (this.isInCart) return
+            if (!this.isAddingEnable) return
+
+            this.isAddingEnable = false
 
             const createdCartId = localStorage.getItem('cartId') || 0
             const newCartId = await addProductToBacket(this.id, this.productCount, createdCartId)
@@ -193,6 +197,9 @@ export default {
                 localStorage.setItem('cartId', this.$cartId.value)
                 localStorage.setItem('cartCount', this.$cartCount.value)
                 this.$emit('addedToCart', { id: this.id, count: this.productCount })
+                setTimeout(() => {
+                    this.isAddingEnable = true
+                }, 200);
             }
         },
         getPhoto(url) {
