@@ -305,8 +305,9 @@ export default {
         padding: 0 25px
     &__submit
         margin-bottom: 50px
-        margin-top: 22px
+        margin-top: auto
         width: 230px
+        height: 45px
     &__logo
         width: 115px
         & img
@@ -374,8 +375,9 @@ export default {
             padding: 0 16px
         &__submit
             margin-bottom: 34px
-            margin-top: 12px
+            margin-top: auto
             width: 145px
+            height: 35px
         &__logo
             width: 72px
 </style>
