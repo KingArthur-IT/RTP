@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" @click="changeEvent(modelValue)">
-    <div class="checkbox-wrapper">
+    <div class="checkbox-wrapper" :class="{'error': !isValid}">
       <input  type="checkbox"
               class="custom-checkbox"  
               :class="{'checked': modelValue, 'error': !isValid}"
@@ -51,6 +51,8 @@ export default {
   height: 17px
   border: 1px solid #fff
   border-radius: 3px
+  &.error
+    border: 2px solid #F27272
   & svg
     position: absolute
     top: 0

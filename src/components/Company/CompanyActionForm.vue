@@ -41,7 +41,7 @@
                 <span class="conditions-text">Согласие с политикой конфиденциальности</span>
             </CustomCheckbox>
             <div class="action__submit">
-                <CustomRectButton :text="'Оставить заявку'" @click="sendForm"/>
+                <CustomRectButton :text="'Оставить заявку'" @click="executeCaptcha"/>
             </div>
         </div>
         <div class="message-wrapper">
@@ -57,6 +57,14 @@
             />
         </div>
     </form>
+    <vue-recaptcha 
+        :sitekey="'6LcLi60mAAAAALTtLKYDtFSFUwtZiyj1rWXtre7R'"
+        size="invisible" 
+        theme="light"
+        @verify="sendForm"
+        @expire="recaptchaExpired"
+        ref="vueRecaptchaCompany">
+    </vue-recaptcha>
   </div>
 </template>
 
@@ -66,12 +74,14 @@ import CustomRectButton from '../UIKit/LightRectButton.vue';
 import CustomCheckbox from '../UIKit/CustomCheckbox.vue';
 import { validateEmail } from '@/use/helpers.js'
 import { sendFormData } from '@/use/middleware.js'
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
     components: {
         CustomInput,
         CustomRectButton,
         CustomCheckbox,
+        VueRecaptcha
     },
     data() {
         return {
@@ -89,7 +99,10 @@ export default {
     methods: {
         validateEmail,
         sendFormData,
-        async sendForm() {
+        async sendForm(response) {
+            this.recaptchaResponse = response
+            if (!this.recaptchaResponse) return
+
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 18
@@ -110,7 +123,14 @@ export default {
             this.phone = '+7 ('
             this.message = ''
             this.isConfirmed = false
-        }
+        },
+        recaptchaExpired() {
+            this.$refs.vueRecaptchaCompany.reset();
+        },
+        executeCaptcha(){
+            console.log('exex');
+            this.$refs.vueRecaptchaCompany.execute()
+        },
     }
 }
 </script>

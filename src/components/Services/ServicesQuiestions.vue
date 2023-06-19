@@ -57,7 +57,7 @@
                       />
                   </div>
               </div>
-              <div class="questions-sect__btn" @click="formSubmit">
+              <div class="questions-sect__btn" @click="executeCaptcha">
                   <LightRectButton :text="'Отправить'" :isWhiteBtn="true" />
               </div>
           </form>
@@ -68,6 +68,14 @@
         v-model:open="isAcceptedModalShown"
         @closeModal="clearAndCloseForm"
       />
+      <vue-recaptcha 
+        :sitekey="'6LcLi60mAAAAALTtLKYDtFSFUwtZiyj1rWXtre7R'"
+        size="invisible" 
+        theme="light"
+        @verify="formSubmit"
+        @expire="recaptchaExpired"
+        ref="vueRecaptchaServices">
+    </vue-recaptcha>
   </div>
 </template>
 
@@ -77,12 +85,14 @@ import LightRectButton from '../UIKit/LightRectButton.vue'
 import { validateEmail } from '@/use/helpers.js'
 import { sendFormData } from '@/use/middleware.js'
 import AcceptOrderModal from '../Modals/AcceptOrderModal.vue'
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
     components: {
         CustomInput,
         LightRectButton,
-        AcceptOrderModal
+        AcceptOrderModal,
+        VueRecaptcha
     },
     data() {
         return {
@@ -99,7 +109,10 @@ export default {
     methods: {
         validateEmail,
         sendFormData,
-        async formSubmit() {
+        async formSubmit(response) {
+            this.recaptchaResponse = response
+            if (!this.recaptchaResponse) return
+
             this.isNameValid = !!this.name
             this.isEmailValid = this.validateEmail(this.email)
             this.isPhoneValid = this.phone.length === 18
@@ -117,7 +130,13 @@ export default {
             this.email = ''
             this.phone = '+7 ('
             this.message = ''
-        }
+        },
+        recaptchaExpired() {
+            this.$refs.vueRecaptchaServices.reset();
+        },
+        executeCaptcha(){
+            this.$refs.vueRecaptchaServices.execute()
+        },
     }
 }
 </script>
