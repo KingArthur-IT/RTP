@@ -42,7 +42,7 @@ const router = createRouter({
       component: () => import('../views/CatalogSystemView.vue'),
     },
     {
-      path: '/card/:name',
+      path: '/card/:name/:id',
       name: 'card',
       component: () => import('../views/ProductCardView.vue'),
     },

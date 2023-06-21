@@ -72,7 +72,7 @@
                 </div>
                 <div class="product-hero__card">
                     <PriceCard 
-                        :prodId="$route.query.id"
+                        :prodId="$route.params.id"
                         :price="Number(productCardInfo?.arPrice?.PRICE) || 0" 
                         v-model:productCount="productCount" 
                     />
@@ -190,7 +190,7 @@ export default {
                 this.updateCard(id)
         },
         updateSelectedColor({ value, id }) {
-            const oldSelectedId = this.$route.query.id
+            const oldSelectedId = this.$route.params.id
 
             this.colors.forEach(c => {
                 if (c.value !== value)
@@ -209,7 +209,7 @@ export default {
 
             window.scrollTo(0, 0);
             
-            this.productCardInfo = await this.getProductById(this.$route.query.id)
+            this.productCardInfo = await this.getProductById(this.$route.params.id)
         
             if (this.$route.params.name === 'all') {
                 this.catalogList = await this.getCatalog()
@@ -232,15 +232,15 @@ export default {
 
             const currColorVal = this.productCardInfo.arPropsNoNull?.TSVET?.VALUE
             if (currColorVal)
-                this.colors.push({ value: currColorVal, isSelected: true, color: this.getColorHex(currColorVal.trim()), id: this.$route.query.id})
+                this.colors.push({ value: currColorVal, isSelected: true, color: this.getColorHex(currColorVal.trim()), id: this.$route.params.id})
             const currDiametr = this.productCardInfo.arPropsNoNull?.DIAMETR?.VALUE
             if (currDiametr) {
                 const val = this.productCardInfo.arPropsNoNull?.TOLSHCHINA_STENKI?.VALUE ? `${String(currDiametr).replace(/\D/g, "")}/${this.productCardInfo.arPropsNoNull?.TOLSHCHINA_STENKI?.VALUE}` : currDiametr
-                this.description[0].values.push({ value: val, id: this.$route.query.id })
+                this.description[0].values.push({ value: val, id: this.$route.params.id })
             }
             const currDlina = this.productCardInfo.arPropsNoNull?.DLINA?.VALUE
             if (currDlina)
-                this.description[1].values.push({ value: currDlina, id: this.$route.query.id })
+                this.description[1].values.push({ value: currDlina, id: this.$route.params.id })
 
             const elWithColors = this.productCardInfo.arPodobnie?.color //[] arr
             const elWithDiametr = this.productCardInfo.arPodobnie?.diametr
@@ -274,7 +274,7 @@ export default {
         },
         async updateCard(id) {
             this.productCount = 1
-            this.$router.replace({ query: { id: id } });
+            this.$router.replace({ params: { id: id } });
             this.toggleStopper(true)
 
             this.productCardInfo = await this.getProductById(id)
@@ -357,7 +357,7 @@ export default {
         }
     },
     watch: {
-        '$route.query.id': {
+        '$route.params.id': {
             handler() {
                 this.mountedEvent()
             },

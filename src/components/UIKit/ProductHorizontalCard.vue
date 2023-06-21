@@ -171,7 +171,7 @@ export default {
             }
         },
         goToCard() {
-            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'all' }, query: { id: this.id } })
+            this.$router.push({ name: 'card', params: { name: this.$route.params.name || 'all', id: this.id } })
         },
         async addToBasket() {
             if (this.isInCart) return

@@ -65,7 +65,7 @@ export default {
             return this.$route.name === 'home'
         },
         isCartActive() {
-            return this.cartCount > 0
+            return true // this.cartCount > 0
         }
     },
     watch: {

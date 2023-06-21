@@ -41,7 +41,7 @@ export default {
   methods: {
     getBacketProducts,
     goToCart() {
-      if (this.cartCount > 0)
+      // if (this.cartCount > 0)
         this.$router.push({ name: 'cart' })
     }
   }
@@ -84,7 +84,8 @@ export default {
     & .busket__text
       color: var(--primary-color)
   &.no-products
-    cursor: default
+    // cursor: default
+    cursor: pointer
     & svg path
       fill: #828D99
     & .busket__text
