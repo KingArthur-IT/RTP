@@ -506,6 +506,8 @@ export default {
     display: flex
     justify-content: space-between
     margin-bottom: 114px
+    &__hero
+      width: calc(100% - 364px)
     &__filters
       width: 320px
       margin-right: 44px
@@ -514,6 +516,8 @@ export default {
 
 @media screen and (max-width: 1600px)
   .catalog-system
+      &__hero
+        width: calc(100% - 250px)
       &__filters
         width: 220px
         margin-right: 30px

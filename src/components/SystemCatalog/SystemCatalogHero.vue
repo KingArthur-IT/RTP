@@ -405,7 +405,7 @@ export default {
     &-row
         display: flex
         flex-direction: column
-        width:100%
+        width: 100%
         &__card
             flex-basis: 100%
             margin-bottom: 20px

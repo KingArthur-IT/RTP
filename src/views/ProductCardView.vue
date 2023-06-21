@@ -2,7 +2,7 @@
   <main>
     <div class="container product-card">
         <div v-if="!isLoading">
-            <BreadCrumbsSecondLevel :thirdLevel="productCardInfo?.arFields?.PREVIEW_TEXT" :thirdLevelPage="pageName" />
+            <BreadCrumbsSecondLevel />
             <div class="product-head">
                 <div class="product-head__head">
                     <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
@@ -267,8 +267,6 @@ export default {
                         this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
                     }
                 })
-
-            console.log(this.productCardInfo);
 
             setTimeout(() => {
                 this.isLoading = false
