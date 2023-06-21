@@ -42,7 +42,7 @@
                     </div>
                     <div class="subhead__info">
                         <div>Артикул {{ productCardInfo?.arProps?.CML2_ARTICLE.VALUE }}</div>
-                        <div>Код {{ code }}</div>
+                        <!-- <div>Код {{ code }}</div> -->
                     </div>
                 </div>
             </div>
@@ -267,6 +267,8 @@ export default {
                         this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
                     }
                 })
+
+            console.log(this.productCardInfo);
 
             setTimeout(() => {
                 this.isLoading = false
