@@ -33,7 +33,7 @@ export default {
             isShown: false,
             isVisible: false,
             isLoading: true,
-            videoUrl: 'https://www.youtube.com/embed/_DLxACb4P7I',
+            videoUrl: 'https://www.youtube.com/embed/_DLxACb4P7I?autoplay=1',
             dynamicUrl: ''
         }
     },
@@ -61,8 +61,9 @@ export default {
                     this.isLoading = false
                 }, 1000);
             } else {
-                const src = this.$refs.modalHero.querySelector('iframe').getAttribute('src')
-                this.$refs.modalHero.querySelector('iframe').setAttribute('src', src)
+                // const src = this.$refs.modalHero.querySelector('iframe').getAttribute('src')
+                // this.$refs.modalHero.querySelector('iframe').setAttribute('src', src)
+                this.dynamicUrl = ""
                 this.isVisible = false
                 setTimeout(() => {
                     this.isShown = false
