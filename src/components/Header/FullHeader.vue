@@ -1,13 +1,15 @@
 <template>
     <div class="header__hero" @click="isServicesHeaderListShown = false">
-        <div class="header__logo" :class="{'cursor-default': isHomePage}" @click="logoClick">
-            <img src="@/assets/logo.png" alt="RTP">
-            <div class="header__logo-txt">
-                Производитель<br>
-                инженерной сантехники<br>
-                с 2005 года
+        <router-link to="/">
+            <div class="header__logo" :class="{'cursor-default': isHomePage}">
+                <img src="@/assets/logo.png" alt="RTP">
+                <div class="header__logo-txt">
+                    Производитель<br>
+                    инженерной сантехники<br>
+                    с 2005 года
+                </div>
             </div>
-        </div>
+        </router-link>
         <div class="header__content">
             <nav class="header__nav">
                 <div class="header__nav-item" :class="{'active': isServicesHeaderListShown}" @click.stop="servicesListShownToogle">
@@ -16,11 +18,21 @@
                         <path d="M6.5 6.55671e-07L12.9952 7.5L0.00480872 7.5L6.5 6.55671e-07Z" fill="#8CA7DD"/>
                     </svg>
                 </div>
-                <div class="header__nav-item" @click="goToPage('services')">Услуги</div>
-                <div class="header__nav-item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
-                <div class="header__nav-item" @click="goToPage('payment-methods')">Оплата</div>
-                <div class="header__nav-item" :class="{'active': isCurrentPage('company')}" @click="goToPage('company')">О компании</div>
-                <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}" @click="goToPage('contacts')">Контакты</div>
+                <router-link to="/services">
+                    <div class="header__nav-item">Услуги</div>
+                </router-link>
+                <router-link to="/delivery-rules">
+                    <div class="header__nav-item">Доставка и сервис</div>
+                </router-link>
+                <router-link to="/payment-methods">
+                    <div class="header__nav-item">Оплата</div>
+                </router-link>
+                <router-link to="/company">
+                    <div class="header__nav-item" :class="{'active': isCurrentPage('company')}">О компании</div>
+                </router-link>
+                <router-link to="/contacts">
+                    <div class="header__nav-item" :class="{'active': isCurrentPage('contacts')}">Контакты</div>
+                </router-link>
                 <ServicesList :isShown="isServicesHeaderListShown" @closeEvent="isServicesHeaderListShown = false"/>
             </nav>
             <div class="header__call-info">
@@ -66,13 +78,6 @@ export default {
         isCurrentPage(name) {
             return this.$route.name === name
         },
-        goToPage(name) {
-            this.$router.push({ name })
-        },
-        logoClick() {
-            if (!this.isHomePage)   
-                this.goToPage('home')
-        }
     },
     computed: {
         isHomePage() {

@@ -1,9 +1,11 @@
 <template>
   <div class="head">
       <div class="footer__contacts-col">
-        <div class="footer__logo" :class="{'cursor-default': isHomePage}" @click="logoClick">
-            <img src="@/assets/footer-logo.png" alt="RTP">
-        </div>
+        <router-link to="/">
+            <div class="footer__logo" :class="{'cursor-default': isHomePage}">
+                <img src="@/assets/footer-logo.png" alt="RTP">
+            </div>
+        </router-link>
         <div class="footer__title">Оставайтесь на связи</div>
         <div class="footer__contacts">
         <a href="tel:+84955405262" class="footer__contact-item">
@@ -25,15 +27,29 @@
         <div class="footer__title">Компания</div>
         <div class="nav-wrapper">
         <div class="nav">
-            <div class="nav__item" @click="goToPage('company')">О компании</div>
-            <div class="nav__item" @click="goToPage('catalog')">Каталог</div>
-            <div class="nav__item" @click="goToPage('services')">Услуги</div>
-            <div class="nav__item" @click="goToPage('payment-methods')">Оплата</div>
-            <div class="nav__item" @click="goToPage('cart')" :class="{'disabled': !isCartActive}">Корзина</div>
+            <router-link to="/company">
+                <div class="nav__item">О компании</div>
+            </router-link>
+            <router-link to="/catalog">
+                <div class="nav__item">Каталог</div>
+            </router-link>
+            <router-link to="/services">
+                <div class="nav__item">Услуги</div>
+            </router-link>
+            <router-link to="/payment-methods">
+                <div class="nav__item">Оплата</div>
+            </router-link>
+            <router-link to="/cart">
+                <div class="nav__item" :class="{'disabled': !isCartActive}">Корзина</div>
+            </router-link>
         </div>
         <div class="nav">
-            <div class="nav__item" @click="goToPage('delivery-rules')">Доставка и сервис</div>
-            <div class="nav__item" @click="goToPage('contacts')">Контакты</div>
+            <router-link to="/delivery-rules">
+                <div class="nav__item">Доставка и сервис</div>
+            </router-link>
+            <router-link to="/contacts">
+                <div class="nav__item">Контакты</div>
+            </router-link>
         </div>
         </div>
     </div>

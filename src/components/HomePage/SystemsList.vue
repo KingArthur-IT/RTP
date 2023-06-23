@@ -1,14 +1,16 @@
 <template>
   <div class="list">
       <div class="list__item" v-for="(item, index) in systemList" :key="index">
-          <div class="card" @click="goToPage(item.name)" :class="item.name">
-              <img :src="getImageUrl('systems-bg', item.name)" :alt="item.name" class="card__bg">
-              <div class="card__label">
-                  <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo">
-                  <span>{{ item.title }}</span>
-              </div>
-              <p class="card__description">Система {{ item.title.toUpperCase() }} {{ item.description }}</p>
-          </div>
+          <router-link :to="pagePath(item.name)">
+            <div class="card" :class="item.name">
+                <img :src="getImageUrl('systems-bg', item.name)" :alt="item.name" class="card__bg">
+                <div class="card__label">
+                    <img :src="getImageUrl('logos', item.name)" :alt="item.name" class="card__logo">
+                    <span>{{ item.title }}</span>
+                </div>
+                <p class="card__description">Система {{ item.title.toUpperCase() }} {{ item.description }}</p>
+            </div>
+          </router-link>
       </div>
   </div>
 </template>
@@ -25,11 +27,11 @@ export default {
     },
     methods: {
         getImageUrl,
-        goToPage(name) {
+        pagePath(name) {
             if (name === 'alpha')
-                this.$router.push({ name: 'alpha-system' })
-            else this.$router.push({ name: 'catalog-system', params: { name: name } })
-        }
+                return `/alpha-system`
+            else return `/catalog-system/${name}`
+        },
     }
 }
 </script>

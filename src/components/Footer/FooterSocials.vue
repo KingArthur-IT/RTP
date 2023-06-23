@@ -36,7 +36,9 @@
                   </div>
               </div>
           </div>
-          <div class="hero__item terms" @click="$router.push({ name: 'confidence' })">Политика конфеденциальности</div>
+          <router-link to="/confidence">
+              <div class="hero__item terms">Политика конфеденциальности</div>
+          </router-link>
       </div>
   </div>
 </template>
@@ -63,6 +65,7 @@ export default {
             text-align: right
         &.terms
             cursor: pointer
+            width: fit-content
 
 .socials
     display: flex

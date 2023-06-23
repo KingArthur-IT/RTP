@@ -44,7 +44,9 @@
                   Благодарим за обращение в наш магазин!
               </div>
               <div class="delivery__btn">
-                  <DarkRectButtonVue @click="$router.push({ name: 'catalog' })" :text="'Начать покупки'" />
+                  <router-link to="/catalog">
+                      <DarkRectButtonVue :text="'Начать покупки'" />
+                  </router-link>
               </div>
           </div>
       </div>

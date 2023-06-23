@@ -18,7 +18,9 @@
                         </div>
                         <h2 class="slide__title" v-html="doFirstLetterUppercase(slide.descriptionBanerHtml)"></h2>
                         <div class="slide__btn">
-                            <CustomRectButton :text="'Подробнее'" @click="slideDetailClick(slide.name)"/>
+                            <router-link :to="pagePath(slide.name)">
+                                <CustomRectButton :text="'Подробнее'"/>
+                            </router-link>
                         </div>
                         <button class="slide__btn"></button>
                     </div>
@@ -81,11 +83,10 @@ export default {
             if (this.slideIndex < 1)
                 this.slideIndex = this.systemList.length
         },
-        slideDetailClick(name) {
+        pagePath(name) {
             if (name === 'alpha')
-                this.$router.push({ name: 'alpha-system' })
-            else this.$router.push({ name: 'catalog-system', params: { name: name } })
-            
+                return `/alpha-system`
+            else return `/catalog-system/${name}`
         },
     },
 }
