@@ -87,7 +87,7 @@ export default {
         pointer-events: none
         // backdrop-filter: blur(2px)
         // -webkit-backdrop-filter: blur(2px)
-        // background: rgba(255, 255, 255, 0.1)
+        background: rgba(0, 0, 0, 1)
         opacity: 0
         &.show
             transition: opacity .5s ease
@@ -102,6 +102,7 @@ export default {
     // background: linear-gradient(30deg, rgba(255, 255, 255, 0.5) -19.85%, rgba(235, 235, 235, 0.367354) 4.2%, rgba(224, 224, 224, 0.287504) 13.88%, rgba(212, 212, 212, 0.21131) 27.98%, rgba(207, 207, 207, 0.175584) 37.8%, rgba(202, 202, 202, 0.143432) 44.38%, rgba(200, 200, 200, 0.126299) 50.54%, rgba(196, 196, 196, 0.1) 60.21%)
     // backdrop-filter: blur(15px)
     // -webkit-backdrop-filter: blur(15px)
+    background: rgba(0, 0, 0, 1)
     z-index: 20
     display: flex
     justify-content: center
@@ -109,6 +110,8 @@ export default {
     display: none
     opacity: 0
     transition: opacity .3s ease
+    overflow-y: hidden 
+    cursor: pointer
     &.show
         display: flex
     &.visible
@@ -124,5 +127,5 @@ export default {
     .modal
         & iframe
             width: 1000px
-            height: 450px
+            height: 452px
 </style>

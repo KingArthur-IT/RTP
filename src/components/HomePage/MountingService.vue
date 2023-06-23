@@ -37,7 +37,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: 'Услуги по монтажу'
+            default: 'Услуги монтажа'
         }
     },
     computed: {
