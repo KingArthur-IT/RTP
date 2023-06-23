@@ -1,19 +1,23 @@
 <template>
   <div class="card">
-      <div class="card__head" :class="{'min-h': pageName === 'delta'}" @click="$router.push({ name: 'catalog-system', params: { name: pageName } })">
-          <p>{{ title }}</p>
-          <div class="card__icon">
-              <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
-              </svg>
-          </div>
-      </div>
+      <router-link :to="`/catalog-system/${pageName}`">
+        <div class="card__head" :class="{'min-h': pageName === 'delta'}">
+            <p>{{ title }}</p>
+            <div class="card__icon">
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.6387 6L6.63867 0V5H0.638672V7H6.63867V12L13.6387 6Z" fill="#42474D"/>
+                </svg>
+            </div>
+        </div>
+      </router-link>
       <div class="card__body">
-          <div v-for="item in data" :key="item.ID" @click="$router.push({ name: 'catalog-system', params: { name: pageName, category: item.CODE } })">
-              <div v-if="item.count" class="card__row">
-                    <div class="card__name">{{ item.NAME }}</div>
-                    <div class="card__count">{{ item.count }}</div>
-              </div>
+          <div v-for="item in data" :key="item.ID" >
+              <router-link :to="`/catalog-system/${pageName}/${item.CODE}`">
+                  <div v-if="item.count" class="card__row">
+                        <div class="card__name">{{ item.NAME }}</div>
+                        <div class="card__count">{{ item.count }}</div>
+                  </div>
+              </router-link>
           </div>
       </div>
   </div>

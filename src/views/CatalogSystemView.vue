@@ -227,9 +227,9 @@ export default {
               const findVal = propInTypes.list.find(v => v.value === findProp.VALUE) //добавлено ли в него такое значение?
               if (findVal) 
                 findVal.count += 1
-              else propInTypes.list.push({ value: findProp.VALUE, count: 1, isChecked: true})
+              else propInTypes.list.push({ value: findProp.VALUE, count: 1, isChecked: false})
             } else {
-              this.typesForFilter.push({ name: prop, description: findProp.NAME, propName: prop, list: [ { value: findProp.VALUE, count: 1, isChecked: true} ] })
+              this.typesForFilter.push({ name: prop, description: findProp.NAME, propName: prop, list: [ { value: findProp.VALUE, count: 1, isChecked: false} ] })
             }
           }
         })
@@ -360,7 +360,7 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       this.currentPage = 0
-      this.maxPrice = 0
+      // this.maxPrice = 0
 
 
       //никаких галок не выбрано
@@ -379,7 +379,7 @@ export default {
         await this.addProductsFromIds()
       }
 
-      this.maxPrice = maxPrice //Math.min(this.maxPrice, maxPrice)
+      // this.maxPrice = maxPrice //Math.min(this.maxPrice, maxPrice)
 
       if (selectedTypes) {
         selectedTypes.forEach(el => {
