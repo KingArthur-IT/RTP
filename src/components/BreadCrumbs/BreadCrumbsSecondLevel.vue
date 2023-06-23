@@ -13,7 +13,7 @@
             <path d="M0.292969 1.70703L4.58597 6.00003L0.292969 10.293L1.70697 11.707L7.41397 6.00003L1.70697 0.293031L0.292969 1.70703Z" fill="#224386"/>
           </svg>
       </div>
-      <div class="breadcrumbs__item" :class="{'home': thirdLevel}" @click="goToPage">{{ getPageDescription }}</div>
+      <div class="breadcrumbs__item" :class="{'home': thirdLevel, 'cursor-pointer': isEnableGoToSystem}" @click="goToPage">{{ getPageDescription }}</div>
 
       <div v-if="thirdLevel" class="breadcrumbs__icon">
           <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,6 +37,10 @@ export default {
         thirdLevelPage: {
             type: String,
             default: ''
+        },
+        isEnableGoToSystem: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -67,7 +71,7 @@ export default {
     },
     methods: {
         goToPage() {
-            if (this.thirdLevel) {
+            if (this.thirdLevel || this.isEnableGoToSystem) {
                 this.$router.push({ name: 'catalog-system', params: { name: this.pageName } })
                 this.$emit('backToSystem')
             }
@@ -91,6 +95,9 @@ export default {
         padding: 0 10px
         &.home svg path
             fill: #A6ACB3
+
+.cursor-pointer
+    cursor: pointer
 
 @media screen and (max-width: 1600px)
     .breadcrumbs

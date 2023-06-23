@@ -2,7 +2,7 @@
   <main>
     <div class="container product-card">
         <div v-if="!isLoading">
-            <BreadCrumbsSecondLevel />
+            <BreadCrumbsSecondLevel :isEnableGoToSystem="true" /> 
             <div class="product-head">
                 <div class="product-head__head">
                     <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
