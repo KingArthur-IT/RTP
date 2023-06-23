@@ -215,20 +215,20 @@ export default {
     },
     watch: {
         filterValue() {
-            const compareFromCheap = ( a, b ) => {
-                if ( Number(a.PRICE) < Number(b.PRICE) )
-                    return -1;
-                if ( Number(a.PRICE) > Number(b.PRICE) )
-                    return 1;
-                return 0;
-            }
-            const compareFromExpansive = ( a, b ) => {
-                if ( Number(a.PRICE) > Number(b.PRICE) )
-                    return -1;
-                if ( Number(a.PRICE) < Number(b.PRICE) )
-                    return 1;
-                return 0;
-            }
+            // const compareFromCheap = ( a, b ) => {
+            //     if ( Number(a.PRICE) < Number(b.PRICE) )
+            //         return -1;
+            //     if ( Number(a.PRICE) > Number(b.PRICE) )
+            //         return 1;
+            //     return 0;
+            // }
+            // const compareFromExpansive = ( a, b ) => {
+            //     if ( Number(a.PRICE) > Number(b.PRICE) )
+            //         return -1;
+            //     if ( Number(a.PRICE) < Number(b.PRICE) )
+            //         return 1;
+            //     return 0;
+            // }
             // const compareStars = ( a, b ) => {
             //     if ( a.startsCount > b.startsCount )
             //         return -1;
@@ -244,18 +244,18 @@ export default {
             //     return 0;
             // }
 
-            if (this.filterValue === 'cheap')
-                this.filteredList.sort(compareFromCheap)
-            if (this.filterValue === 'expansive')
-                this.filteredList.sort(compareFromExpansive)
+            // if (this.filterValue === 'cheap')
+            //     this.filteredList.sort(compareFromCheap)
+            // if (this.filterValue === 'expansive')
+            //     this.filteredList.sort(compareFromExpansive)
             // if (this.filterValue === 'popular')
             //     this.filteredList.sort(compareStars)
             // if (this.filterValue === 'new')
             //     this.filteredList.sort(compareDate)
-            // if (this.filterValue === 'cheap')
-            //     this.$emit('updateSortVal', { 'sort': 'A'})
-            // if (this.filterValue === 'expansive')
-            //     this.$emit('updateSortVal', { 'sort': 'Z'})
+            if (this.filterValue === 'cheap')
+                this.$emit('updateSortVal', { 'sort': 'a'})
+            if (this.filterValue === 'expansive')
+                this.$emit('updateSortVal', { 'sort': 'z'})
         },
         cardsList: {
             async handler() {

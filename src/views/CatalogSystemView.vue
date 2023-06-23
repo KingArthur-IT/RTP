@@ -66,6 +66,7 @@ export default {
       propsArray: ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET'],
       sortVal: {},
       isMoreBtnLoaderShown: false,
+      lastAppliedFilters: []
     }
   },
   async mounted() {
@@ -76,12 +77,6 @@ export default {
     await this.findAndApplyCategory()
 
     await this.getCatalogFromFile()
-    // if (this.systemName === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
-    //   console.log('mounted from file');
-    //   await this.getCatalogFromFile()
-    // }
-    // else
-    //   await this.getProductsIds()
 
     await this.addProductsFromIds()
 
@@ -164,8 +159,8 @@ export default {
         filters[`min_price`] = String(minPrice)
       if (maxPrice)
         filters[`max_price`] = String(maxPrice)
-      // if (Object.keys(this.sortVal).length)
-      //   filters['sort'] = this.sortVal.sort
+      if (Object.keys(this.sortVal).length)
+        filters['sort'] = String(this.sortVal.sort).toUpperCase()
 
       //все id продуктов из категорий этой системы
       //если массив заполнен, то берем его, если нет берем все категории секции
@@ -306,12 +301,6 @@ export default {
       this.currentPage = 0
 
       await this.getCatalogFromFile(catCode)
-      // if (this.systemName === 'alpha' && catCode === 'fitingi') {
-      //   console.log('from file');
-      //   await this.getCatalogFromFile()
-      // }
-      // else
-      //   await this.getProductsIds()
 
       await this.addProductsFromIds()
       this.filteredProducts = this.allProducts
@@ -361,6 +350,8 @@ export default {
       this.allProducts = []
       this.currentPage = 0
       // this.maxPrice = 0
+      console.log(selectedTypes);
+      this.lastAppliedFilters = selectedTypes
 
 
       //никаких галок не выбрано
@@ -422,41 +413,52 @@ export default {
     },
 
     async updateSortVal(data) {
-      // this.sortVal = data
-      
-      // this.isLoaded = false
-      // this.allProducts = []
-      // this.filteredProducts = []
-      // this.currentPage = 0
+      this.sortVal = data
 
-      // //никаких галок не выбрано
-      // if (this.typesForFilter.every(t => t.list.every(l => !l.isChecked))) {
-      //   this.filteredProducts = []
-      //   this.isLoaded = true
-      //   return
-      // }
-
-      // console.log(this.typesForFilter);
-      // //хотя бы одна отменена иначе не фильтруем
-      // if (this.typesForFilter.some(t => t.list.some(l => !l.isChecked)))
-      //   await this.getProductsIds(this.typesForFilter, false)
-      // else
-      //   await this.getProductsIds()
-
-      // await this.addProductsFromIds()    
-
-      // this.filteredProducts = this.allProducts
-
-      // setTimeout(() => {
-      //   this.isLoaded = true
-      // }, 1000);
+      if (this.typesForFilter.some(t => t.list.some(l => l.isChecked))) {
+        this.applyFilters({ maxPrice: this.maxPrice, minPrice: 0, selectedTypes: this.lastAppliedFilters })
+      } else {
+        this.isLoaded = false
+        this.toggleStopper(true)
+  
+        this.allProducts = []
+        this.filteredProducts = []
+        this.currentPage = 0
+  
+        await this.getCatalogFromFile()
+        await this.addProductsFromIds()
+  
+        // //никаких галок не выбрано
+        // if (this.typesForFilter.every(t => t.list.every(l => !l.isChecked))) {
+        //   this.filteredProducts = []
+        //   this.isLoaded = true
+        //   return
+        // }
+  
+        // //хотя бы одна отменена иначе не фильтруем
+        // if (this.typesForFilter.some(t => t.list.some(l => !l.isChecked)))
+        //   await this.getProductsIds(this.typesForFilter, false)
+        // else
+        //   await this.getProductsIds()
+  
+        // await this.addProductsFromIds()    
+  
+        this.filteredProducts = this.allProducts
+        setTimeout(() => {
+          this.isLoaded = true
+          this.toggleStopper(false)
+        }, 500);
+      }
     },
 
     async getCatalogFromFile(catCode = null) {
       let catParam = !this.$route.params.category ? '' : `_${this.$route.params.category}`
       if (catCode)
         catParam = `_${catCode}`
-      const fileName = `${this.$route.params.name}${catParam}`
+      let sortIndex = ''
+      if (this.sortVal && this.sortVal.sort)
+        sortIndex = `_sort${this.sortVal.sort}`
+      const fileName = `${this.$route.params.name}${catParam}${sortIndex}`
       console.log('filename', fileName);
       
       await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static/get_catalog_prod_id_${fileName}.txt`)
@@ -472,7 +474,7 @@ export default {
             return
           }
           const getIdsResult = JSON.parse(data)
-          
+
           if (getIdsResult && getIdsResult.get_catalog_prod_id && getIdsResult.get_catalog_prod_id.data) {
             this.allProductsIds = getIdsResult.get_catalog_prod_id.data
             this.maxPrice = Math.ceil(getIdsResult.get_catalog_prod_id.data_price_max)
