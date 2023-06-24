@@ -168,7 +168,7 @@ export default {
       const getIdsResult = await this.getIdsOfSelectedSystem(activeCatalogArray, filters)
 
       if (getIdsResult && getIdsResult.data && getIdsResult.props) {
-        this.allProductsIds = getIdsResult.data
+        this.allProductsIds = Object.values(getIdsResult.data)
         this.maxPrice = Math.ceil(getIdsResult.max_price)
         if (!selectedTypes)
           this.createTypesForFilter(getIdsResult.props, null)
@@ -264,6 +264,7 @@ export default {
 
         return {
           ID: pr.arFields.ID,
+          URL_CODE: pr.prod_code,
           IBLOCK_SECTION_ID: pr.arFields.IBLOCK_SECTION_ID,
           NAME: pr.arFields.NAME,
           PREVIEW_PICTURE: pr.arFields.PREVIEW_PICTURE,
@@ -272,7 +273,7 @@ export default {
           PRICE: pr.arPrice.PRICE,
           info: infoList,
           hidden: hiddenList,
-          photoes: pr.arPhotoPrew
+          photoes: pr.arPhotoPrew,
         }
       })
     },
@@ -476,7 +477,7 @@ export default {
           const getIdsResult = JSON.parse(data)
 
           if (getIdsResult && getIdsResult.get_catalog_prod_id && getIdsResult.get_catalog_prod_id.data) {
-            this.allProductsIds = getIdsResult.get_catalog_prod_id.data
+            this.allProductsIds = Object.values(getIdsResult.get_catalog_prod_id.data)
             this.maxPrice = Math.ceil(getIdsResult.get_catalog_prod_id.data_price_max)
             this.createTypesForFilter(getIdsResult.get_catalog_prod_id.data_prop)
           }

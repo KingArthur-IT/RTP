@@ -20,16 +20,17 @@
                 <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
                     <ProductCard 
                         v-model:count="item.count"
-                            :id="item.ID" 
-                            :description="item.PREVIEW_TEXT"
-                            :newPrice="item.PRICE"
-                            :oldPrice="'0'"
-                            :isBenefitShown="false"
-                            :isInCart="item.isInCart"
-                            :photoes="item.photoes"
-                            @addedToCart="addedToCart"
-                            @updateCountInCart="updateCountInCart"
-                            @deleteFromCart="deleteFromCart"
+                        :id="item.ID" 
+                        :code="item.URL_CODE"
+                        :description="item.PREVIEW_TEXT"
+                        :newPrice="item.PRICE"
+                        :oldPrice="'0'"
+                        :isBenefitShown="false"
+                        :isInCart="item.isInCart"
+                        :photoes="item.photoes"
+                        @addedToCart="addedToCart"
+                        @updateCountInCart="updateCountInCart"
+                        @deleteFromCart="deleteFromCart"
                     />
                 </div>
             </div>
@@ -38,6 +39,7 @@
                     <ProductHorizontalCard 
                         v-model:count="item.count"
                         :id="item.ID" 
+                        :code="item.URL_CODE"
                         :title="item.NAME"
                         :price="item.PRICE"
                         :description="item.PREVIEW_TEXT"
@@ -169,6 +171,7 @@ export default {
                     isInCart: isInCart, 
                     count: count,
                     ID: el.arFields.ID,
+                    URL_CODE: el.prod_code,
                     IBLOCK_SECTION_ID: el.arFields.IBLOCK_SECTION_ID,
                     NAME: el.arFields.NAME,
                     PREVIEW_PICTURE: el.arFields.PREVIEW_PICTURE,

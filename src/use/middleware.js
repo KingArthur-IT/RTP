@@ -54,10 +54,11 @@ export const getIdsOfSelectedSystem = async (idsArr, filters = null) => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod_id', 'section_id': idsArr.join(';'), ...filters })
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod_id && res.data.get_catalog_prod_id.data && res.data.get_catalog_prod_id.data_prop && res.data.get_catalog_prod_id.data_price_max) {
+            console.log('data', res.data.get_catalog_prod_id.data);
               return {
-                data: res.data.get_catalog_prod_id.data,
+                data: { ids: res.data.get_catalog_prod_id.data, codes: res.data.get_catalog_prod_id.data_code },
                 props: res.data.get_catalog_prod_id.data_prop,
-                max_price: res.data.get_catalog_prod_id.data_price_max
+                max_price: res.data.get_catalog_prod_id.data_price_max,
               }
           } else {
               console.log('Error while getProductsOfSelectedSystem', res);
@@ -235,6 +236,19 @@ export const sendFile = async (file) => {
 //получить товар по id для карточки
 export const getProductById = async (id) => {
   return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_id': id, 'get_all_no_null_prop': 'Y', 'get_podob': "Y" })
+      .then((res) => {
+          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)[0]
+          } else {
+              console.log('Error while getProductById', res);
+          }
+      })
+      .catch((err) => console.log('Error while getProductById', err))
+};
+
+//получить товар по code для карточки
+export const getProductByCode = async (code) => {
+  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'prod_code': code, 'get_all_no_null_prop': 'Y', 'get_podob': "Y" })
       .then((res) => {
           if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)[0]

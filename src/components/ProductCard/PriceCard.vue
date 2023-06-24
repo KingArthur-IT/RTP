@@ -82,7 +82,11 @@ export default {
         prodId: {
             type: String,
             required: true
-        }
+        },
+        prodCode: {
+            type: String,
+            required: true
+        },
     },
     data() {
         return {
@@ -93,6 +97,7 @@ export default {
         }
     },
     async mounted() {
+        this.isInCart = false
         this.count = this.productCount
         //получить товары из корзины и понять есть ли там выбранный
         this.cartId = localStorage.getItem('cartId') || 0
@@ -156,25 +161,37 @@ export default {
         productCount() {
             this.count = this.productCount
         },
-        '$route.query': {
-            immediate: true,
-            async handler(newQuery, oldQuery) {
-                // console.log('New query:', newQuery)
-                // console.log('Old query:', oldQuery)
+        async prodId() {
+            this.isInCart = false
+            this.count = 1
 
-                this.count = 1
-
-                this.cartId = localStorage.getItem('cartId') || 0
-                if (this.cartId) {
-                    const cartPrd = await this.getBacketProducts(this.cartId)
-                    this.isInCart = cartPrd.some(p => p.prod_id == this.prodId)
-                    if (this.isInCart) {
-                        this.count = cartPrd.find(p => p.prod_id == this.prodId).count
-                        this.$emit('update:productCount', this.count)
-                    }
+            this.cartId = localStorage.getItem('cartId') || 0
+            if (this.cartId) {
+                const cartPrd = await this.getBacketProducts(this.cartId)
+                this.isInCart = cartPrd.some(p => p.prod_id == this.prodId)
+                if (this.isInCart) {
+                    this.count = cartPrd.find(p => p.prod_id == this.prodId).count
+                    this.$emit('update:productCount', this.count)
                 }
             }
         }
+        // '$route.params': {
+        //     immediate: true,
+        //     async handler(newQuery, oldQuery) {
+        //         this.isInCart = false
+        //         this.count = 1
+
+        //         this.cartId = localStorage.getItem('cartId') || 0
+        //         if (this.cartId) {
+        //             const cartPrd = await this.getBacketProducts(this.cartId)
+        //             this.isInCart = cartPrd.some(p => p.prod_id == this.prodId)
+        //             if (this.isInCart) {
+        //                 this.count = cartPrd.find(p => p.prod_id == this.prodId).count
+        //                 this.$emit('update:productCount', this.count)
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 </script>

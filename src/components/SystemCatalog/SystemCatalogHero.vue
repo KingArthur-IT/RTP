@@ -38,14 +38,15 @@
                 <div v-for="item in filteredList.slice(0, 8)" :key="item.id" class="list-col__card">
                     <ProductCard 
                         v-model:count="item.count"
-                        :hasShadow="false"
                         :id="item.ID" 
+                        :code="item.URL_CODE"
                         :description="item.PREVIEW_TEXT"
                         :newPrice="item.PRICE"
                         :oldPrice="'0'"
                         :isBenefitShown="false"
                         :photoes="item.photoes"
                         :isInCart="item.isInCart"
+                        :hasShadow="false"
                         @addedToCart="addedToCart"
                         @updateCountInCart="updateCountInCart"
                         @deleteFromCart="deleteFromCart"
@@ -56,7 +57,9 @@
                 </div>
                 <div v-for="item in filteredList.slice(8, filteredList.length)" :key="item.ID" class="list-col__card">
                     <ProductCard 
+                        v-model:count="item.count"
                         :id="item.ID" 
+                        :code="item.URL_CODE"
                         :description="item.PREVIEW_TEXT"
                         :newPrice="item.PRICE"
                         :oldPrice="'0'"
@@ -64,7 +67,6 @@
                         :photoes="item.photoes"
                         :isInCart="item.isInCart"
                         @addedToCart="addedToCart"
-                        v-model:count="item.count"
                         @updateCountInCart="updateCountInCart"
                         @deleteFromCart="deleteFromCart"
                     />
@@ -75,6 +77,7 @@
                     <ProductHorizontalCard 
                         v-model:count="item.count"
                         :id="item.ID" 
+                        :code="item.URL_CODE"
                         :title="item.NAME"
                         :price="item.PRICE"
                         :photoes="item.photoes"

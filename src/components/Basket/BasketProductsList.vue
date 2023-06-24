@@ -3,6 +3,7 @@
         <div v-for="prod in cartList" :key="prod.prod_id" class="estimate__card">
             <BasketCard 
                 :id="prod.prod_id"
+                :code="prod.code"
                 :title="prod.title"
                 :description="prod.description"
                 :price="prod.price"

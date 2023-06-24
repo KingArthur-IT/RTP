@@ -72,7 +72,8 @@
                 </div>
                 <div class="product-hero__card">
                     <PriceCard 
-                        :prodId="$route.params.id"
+                        :prodCode="$route.params.id"
+                        :prodId="productId"
                         :price="Number(productCardInfo?.arPrice?.PRICE) || 0" 
                         v-model:productCount="productCount" 
                     />
@@ -131,7 +132,7 @@ import ProductCardDetail from '../components/ProductCard/ProductCardDetail.vue';
 import ProductCardPreview from '../components/ProductCard/ProductCardPreview.vue';
 import ProductCharacteristics from '../components/ProductCard/ProductCharacteristics.vue';
 import ProductCard from '../components/UIKit/ProductCard.vue';
-import { getProductById, getCatalog } from '@/use/middleware.js'
+import { getProductByCode, getCatalog } from '@/use/middleware.js'
 import { getPageName } from '@/use/helpers.js'
 import ShareBtn from '../components/UIKit/ShareBtn.vue';
 import CopyLink from '../components/UIKit/CopyLink.vue';
@@ -155,6 +156,7 @@ export default {
             isLoading: true,
             pageName: '',
             productCardInfo: null,
+            productId: '',
             starsCount: 4,
             description: [
                 { 
@@ -177,7 +179,7 @@ export default {
         await this.mountedEvent()
     },
     methods: {
-        getProductById,
+        getProductByCode,
         getCatalog,
         getPageName,
         toggleStopper,
@@ -209,8 +211,10 @@ export default {
 
             window.scrollTo(0, 0);
             
-            this.productCardInfo = await this.getProductById(this.$route.params.id)
-        
+            this.productCardInfo = await this.getProductByCode(this.$route.params.id)
+            this.productId = this.productCardInfo.arFields.ID
+            console.log(this.productId);
+
             if (this.$route.params.name === 'all') {
                 this.catalogList = await this.getCatalog()
                 const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
@@ -249,7 +253,7 @@ export default {
             if (!!elWithColors)
                 elWithColors.forEach(color => {
                     if (!this.colors.some(c => c.value === color.prop_val)) {
-                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_id})
+                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_code})
                     }
                 })
 
@@ -257,14 +261,14 @@ export default {
                 elWithDiametr.forEach(diam => {
                     const val = diam.prop_val_2 ? `${String(diam.prop_val).replace(/\D/g, "")}/${diam.prop_val_2}` : diam.prop_val
                     if (!this.description[0].values.some(c => c.value === val)) {
-                        this.description[0].values.push({ value: val, id: diam.prod_id })
+                        this.description[0].values.push({ value: val, id: diam.prod_code })
                     }
                 })
 
             if (!!elWithDlina)
                 elWithDlina.forEach(dlina => {
                     if (!this.description[1].values.some(c => c.value === dlina.prop_val)) {
-                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
+                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_code })
                     }
                 })
 
@@ -277,7 +281,8 @@ export default {
             this.$router.replace({ params: { id: id } });
             this.toggleStopper(true)
 
-            this.productCardInfo = await this.getProductById(id)
+            this.productCardInfo = await this.getProductByCode(id)
+            this.productId = this.productCardInfo.arFields.ID
         
             if (this.$route.params.name === 'all') {
                 this.catalogList = await this.getCatalog()
@@ -305,7 +310,7 @@ export default {
             if (!!elWithColors)
                 elWithColors.forEach(color => {
                     if (!this.colors.some(c => c.value === color.prop_val)) {
-                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_id})
+                        this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_code})
                     }
                 })
 
@@ -313,14 +318,14 @@ export default {
                 elWithDiametr.forEach(diam => {
                     const val = diam.prop_val_2 ? `${String(diam.prop_val).replace(/\D/g, "")}/${diam.prop_val_2}` : diam.prop_val
                     if (!this.description[0].values.some(c => c.value === val)) {
-                        this.description[0].values.push({ value: val, id: diam.prod_id })
+                        this.description[0].values.push({ value: val, id: diam.prod_code })
                     }
                 })
 
             if (!!elWithDlina)
                 elWithDlina.forEach(dlina => {
                     if (!this.description[1].values.some(c => c.value === dlina.prop_val)) {
-                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_id })
+                        this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_code })
                     }
                 })
 
@@ -356,14 +361,14 @@ export default {
             return this.productCardInfo?.arProps?.OPISANIE.VALUE
         }
     },
-    watch: {
-        '$route.params.id': {
-            handler() {
-                this.mountedEvent()
-            },
-            deep: true
-        }
-    }
+    // watch: {
+    //     '$route.params.id': {
+    //         handler() {
+    //             this.mountedEvent()
+    //         },
+    //         deep: true
+    //     }
+    // }
 }
 </script>
 

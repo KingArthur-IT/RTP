@@ -202,6 +202,7 @@ export default {
         el['description'] = productData[0]?.arProps?.OPISANIE?.VALUE || ''
         el['count'] = Number(el.count)
         el['photo'] = productData[0]?.arPhotoPrew[0] || ''
+        el['code'] = productData[0]?.prod_code
       })
     }
   },
