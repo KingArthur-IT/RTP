@@ -167,8 +167,10 @@ export default {
       const activeCatalogArray = this.activeCatIdsArr.length ? this.activeCatIdsArr : this.categoriesList.list.map(el => el.ID)
       const getIdsResult = await this.getIdsOfSelectedSystem(activeCatalogArray, filters)
 
-      if (getIdsResult && getIdsResult.data && getIdsResult.props) {
-        this.allProductsIds = Object.values(getIdsResult.data)
+      console.log('getIdsResult', getIdsResult);
+      if (getIdsResult && getIdsResult.data && getIdsResult.data.ids && getIdsResult.props) {
+
+        this.allProductsIds = Object.values(getIdsResult.data.ids)
         this.maxPrice = Math.ceil(getIdsResult.max_price)
         if (!selectedTypes)
           this.createTypesForFilter(getIdsResult.props, null)
@@ -351,9 +353,7 @@ export default {
       this.allProducts = []
       this.currentPage = 0
       // this.maxPrice = 0
-      console.log(selectedTypes);
       this.lastAppliedFilters = selectedTypes
-
 
       //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
