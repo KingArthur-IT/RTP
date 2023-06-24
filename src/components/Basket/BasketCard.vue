@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/card/${$route.params.name || 'all'}/${code}`">
+    <router-link :to="`/card/${system}/${code}`">
         <div class="basket-card">
             <div v-if="photoUrl" class="basket-card__img">
                 <img :src="photoUrl" alt="img">
@@ -54,6 +54,10 @@ export default {
             type: String,
             default: ''
         },
+        system: {
+            type: String,
+            default: ''
+        },
         photoUrl: {
             type: String,
             default: ''
@@ -80,7 +84,7 @@ export default {
     },
     data() {
         return {
-            productCount: 1
+            productCount: 1,
         }
     },
     methods: {

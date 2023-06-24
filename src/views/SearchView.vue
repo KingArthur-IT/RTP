@@ -22,6 +22,7 @@
                         v-model:count="item.count"
                         :id="item.ID" 
                         :code="item.URL_CODE"
+                        :system="item.system"
                         :description="item.PREVIEW_TEXT"
                         :newPrice="item.PRICE"
                         :oldPrice="'0'"
@@ -40,6 +41,7 @@
                         v-model:count="item.count"
                         :id="item.ID" 
                         :code="item.URL_CODE"
+                        :system="item.system"
                         :title="item.NAME"
                         :price="item.PRICE"
                         :description="item.PREVIEW_TEXT"
@@ -69,7 +71,8 @@ import SearchSystemsList from '../components/Search/SearchSystemsList.vue'
 import SuggestSection from '../components/Search/SuggestSection.vue'
 import ProductCard from '../components/UIKit/ProductCard.vue'
 import ProductHorizontalCard from '../components/UIKit/ProductHorizontalCard.vue'
-import { searchProducts, getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
+import { getCatalog, searchProducts, getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
+import { getPageName } from '@/use/helpers.js'
 import Loader from '../components/UIKit/Loader.vue'
 
 export default {
@@ -84,6 +87,7 @@ export default {
     },
     data() {
         return {
+            catalogList: [],
             cartId: 0,
             searchValue: '',
             filteredResults: [],
@@ -104,6 +108,7 @@ export default {
         }
     },
     async mounted() {
+        this.catalogList = await this.getCatalog()
         await this.getSearchData()
         
         let previousY = 0
@@ -144,6 +149,7 @@ export default {
         },
     },
     methods: {
+        getCatalog, getPageName,
         searchProducts, getBacketProducts, addProductToBacket, deleteCartItem,
         async getSearchData() {
             this.filteredResults = []
@@ -167,9 +173,12 @@ export default {
                 })
                 const isInCart = this.productsInCart.some(pr => pr.id == el.arFields.ID)
                 const count = isInCart ? this.productsInCart.find(pr => pr.id == el.arFields.ID).count : 1
+                const parentSectName = this.catalogList.find(cat => cat.list.some(sect => sect.ID == el.arFields.IBLOCK_SECTION_ID)).NAME
+                const systemName = this.getPageName(parentSectName)
                 return {
                     isInCart: isInCart, 
                     count: count,
+                    system: systemName,
                     ID: el.arFields.ID,
                     URL_CODE: el.prod_code,
                     IBLOCK_SECTION_ID: el.arFields.IBLOCK_SECTION_ID,

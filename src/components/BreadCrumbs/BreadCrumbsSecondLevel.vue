@@ -41,6 +41,10 @@ export default {
         isEnableGoToSystem: {
             type: Boolean,
             default: false
+        },
+        systemName: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -50,7 +54,10 @@ export default {
     },
     computed: {
         getPageDescription() {
-            const page = !!this.thirdLevelPage ? this.thirdLevelPage : this.pageName
+            let page = !!this.thirdLevelPage ? this.thirdLevelPage : this.pageName
+            // if (!!this.systemName)
+            //     page = this.systemName
+
             if (page === 'alpha')
                 return 'Трубы и фитинги из полипропилена'
             if (page === 'sigma')

@@ -2,7 +2,7 @@
   <main>
     <div class="container product-card">
         <div v-if="!isLoading">
-            <BreadCrumbsSecondLevel :isEnableGoToSystem="true" /> 
+            <BreadCrumbsSecondLevel :isEnableGoToSystem="true" :systemName="pageName" /> 
             <div class="product-head">
                 <div class="product-head__head">
                     <h1 class="product-head__title" v-html="productCardInfo?.arFields?.PREVIEW_TEXT"></h1>
@@ -213,12 +213,10 @@ export default {
             
             this.productCardInfo = await this.getProductByCode(this.$route.params.id)
             this.productId = this.productCardInfo.arFields.ID
-            console.log(this.productId);
 
             if (this.$route.params.name === 'all') {
                 this.catalogList = await this.getCatalog()
                 const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === this.productCardInfo.arFields.IBLOCK_SECTION_ID)).NAME
-    
                 this.pageName = this.getPageName(parentSectName)
             } else {
                 this.pageName = this.getPageName(this.$route.params.name)

@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/card/${$route.params.name || 'all'}/${code}`">
+    <router-link :to="`/card/${systemName}/${code}`">
         <div class="card" :class="{'has-shadow': hasShadow}">
                 <div v-if="!photoes.length" class="card__carousel card__slide no-dots">
                     <img src="@/assets/no-photo.jpg" alt="img" class="card__img">
@@ -90,6 +90,10 @@ export default {
         code: {
             type: String,
             required: true
+        },
+        system: {
+            type: String,
+            default: ''
         },
         title: {
             type: String,
@@ -201,6 +205,9 @@ export default {
     computed: {
         btnText() {
             return this.isInCart ? 'В корзине' : 'В корзину'
+        },
+        systemName() {
+            return !!this.system ? this.system : this.$route.params.name 
         }
     },
     watch: {

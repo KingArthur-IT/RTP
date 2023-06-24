@@ -4,6 +4,7 @@
             <BasketCard 
                 :id="prod.prod_id"
                 :code="prod.code"
+                :system="prod.systemName"
                 :title="prod.title"
                 :description="prod.description"
                 :price="prod.price"

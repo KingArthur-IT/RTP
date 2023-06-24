@@ -147,12 +147,12 @@
 <script>
 import BreadCrumbs from '../components/BreadCrumbs/BreadCrumbs.vue'
 import DarkRectButton from '../components/UIKit/DarkRectButton.vue'
-import { validateEmail, getMonthName } from '@/use/helpers.js'
+import { getPageName, validateEmail, getMonthName } from '@/use/helpers.js'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import BasketProductsList from '../components/Basket/BasketProductsList.vue';
 import AcceptOrderModal from '../components/Modals/AcceptOrderModal.vue';
-import { getBacketProducts, getAllProductsInCart, deleteCartItem, createOrder } from '@/use/middleware.js'
+import { getCatalog, getBacketProducts, getAllProductsInCart, deleteCartItem, createOrder } from '@/use/middleware.js'
 import AdressAutocomplete from '../components/UIKit/AdressAutocomplete.vue';
 import EmptyBasketModal from '../components/Modals/EmptyBasketModal.vue';
 
@@ -168,6 +168,7 @@ export default {
   },
   data() {
     return {
+      catalogList: [],
       isModalShown: false,
       callMePhone: '',
       isCallMePhoneValid: true,
@@ -190,11 +191,13 @@ export default {
   async mounted(){
     window.scrollTo(0, 0);
     this.cartId = localStorage.getItem('cartId') || 0
+    this.catalogList = await this.getCatalog()
 
     if (this.cartId) {
       this.cartList = await this.getBacketProducts(this.cartId)
 
       const allProducts = await this.getAllProductsInCart(this.cartList.map(el => el.prod_id))
+      // console.log(allProducts); IBLOCK_SECTION_ID
 
       this.cartList.forEach(el => {
         const productData = allProducts.filter(p => p.arFields.ID == el.prod_id)
@@ -203,10 +206,15 @@ export default {
         el['count'] = Number(el.count)
         el['photo'] = productData[0]?.arPhotoPrew[0] || ''
         el['code'] = productData[0]?.prod_code
+
+        const parentSectName = this.catalogList.find(el => el.list.some(sect => sect.ID === productData[0]?.arFields.IBLOCK_SECTION_ID)).NAME
+        el['systemName'] = this.getPageName(parentSectName)
       })
     }
   },
   methods: {
+    getCatalog,
+    getPageName,
     validateEmail,
     getMonthName,
     getBacketProducts,

@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/card/${$route.params.name || 'all'}/${code}`">
+    <router-link :to="`/card/${systemName}/${code}`">
         <div class="card" :class="{'has-shadow': hasShadow}">
             <div class="card__hero">
                 <div>
@@ -105,6 +105,10 @@ export default {
         code: {
             type: String,
             required: true
+        },
+        system: {
+            type: String,
+            default: ''
         },
         description: {
             type: String,
@@ -223,6 +227,9 @@ export default {
         btnText() {
             return this.isInCart ? 'В корзине' : 'В корзину'
         },
+        systemName() {
+            return !!this.system ? this.system : this.$route.params.name 
+        }
     },
     watch: {
         count() {
