@@ -21,42 +21,56 @@
             <div v-else class="loader-wrapper">
                 <Loader />
             </div>
-            <div v-if="dispayModeValue === 'col'" class="search-hero-col">
-                <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
-                    <ProductCard 
-                        v-model:count="item.count"
-                        :id="item.ID" 
-                        :code="item.URL_CODE"
-                        :system="item.system"
-                        :description="item.PREVIEW_TEXT"
-                        :newPrice="item.PRICE"
-                        :oldPrice="'0'"
-                        :isBenefitShown="false"
-                        :isInCart="item.isInCart"
-                        :photoes="item.photoes"
-                        @addedToCart="addedToCart"
-                        @updateCountInCart="updateCountInCart"
-                        @deleteFromCart="deleteFromCart"
+            <div class="search-hero">
+                <div v-if="searchResults.length" class="search-hero__filters">
+                    <SystemFiltersVue 
+                        :typesList="typesForFilter"
+                        :rangeMaximum="maxPrice" 
+                        :rangeMinimum="minPrice"
+                        @applyFilters="applyFilters"
                     />
                 </div>
-            </div>
-            <div v-else class="search-hero-row">
-                <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-row__card">
-                    <ProductHorizontalCard 
-                        v-model:count="item.count"
-                        :id="item.ID" 
-                        :code="item.URL_CODE"
-                        :system="item.system"
-                        :title="item.NAME"
-                        :price="item.PRICE"
-                        :description="item.PREVIEW_TEXT"
-                        :infoList="item.info"
-                        :isInCart="item.isInCart"
-                        :photoes="item.photoes"
-                        @addedToCart="addedToCart"
-                        @updateCountInCart="updateCountInCart"
-                        @deleteFromCart="deleteFromCart"
-                    />
+                <div class="search-hero__content">
+                    <div v-if="dispayModeValue === 'col'" class="search-hero-col">
+                        <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-col__card">
+                            <ProductCard 
+                                v-model:count="item.count"
+                                :id="item.ID" 
+                                :code="item.URL_CODE"
+                                :system="item.system"
+                                :description="item.PREVIEW_TEXT"
+                                :newPrice="item.PRICE"
+                                :oldPrice="'0'"
+                                :isBenefitShown="false"
+                                :isInCart="item.isInCart"
+                                :photoes="item.photoes"
+                                @addedToCart="addedToCart"
+                                @updateCountInCart="updateCountInCart"
+                                @deleteFromCart="deleteFromCart"
+                            />
+                        </div>
+                    </div>
+                    <div v-else class="search-hero-row">
+                        <div v-for="item in filteredResults?.slice(0, currentCardsCount)" :key="item.id" class="search-hero-row__card">
+                            <ProductHorizontalCard 
+                                v-model:count="item.count"
+                                :id="item.ID" 
+                                :code="item.URL_CODE"
+                                :system="item.system"
+                                :title="item.NAME"
+                                :price="item.PRICE"
+                                :description="item.PREVIEW_TEXT"
+                                :infoList="item.info"
+                                :isInCart="item.isInCart"
+                                :photoes="item.photoes"
+                                @addedToCart="addedToCart"
+                                @updateCountInCart="updateCountInCart"
+                                @deleteFromCart="deleteFromCart"
+                            />
+                        </div>
+                    </div>
+                    <div v-if="searchResults.length && !filteredResults.length" class="no-filter-rezult">Нет результатов по Вашему запросу</div>
+                     <div class="empty-block"></div>
                 </div>
             </div>
             <!-- <div class="suggestions-wrapper">
@@ -80,6 +94,7 @@ import { getCatalog, searchProducts, getBacketProducts, addProductToBacket, dele
 import { getPageName } from '@/use/helpers.js'
 import Loader from '../components/UIKit/Loader.vue'
 import SearchSystemsCheckboxes from '../components/Search/SearchSystemsCheckboxes.vue'
+import SystemFiltersVue from '../components/SystemCatalog/SystemFilters.vue'
 
 export default {
     components: {
@@ -90,11 +105,19 @@ export default {
         ProductHorizontalCard,
         SearchSystemsList,
         Loader,
-        SearchSystemsCheckboxes
+        SearchSystemsCheckboxes,
+        SystemFiltersVue
     },
     data() {
         return {
+            maxPrice: 0,
+            minPrice: 0,
+            lastSelectedMaxPrice: 0,
+            lastSelectedMinPrice: 0,
+            typesForFilter: [],
             catalogList: [],
+            selectedSystemsList: {},
+            selectedTypesList: [],
             cartId: 0,
             searchValue: '',
             filteredResults: [],
@@ -109,8 +132,8 @@ export default {
             ],
             filterValue: 'popular',
             dispayModeValue: 'col',
-            maxCardsPerPage: 5,
-            currentCardsCount: 10,
+            maxCardsPerPage: 12,
+            currentCardsCount: 12,
             isLoaded: false
         }
     },
@@ -122,7 +145,7 @@ export default {
         let previousRatio = 0
 
         //Scroll animation
-        const suggestionBlock = document.querySelector('.suggestions-wrapper');
+        const suggestionBlock = document.querySelector('.empty-block');
         const showMoreObserver = new IntersectionObserver(entries => {
             const currentY = entries[0].boundingClientRect.y
             const currentRatio = entries[0].intersectionRatio
@@ -182,13 +205,44 @@ export default {
             const cartPrd = await this.getBacketProducts(this.cartId)
             this.productsInCart = cartPrd?.map(p => { return { id: p.prod_id, count: p.count} })
 
+            //посчитать мах цену
+            cardsList.forEach(el => {
+                if (el.arPrice.PRICE > this.maxPrice)
+                    this.maxPrice = Math.ceil(el.arPrice.PRICE)
+                if (el.arPrice.PRICE < this.minPrice || this.minPrice === 0)
+                    this.minPrice = Math.floor(el.arPrice.PRICE)
+            })
+
+            //сформировать массив типов для секции фильтров с галочками
+            const typesPropsList = ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY', 'TIP_FITINGA', 'TIP_SOEDINENIYA_IZDELIY', 'VID_REZBY', 'OBLAST_PRIMENENIYA', 'ARMIROVANIE_TRUBY', 'RABOCHAYA_TEMPERATURA', 'DLINA', 'SDR', 'TOLSHCHINA_STENKI', 'NOMINALNOE_DAVLENIE_PN_BAR']
+            this.typesForFilter = []
+            cardsList.forEach(product => {
+                typesPropsList.forEach(prop => {
+                    if (product.arProps[prop] && product.arProps[prop].VALUE) { //если значение такого пропа у продукта есть
+                        const propInTypes = this.typesForFilter.find(t => t.name === product.arProps[prop].NAME) //если он есть уже в типах фильтров
+                        if (propInTypes) { //если уже есть такой тип
+                            const findVal = propInTypes.list.find(v => v.value === product.arProps[prop].VALUE) //добавлено ли в него такое значение?
+                            if (findVal) 
+                            findVal.count += 1
+                            else propInTypes.list.push({ value: product.arProps[prop].VALUE, count: 1, isChecked: false})
+                        } else
+                            this.typesForFilter.push({ name: product.arProps[prop].NAME, description: product.arProps[prop].NAME, propName: prop, list: [ { value: product.arProps[prop].VALUE, count: 1, isChecked: false} ] })
+                    }
+                })
+            })
+            
             //трансформировать данные из массива продуктов
             const propsArray = ['DIAMETR', 'TOLSHCHINA_STENKI', 'TSVET']
             this.searchResults = cardsList?.map(el => { 
                 const infoList = []
+                const hiddenList = []
                 propsArray.forEach((propName) => {
                     if (el.arProps[propName].VALUE)
                     infoList.push({ description: el.arProps[propName].NAME, value: el.arProps[propName].VALUE })
+                })
+                typesPropsList.forEach((propName) => {
+                    if (el.arProps[propName] && el.arProps[propName].VALUE)
+                        hiddenList.push({ name: propName, value: el.arProps[propName].VALUE })
                 })
                 const isInCart = this.productsInCart.some(pr => pr.id == el.arFields.ID)
                 const count = isInCart ? this.productsInCart.find(pr => pr.id == el.arFields.ID).count : 1
@@ -207,6 +261,7 @@ export default {
                     PRICE: el.arPrice.PRICE,
                     CREATED_DATE: el.arFields.DATE_CREATE_UNIX,
                     info: infoList,
+                    hidden: hiddenList,
                     photoes: el.arPhotoPrew
                 }
             })
@@ -236,14 +291,42 @@ export default {
             }
         },
         updateFilteredSystems(selectedSystems) {
-            console.log(this.searchResults);
-            this.filteredResults = this.searchResults.filter(item => selectedSystems[item.system])
-            console.log(this.filteredResults);
+            this.selectedSystemsList = {...selectedSystems}
+            this.applyFilters({ selectedCategories: null, minPrice: this.lastSelectedMinPrice || this.minPrice, maxPrice: this.lastSelectedMaxPrice || this.maxPrice, selectedTypes: this.selectedTypesList })
+        },
+        applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
+            window.scrollTo(0, 600)
+            this.selectedTypesList = selectedTypes
+            this.filteredResults = [] //this.searchResults.filter(item => selectedSystems[item.system])
+
+            this.lastSelectedMaxPrice = maxPrice
+            this.lastSelectedMinPrice = minPrice
+
+            if (Object.entries(this.selectedSystemsList).some(el => el[1]))
+                this.filteredResults = this.searchResults.filter(item => this.selectedSystemsList[item.system])
+            else this.filteredResults = this.searchResults
+
+            this.filteredResults = this.filteredResults
+                .filter(p => Number(p.PRICE) >= minPrice && Number(p.PRICE) <= maxPrice)
+
+            if (selectedTypes.some(t => t.list.some(l => l.isChecked))) {
+                this.filteredResults = this.filteredResults
+                    .filter(p => {
+                        let isSelected = false
+                        selectedTypes
+                            .filter(el => el.list.some(ch => ch.isChecked))
+                            .forEach(prop => { //фикс цвет
+                                const productPropValue = p.hidden.find(el => el.name === prop.propName)?.value //какой цвет у продукта
+                                isSelected = prop.list.some(el => el.value === productPropValue && el.isChecked)
+                            })
+                        return isSelected
+                    })
+            }
         }
     },
     watch: {
         filterValue() {
-            this.currentCardsCount = 10
+            this.currentCardsCount = 12
 
             const compareFromCheap = ( a, b ) => {
                 if ( Number(a.PRICE) < Number(b.PRICE) )
@@ -274,14 +357,22 @@ export default {
                 return 0;
             }
 
-            if (this.filterValue === 'cheap')
+            if (this.filterValue === 'cheap') {
                 this.filteredResults.sort(compareFromCheap)
-            if (this.filterValue === 'expansive')
+                this.searchResults.sort(compareFromCheap)
+            }
+            if (this.filterValue === 'expansive') {
                 this.filteredResults.sort(compareFromExpansive)
-            if (this.filterValue === 'popular')
+                this.searchResults.sort(compareFromExpansive)
+            }
+            if (this.filterValue === 'popular') {
                 this.filteredResults.sort(compareStars)
-            if (this.filterValue === 'new')
+                this.searchResults.sort(compareStars)
+            }
+            if (this.filterValue === 'new') {
                 this.filteredResults.sort(compareDate)
+                this.searchResults.sort(compareDate)
+            }
         },
         '$route.query.search': {
             handler() {
@@ -347,4 +438,21 @@ export default {
 
 .search-system-list
     margin: 78px 0 112px
+
+.search-hero
+    display: flex
+    justify-content: flex-start
+    &__hero
+      width: calc(100% - 240px)
+    &__filters
+      width: 240px
+      margin-right: 44px
+
+.empty-block
+    width: 100%
+    height: 10px
+    opacity: 0
+    pointer-events: none
+.no-filter-rezult
+    margin-top: 60px
 </style>

@@ -1,20 +1,20 @@
 <template>
   <div class="system-list">
-      <div v-for="system in systemList" :key="system.name" class="system-list__wrapper">
-          <div v-if="counts[system.name]" class="system-list__item-wrapper">
+      <div v-for="system in list" :key="system" class="system-list__wrapper">
+          <div class="system-list__item-wrapper">
               <div 
                 class="system-list__item" 
-                :class="{ [system.name]: true, 'selected': selectedSystems[system.name] }"
-                @click="selectedSystems[system.name] = !selectedSystems[system.name]"
+                :class="{ [system[0]]: true, 'selected': selectedSystems[system[0]] }"
+                @click="selectedSystems[system[0]] = !selectedSystems[system[0]]"
               >
                   <div class="system-list__checkbox">
-                      <CustomCheckboxVue :isSearchPage="true" v-model:model-value="selectedSystems[system.name]" />
+                      <CustomCheckboxVue :isSearchPage="true" v-model:model-value="selectedSystems[system[0]]" />
                   </div>
                   <div class="system-list__img">
-                      <img :src="getImageUrl('search-icons', system.name)" alt="alpha">
+                      <img :src="getImageUrl('search-icons', system[0])" alt="alpha">
                   </div>
-                  <div class="system-list__name">Система {{ String(system.title).toUpperCase() }} {{ system.description }}</div>
-                  <div class="system-list__count">{{ counts[system.name] }}</div>
+                  <div class="system-list__name">Система {{ String(systemList.find(el => el.name === system[0]).title).toUpperCase() }} {{ systemList.find(el => el.name === system[0]).description }}</div>
+                  <div class="system-list__count">{{ system[1] }}</div>
               </div>
           </div>
       </div>
@@ -39,14 +39,14 @@ export default {
         return {
             systemList,
             selectedSystems: {
-                alpha: true,
+                alpha: false,
                 sigma: false,
                 omega: false,
-                'beta-orange': true,
-                delta: true,
-                beta: true,
-                'beta-elite': true,
-                gamma: true,
+                'beta-orange': false,
+                delta: false,
+                beta: false,
+                'beta-elite': false,
+                gamma: false,
             }
         }
     },
@@ -60,6 +60,11 @@ export default {
             },
             deep: true
         }
+    },
+    computed: {
+        list() {
+            return Object.entries(this.counts).filter(item => !!item[1])
+        }
     }
 }
 </script>
@@ -70,6 +75,7 @@ export default {
     flex-wrap: wrap
     width: calc( 100% + 40px )
     transform: translateX(-20px)
+    margin-bottom: 40px
     &__wrapper
         flex-basis: 50%
     &__item-wrapper
@@ -102,7 +108,7 @@ export default {
                 background: #80C2EC
             &.gamma
                 background: #2A4A8A
-            &.sigma
+            &.omega
                 background: #B92F2C
         &.selected
             &.alpha
@@ -119,7 +125,7 @@ export default {
                 background: #80C2EC
             &.gamma
                 background: #2A4A8A
-            &.sigma
+            &.omega
                 background: #B92F2C
     &__checkbox
         margin-right: 17px

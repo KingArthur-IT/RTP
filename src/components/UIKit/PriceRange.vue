@@ -128,6 +128,9 @@ export default {
     maxValue() {
       this.sliderMaxValue = this.maxValue
     },
+    minValue() {
+      this.sliderMinValue = this.minValue
+    },
     max() {
       this.sliderMaxValue = this.max
       this.change()

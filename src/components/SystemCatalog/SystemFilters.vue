@@ -92,7 +92,7 @@ export default {
         },
         clearFilters() {
             this.typesArray.forEach(t => {
-                t.list.forEach(el => el.isChecked = true)
+                t.list.forEach(el => el.isChecked = false)
             })
             this.applyCategories()
         },
@@ -110,6 +110,9 @@ export default {
     watch: {
         rangeMaximum() {
             this.rangeMaxValue = this.rangeMaximum
+        },
+        rangeMinimum() {
+            this.rangeMinValue = this.rangeMinimum
         },
         rangeMaxValue() {
             if (this.rangeMaxValue > this.rangeMaximum)
