@@ -69,8 +69,8 @@ export default {
         }
     },
     mounted() {
-        // this.rangeMaxValue = this.rangeMaximum
-        // this.rangeMinValue = this.rangeMinimum
+        this.rangeMaxValue = this.rangeMaximum
+        this.rangeMinValue = this.rangeMinimum
 
         if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
             let priorityNames = ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY']; 

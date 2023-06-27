@@ -8,8 +8,13 @@
                 <div v-if="!searchResults?.length" class="search__no-results-btn" @click="$router.push({ name: 'catalog' })">
                     <button>Перейти в каталог</button>
                 </div>
-                <div v-else class="filters-wrapper">
-                    <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
+                <div v-else>
+                    <div>
+                        <SearchSystemsCheckboxes :counts="searchedSystemCount" @updateFilteredSystems="updateFilteredSystems" />
+                    </div>
+                    <div v-if="filteredResults.length" class="filters-wrapper">
+                        <FiltersRow v-model:activeFilter="filterValue" v-model:displayMode="dispayModeValue"/>
+                    </div>
                 </div>
             </div>
             <!-- loader -->
@@ -74,6 +79,7 @@ import ProductHorizontalCard from '../components/UIKit/ProductHorizontalCard.vue
 import { getCatalog, searchProducts, getBacketProducts, addProductToBacket, deleteCartItem } from '@/use/middleware.js'
 import { getPageName } from '@/use/helpers.js'
 import Loader from '../components/UIKit/Loader.vue'
+import SearchSystemsCheckboxes from '../components/Search/SearchSystemsCheckboxes.vue'
 
 export default {
     components: {
@@ -83,7 +89,8 @@ export default {
         ProductCard,
         ProductHorizontalCard,
         SearchSystemsList,
-        Loader
+        Loader,
+        SearchSystemsCheckboxes
     },
     data() {
         return {
@@ -147,6 +154,18 @@ export default {
                 return `По вашему запросу «${this.searchValue}» найден 1 товар.`
             return `По вашему запросу «${this.searchValue}» найдено ${this.searchResults.length} товаров.`
         },
+        searchedSystemCount() {
+            return {
+                alpha: this.searchResults.filter(item => item.system === 'alpha').length,
+                sigma:  this.searchResults.filter(item => item.system === 'sigma').length,
+                omega:  this.searchResults.filter(item => item.system === 'omega').length,
+                'beta-orange': this.searchResults.filter(item => item.system === 'beta-orange').length,
+                delta: this.searchResults.filter(item => item.system === 'delta').length,
+                beta: this.searchResults.filter(item => item.system === 'beta').length,
+                'beta-elite': this.searchResults.filter(item => item.system === 'beta-elite').length,
+                gamma: this.searchResults.filter(item => item.system === 'gamma').length,
+            }
+        }
     },
     methods: {
         getCatalog, getPageName,
@@ -215,6 +234,11 @@ export default {
                 this.$cartCount.value = Number(cartCount) - 1
                 localStorage.setItem('cartCount', cartCount - 1)
             }
+        },
+        updateFilteredSystems(selectedSystems) {
+            console.log(this.searchResults);
+            this.filteredResults = this.searchResults.filter(item => selectedSystems[item.system])
+            console.log(this.filteredResults);
         }
     },
     watch: {

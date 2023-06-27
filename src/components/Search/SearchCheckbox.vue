@@ -1,17 +1,14 @@
 <template>
   <div class="wrapper" @click="changeEvent(modelValue)">
-    <div class="checkbox-wrapper" :class="{'error': !isValid, 'search': isSearchPage}">
+    <div class="checkbox-wrapper">
       <input  type="checkbox"
               class="custom-checkbox"  
-              :class="{'checked': modelValue, 'error': !isValid}"
+              :class="{'checked': modelValue}"
               :value="modelValue"
               @input="(event) => $emit('update:modelValue', event.target.checked)"
       >
-      <svg v-if="modelValue && !isSearchPage" width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg v-if="modelValue" width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 4.42857L5.69565 10L13 1" stroke="white" stroke-width="2"/>
-      </svg>
-      <svg v-if="modelValue && isSearchPage" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1 4L3.66667 7L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
     <slot></slot>
@@ -29,10 +26,6 @@ export default {
     isValid: {
       type: Boolean,
       default: true
-    },
-    isSearchPage: {
-      type: Boolean,
-      default: false
     }
   },
   setup(props, {emit}){
@@ -58,16 +51,6 @@ export default {
   height: 17px
   border: 1px solid #fff
   border-radius: 3px
-  &.search
-    border-radius: 4px
-    width: 16px
-    height: 16px
-    & svg
-      transform: translate(0px, 2px)
-      width: 10px
-      height: 10px
-  &.error
-    border: 2px solid #F27272
   & svg
     position: absolute
     top: 0
@@ -102,13 +85,6 @@ export default {
       transform: translate(-1px, -1px)
       width: 8px
       height: 8px
-    &.search
-      width: 16px
-      height: 16px
-      & svg
-        transform: translate(0px, 2px)
-        width: 10px
-        height: 10px
   .custom-checkbox 
     transform: translate(0px, -6px)
     width: 10px
