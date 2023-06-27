@@ -4,6 +4,7 @@
           <PriceRange
             ref="filterPriceRange"
             :max="rangeMaximum"
+            :min="rangeMinimum"
             :step="1"
             v-model:min-value="rangeMinValue"
             v-model:max-value="rangeMaxValue"
@@ -47,6 +48,10 @@ export default {
             type: Number,
             default: 500
         },
+        rangeMinimum: {
+            type: Number,
+            default: 0
+        },
         categoriesList: {
             type: Array,
             default: []
@@ -64,7 +69,8 @@ export default {
         }
     },
     mounted() {
-        this.rangeMaxValue = this.rangeMaximum
+        // this.rangeMaxValue = this.rangeMaximum
+        // this.rangeMinValue = this.rangeMinimum
 
         if (this.$route.params.name === 'alpha' && (!this.$route.params.category || this.$route.params.category === 'fitingi')) {
             let priorityNames = ['VID_FITINGA', 'DIAMETR', 'TSVET', 'RAZMER_REZBY']; 

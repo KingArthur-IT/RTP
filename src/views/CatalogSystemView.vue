@@ -13,6 +13,7 @@
             :categoriesList="categories"
             :typesList="typesForFilter"
             :rangeMaximum="maxPrice" 
+            :rangeMinimum="minPrice"
             @updateSelectedCategory="updateSelectedCategory"
             @applyFilters="applyFilters"
             @updateMaximum="updateMaximum"
@@ -59,6 +60,7 @@ export default {
       currentPage: 0,
       productsPerPage: 12,
       maxPrice: 100,
+      minPrice: 0,
       isLoaded: false,
       typesForFilter: [],
       categoriesList: {},
@@ -171,7 +173,7 @@ export default {
       if (getIdsResult && getIdsResult.data && getIdsResult.data.ids && getIdsResult.props) {
 
         this.allProductsIds = Object.values(getIdsResult.data.ids)
-        this.maxPrice = Math.ceil(getIdsResult.max_price)
+        // this.maxPrice = Math.ceil(getIdsResult.max_price)
         if (!selectedTypes)
           this.createTypesForFilter(getIdsResult.props, null)
       }
@@ -352,9 +354,12 @@ export default {
       this.filteredProducts = []
       this.allProducts = []
       this.currentPage = 0
+      // const currMaxPrice = this.maxPrice
       // this.maxPrice = 0
       this.lastAppliedFilters = selectedTypes
 
+      // this.maxPrice = Math.max(currMaxPrice, maxPrice) //maxPrice //Math.min(this.maxPrice, maxPrice)
+      
       //никаких галок не выбрано
       if (selectedTypes.every(t => t.list.every(l => !l.isChecked))) {
         this.filteredProducts = []
@@ -371,7 +376,6 @@ export default {
         await this.addProductsFromIds()
       }
 
-      // this.maxPrice = maxPrice //Math.min(this.maxPrice, maxPrice)
 
       if (selectedTypes) {
         selectedTypes.forEach(el => {
@@ -390,6 +394,7 @@ export default {
       this.filteredProducts = this.allProducts 
         // .filter(p => Number(p.PRICE) >= Number(minPrice) && Number(p.PRICE) <= Number(maxPrice))
 
+      
       setTimeout(() => {
         this.isLoaded = true
         this.toggleStopper(false)
@@ -479,6 +484,7 @@ export default {
           if (getIdsResult && getIdsResult.get_catalog_prod_id && getIdsResult.get_catalog_prod_id.data) {
             this.allProductsIds = Object.values(getIdsResult.get_catalog_prod_id.data)
             this.maxPrice = Math.ceil(getIdsResult.get_catalog_prod_id.data_price_max)
+            this.minPrice = Math.floor(getIdsResult.get_catalog_prod_id.data_price_min)
             this.createTypesForFilter(getIdsResult.get_catalog_prod_id.data_prop)
           }
         })

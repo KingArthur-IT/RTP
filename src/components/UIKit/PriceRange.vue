@@ -80,7 +80,7 @@ export default {
       return ((value - min) / (max - min)) * 100;
     },
     clearFilters(){
-      this.sliderMinValue = 0
+      this.sliderMinValue = this.min
       this.sliderMaxValue = this.max
       this.$emit("update:minValue", this.sliderMinValue);
       this.$emit("update:maxValue", this.sliderMaxValue);
@@ -130,6 +130,10 @@ export default {
     },
     max() {
       this.sliderMaxValue = this.max
+      this.change()
+    },
+    min() {
+      this.sliderMinValue = this.min
       this.change()
     }
   }
