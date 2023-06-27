@@ -295,7 +295,7 @@ export default {
             this.applyFilters({ selectedCategories: null, minPrice: this.lastSelectedMinPrice || this.minPrice, maxPrice: this.lastSelectedMaxPrice || this.maxPrice, selectedTypes: this.selectedTypesList })
         },
         applyFilters({ selectedCategories, minPrice, maxPrice, selectedTypes }) {
-            window.scrollTo(0, 600)
+            window.scrollTo(0, 400)
             this.selectedTypesList = selectedTypes
             this.filteredResults = [] //this.searchResults.filter(item => selectedSystems[item.system])
 
