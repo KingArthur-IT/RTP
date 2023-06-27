@@ -7,16 +7,23 @@
       <div class="search__hint" :class="{'active': isHindShow && search && search.length < 3 }">
           <div class="search__item">Поиск осуществляется от 3-х символов</div>
       </div>
-      <div class="search__hint" :class="{'active': isHindShow && search && search.length > 2 && !hintArr.length}">
+      <div class="search__hint" :class="{'active': isHindShow && search && search.length > 2 && !hintArr.length && !pagesHintArr.length}">
           <div class="search__item">Результатов не найдено</div>
       </div>
-      <div class="search__hint" :class="{'active': isHindShow && search && search.length > 2 && hintArr.length}">
-          <div 
+      <div class="search__hint" :class="{'active': isHindShow && search && search.length > 2 && (hintArr.length || pagesHintArr.length)}">
+        <div 
             v-for="(item, index) in hintArr" :key="index" 
             :id="`search-item-${index}`"
             class="search__item"
             @click="acceptHint(index)"
             v-html="item.arFields.PREVIEW_TEXT"
+        ></div>
+        <div 
+            v-for="(item, index) in pagesHintArr" :key="index" 
+            :id="`search-item-page-${index}`"
+            class="search__item"
+            @click="$router.push({ path: item.path })"
+            v-html="item.name"
         ></div>
       </div>
   </div>
@@ -30,8 +37,21 @@ export default {
         return {
             search: '',
             hintArr: [],
+            pagesHintArr: [],
             isHindShow: false,
-            isUsedHint: false
+            isUsedHint: false,
+            pages: [
+                { name: 'Контакты', path: '/contacts' },
+                { name: 'О компании', path: '/company' },
+                { name: 'Каталог', path: '/catalog' },
+                { name: 'Система ALPHA', path: '/alpha-system' },
+                { name: 'Корзина', path: '/cart' },
+                { name: 'Доставка и сервис', path: '/delivery-rules' },
+                { name: 'Пользовательское соглашение', path: '/terms-of-use' },
+                { name: 'Политика конфиденциальности', path: '/confidence' },
+                { name: 'Услуги', path: '/services' },
+                { name: 'Оплата', path: '/payment-methods' },
+            ]
         }
     },
     methods: {
@@ -63,6 +83,7 @@ export default {
             }
 
             if (this.search.length > 2 && !this.isUsedHint) {
+                this.pagesHintArr = this.pages.filter(p => String(p.name).toLocaleLowerCase().includes(String(this.search).toLocaleLowerCase()))
                 const hintArr = await this.hintSearchProducts(this.search)
                 if (hintArr?.length) {
                     this.hintArr = hintArr.slice(0, 5)
@@ -76,6 +97,7 @@ export default {
                 // this.isHindShow = false
                 // this.$showHint.value = false
                 this.hintArr = []
+                this.pagesHintArr = []
             }
         },
         '$showHint.value': {
