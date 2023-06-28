@@ -57,8 +57,10 @@ export default {
     methods: {
         hintSearchProducts,
         searchEvent() {
-            if (this.search.length > 2)
+            if (this.search.length > 2) {
+                this.isHindShow = false
                 this.$router.push({ name: 'search', query: { search: this.search } })
+            }
         },
         acceptHint(index) {
             this.isUsedHint = true
@@ -148,7 +150,7 @@ export default {
         left: 0
         right: 0
         background: #fff
-        z-index: 12
+        z-index: 15
         border: 1px solid transparent
         border-radius: 12px
         overflow: hidden

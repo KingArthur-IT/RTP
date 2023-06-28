@@ -181,8 +181,11 @@ export default {
 
     //получить currentProductsCount товаров по их id
     async addProductsFromIds() {
+      const isShowAllProducts = this.$route.query.full_result === 'Y'
+      
       const start = this.currentPage * this.productsPerPage
-      const end = (this.currentPage + 1) * this.productsPerPage
+      const end = !isShowAllProducts ? (this.currentPage + 1) * this.productsPerPage : this.allProductsIds.length
+      
       const newProducts = await this.getProductsByIdArr(this.allProductsIds.slice(start, end))
       if (newProducts) {
         const transformed = this.transformProductData(newProducts)
