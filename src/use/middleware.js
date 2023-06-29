@@ -296,9 +296,10 @@ export const getBestPropositions = async () => {
 
 //поиск
 export const searchProducts = async (search_text) => {
+  const searchText = String(search_text).toLowerCase()
   //check
   let isFileExist = false
-  const fileData = await sendRequest('', 'POST', { 'method': 'get_search_cash', 'search_text': search_text })
+  const fileData = await sendRequest('', 'POST', { 'method': 'get_search_cash', 'search_text': searchText })
   if (fileData && fileData.data && fileData.data.get_search_cash) {
     const fileDataRez = JSON.parse(fileData.data.get_search_cash)
     if (fileDataRez && fileDataRez.data && fileDataRez.data.length)
@@ -306,7 +307,7 @@ export const searchProducts = async (search_text) => {
   }
 
   if (!isFileExist)
-    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text })
+    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': searchText })
         .then((res) => {
             if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
@@ -316,7 +317,7 @@ export const searchProducts = async (search_text) => {
         })
         .catch((err) => console.log('Error while getBestPropositions', err))
   else {
-    return await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static-search/${search_text}`)
+    return await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static-search/${searchText}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Ошибка при загрузке файла: ' + response.status);
@@ -344,13 +345,49 @@ export const searchProducts = async (search_text) => {
 
 //поиск - подсказка
 export const hintSearchProducts = async (search_text) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text, 'small_result': 'Y' })
-      .then((res) => {
-          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-            return Object.values(res.data.get_catalog_prod.data)
-          } else {
-              console.log('Error while getBestPropositions', res);
+  const searchText = String(search_text).toLowerCase()
+  //check
+  let isFileExist = false
+  const fileData = await sendRequest('', 'POST', { 'method': 'get_search_cash', 'search_text': searchText })
+  if (fileData && fileData.data && fileData.data.get_search_cash) {
+    const fileDataRez = JSON.parse(fileData.data.get_search_cash)
+    if (fileDataRez && fileDataRez.data && fileDataRez.data.length)
+      isFileExist = true
+  }
+
+  if (!isFileExist)
+    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': searchText, 'small_result': 'Y' })
+        .then((res) => {
+            if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+            } else {
+                console.log('Error while getBestPropositions', res);
+            }
+        })
+        .catch((err) => console.log('Error while getBestPropositions', err))
+  else {
+    return await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static-search/${searchText}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке файла: ' + response.status);
           }
-      })
-      .catch((err) => console.log('Error while getBestPropositions', err))
+          return response.text();
+        })
+        .then(data => {
+          if (!data) {
+            console.log(`getSearchFromFile - file data is ${data}`);
+            return
+          }
+          const allSearchResult = JSON.parse(data)
+          
+          if (allSearchResult && allSearchResult.data) {
+            return Object.values(allSearchResult.data)
+          } else {
+              console.log('Error while getBestPropositions', allSearchResult);
+          }
+        })
+        .catch(error => {
+          console.error('Произошла ошибка:', error);
+        });
+  }
 };

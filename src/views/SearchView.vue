@@ -206,6 +206,11 @@ export default {
             const cartPrd = await this.getBacketProducts(this.cartId)
             this.productsInCart = cartPrd?.map(p => { return { id: p.prod_id, count: p.count} })
 
+            if (!cardsList || !cardsList.length) {
+                this.isLoaded = true
+                return
+            }
+
             //посчитать мах цену
             cardsList.forEach(el => {
                 if (el.arPrice.PRICE > this.maxPrice)
