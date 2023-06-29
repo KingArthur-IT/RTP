@@ -299,7 +299,6 @@ export const searchProducts = async (search_text) => {
   //check
   let isFileExist = false
   const fileData = await sendRequest('', 'POST', { 'method': 'get_search_cash', 'search_text': search_text })
-  console.log(fileData, JSON.parse(fileData.data.get_search_cash));
   if (fileData && fileData.data && fileData.data.get_search_cash) {
     const fileDataRez = JSON.parse(fileData.data.get_search_cash)
     if (fileDataRez && fileDataRez.data && fileDataRez.data.length)
@@ -330,7 +329,6 @@ export const searchProducts = async (search_text) => {
             return
           }
           const allSearchResult = JSON.parse(data)
-          console.log('allSearchResult', allSearchResult);
           
           if (allSearchResult && allSearchResult.data) {
             return Object.values(allSearchResult.data)

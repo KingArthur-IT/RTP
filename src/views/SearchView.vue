@@ -443,9 +443,9 @@ export default {
     display: flex
     justify-content: flex-start
     &__hero
-      width: calc(100% - 240px)
+      width: calc(100% - 310px)
     &__filters
-      width: 240px
+      width: 310px
       margin-right: 44px
 
 .empty-block
@@ -455,4 +455,11 @@ export default {
     pointer-events: none
 .no-filter-rezult
     margin-top: 60px
+
+@media screen and (max-width: 1600px)
+    .search-hero
+        &__hero
+            width: calc(100% - 240px)
+        &__filters
+            width: 240px
 </style>
