@@ -296,15 +296,52 @@ export const getBestPropositions = async () => {
 
 //поиск
 export const searchProducts = async (search_text) => {
-  return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text })
-      .then((res) => {
-          if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
-            return Object.values(res.data.get_catalog_prod.data)
-          } else {
-              console.log('Error while getBestPropositions', res);
+  //check
+  let isFileExist = false
+  const fileData = await sendRequest('', 'POST', { 'method': 'get_search_cash', 'search_text': search_text })
+  console.log(fileData, JSON.parse(fileData.data.get_search_cash));
+  if (fileData && fileData.data && fileData.data.get_search_cash) {
+    const fileDataRez = JSON.parse(fileData.data.get_search_cash)
+    if (fileDataRez && fileDataRez.data && fileDataRez.data.length)
+      isFileExist = true
+  }
+
+  if (!isFileExist)
+    return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': search_text })
+        .then((res) => {
+            if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
+              return Object.values(res.data.get_catalog_prod.data)
+            } else {
+                console.log('Error while getBestPropositions', res);
+            }
+        })
+        .catch((err) => console.log('Error while getBestPropositions', err))
+  else {
+    return await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static-search/${search_text}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке файла: ' + response.status);
           }
-      })
-      .catch((err) => console.log('Error while getBestPropositions', err))
+          return response.text();
+        })
+        .then(data => {
+          if (!data) {
+            console.log(`getSearchFromFile - file data is ${data}`);
+            return
+          }
+          const allSearchResult = JSON.parse(data)
+          console.log('allSearchResult', allSearchResult);
+          
+          if (allSearchResult && allSearchResult.data) {
+            return Object.values(allSearchResult.data)
+          } else {
+              console.log('Error while getBestPropositions', allSearchResult);
+          }
+        })
+        .catch(error => {
+          console.error('Произошла ошибка:', error);
+        });
+  }
 };
 
 //поиск - подсказка
