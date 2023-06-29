@@ -305,7 +305,6 @@ export const searchProducts = async (search_text) => {
     if (fileDataRez && fileDataRez.data && fileDataRez.data.length)
       isFileExist = true
   }
-
   if (!isFileExist)
     return await sendRequest('', 'POST', { 'method': 'get_catalog_prod', 'search_text': searchText })
         .then((res) => {
@@ -331,10 +330,10 @@ export const searchProducts = async (search_text) => {
           }
           const allSearchResult = JSON.parse(data)
           
-          if (allSearchResult && allSearchResult.data) {
-            return Object.values(allSearchResult.data)
+          if (allSearchResult && allSearchResult.get_catalog_prod && allSearchResult.get_catalog_prod.data) {
+            return Object.values(allSearchResult.get_catalog_prod.data)
           } else {
-              console.log('Error while getBestPropositions', allSearchResult);
+              console.log('Error while get search from file', allSearchResult);
           }
         })
         .catch(error => {
@@ -379,11 +378,11 @@ export const hintSearchProducts = async (search_text) => {
             return
           }
           const allSearchResult = JSON.parse(data)
-          
-          if (allSearchResult && allSearchResult.data) {
-            return Object.values(allSearchResult.data)
+
+          if (allSearchResult && allSearchResult.get_catalog_prod && allSearchResult.get_catalog_prod.data) {
+            return Object.values(allSearchResult.get_catalog_prod.data)
           } else {
-              console.log('Error while getBestPropositions', allSearchResult);
+              console.log('Error while get search hints from file', allSearchResult);
           }
         })
         .catch(error => {
