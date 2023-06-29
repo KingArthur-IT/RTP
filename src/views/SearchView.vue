@@ -194,6 +194,7 @@ export default {
         getCatalog, getPageName,
         searchProducts, getBacketProducts, addProductToBacket, deleteCartItem,
         async getSearchData() {
+            this.searchResults = []
             this.filteredResults = []
             this.isLoaded = false
 
