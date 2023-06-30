@@ -426,13 +426,16 @@ export default {
 .filters-wrapper
     margin-bottom: 30px
 
+.search-hero
+    &__content
+        width: 100%
 .search-hero-col
     display: flex
     flex-wrap: wrap
     width: calc( 100% + 30px )
     transform: translateX(-15px)
     &__card
-        flex-basis: 20%
+        flex-basis: 25%
         padding: 15px
 .search-hero-row
     display: flex
@@ -449,9 +452,9 @@ export default {
     display: flex
     justify-content: flex-start
     &__hero
-      width: calc(100% - 310px)
+      width: calc(100% - 320px)
     &__filters
-      width: 310px
+      width: 320px
       margin-right: 44px
 
 .empty-block

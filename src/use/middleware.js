@@ -360,10 +360,10 @@ export const hintSearchProducts = async (search_text) => {
             if (res.status === 200 && res.data && res.data.get_catalog_prod && res.data.get_catalog_prod.data) {
               return Object.values(res.data.get_catalog_prod.data)
             } else {
-                console.log('Error while getBestPropositions', res);
+                console.log('Error while get search hints', res);
             }
         })
-        .catch((err) => console.log('Error while getBestPropositions', err))
+        .catch((err) => console.log('Error while get search hints', err))
   else {
     return await fetch(`https://bitrix.rtp-test.swforge.ru:8080/api-static-search/${searchText}`)
         .then(response => {
@@ -378,6 +378,7 @@ export const hintSearchProducts = async (search_text) => {
             return
           }
           const allSearchResult = JSON.parse(data)
+          console.log(allSearchResult);
 
           if (allSearchResult && allSearchResult.get_catalog_prod && allSearchResult.get_catalog_prod.data) {
             return Object.values(allSearchResult.get_catalog_prod.data)

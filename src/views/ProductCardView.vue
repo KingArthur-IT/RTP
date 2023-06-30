@@ -337,12 +337,20 @@ export default {
                     return '#fff'
                 case 'Серый':
                     return '#C3D3E5'
+                case 'Зелёный':
+                    return '#00ff00'
                 case 'Зеленый':
                     return '#00ff00'
                 case 'Синий':
                     return '#0000ff'
                 case 'Красный':
                     return '#ff0000'
+                case 'Оранжевый':
+                    return '#EE741D'
+                case 'Фиолетовый':
+                    return '#e41093'
+                case 'Серый металлик':
+                    return '#C0C0C0'
                 default:
                     return '#fff'
             }
