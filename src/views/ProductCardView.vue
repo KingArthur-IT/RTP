@@ -364,7 +364,7 @@ export default {
             else return ''
         },
         mainDescription() {
-            return this.productCardInfo?.arProps?.OPISANIE.VALUE
+            return this.productCardInfo?.arFields?.DETAIL_TEXT
         }
     },
     // watch: {
