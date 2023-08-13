@@ -19,6 +19,24 @@ export default {
     },
     mounted() {
       console.clear()
+      console.log('mounted');
+      // const self = this;
+      ymaps.ready(() => {
+        console.log('ready');
+        const geolocation = ymaps.geolocation.get({
+            provider: 'auto',
+            mapStateAutoApply: true
+        }).then(function (result) {
+          var userAddress = result.geoObjects.get(0).properties.get('text');
+          var userCoodinates = result.geoObjects.get(0).geometry.getCoordinates();
+          console.log('userAddress', userAddress);
+          console.log('userCoodinates', userCoodinates);
+        });
+        var myGeocoder = ymaps.geocode([55.479802, 39.774091]);
+        myGeocoder.then(function(res) {
+            console.log('reverse', res.geoObjects.get(0).properties.get('text'));
+        });
+      });
     },
     computed: {
       pageName() {
