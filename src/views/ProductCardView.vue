@@ -188,8 +188,9 @@ export default {
             
             this.description[arrIndex].selectedValueIndex = newSelected
 
-            if (oldSelectedId !== id)
+            if (oldSelectedId !== id){
                 this.updateCard(id)
+            }
         },
         updateSelectedColor({ value, id }) {
             const oldSelectedId = this.$route.params.id
@@ -200,8 +201,17 @@ export default {
                 else c.isSelected = true
             })
 
-            if (oldSelectedId !== id)
-                this.updateCard(id)
+            if (oldSelectedId !== id){
+                this.updateCard(id);
+                this.description.forEach(item => {
+                    const index = item.values.findIndex(el => {
+                        return el.id === id
+                    });
+                    if (index > -1){
+                        item.selectedValueIndex = index;
+                    };
+                })
+            }
         },
         printDoc() {
             window.print()
@@ -305,12 +315,20 @@ export default {
             const elWithDiametr = this.productCardInfo.arPodobnie?.diametr
             const elWithDlina = this.productCardInfo.arPodobnie?.dlina
 
-            if (!!elWithColors)
+            if (!!elWithColors) {
+                const currentColor = this.productCardInfo.arProps.TSVET.VALUE;
+                this.colors.forEach(c => c.isSelected = false);
                 elWithColors.forEach(color => {
                     if (!this.colors.some(c => c.value === color.prop_val)) {
                         this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_code})
                     }
                 })
+                this.colors.forEach(c => {
+                    if (c.value === currentColor){
+                        c.isSelected = true;
+                    }
+                });
+            }
 
             if (!!elWithDiametr)
                 elWithDiametr.forEach(diam => {
