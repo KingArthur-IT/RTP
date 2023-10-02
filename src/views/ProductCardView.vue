@@ -189,29 +189,53 @@ export default {
             this.description[arrIndex].selectedValueIndex = newSelected
 
             if (oldSelectedId !== id){
-                this.updateCard(id)
+                this.updateCard(id);
             }
         },
         updateSelectedColor({ value, id }) {
-            const oldSelectedId = this.$route.params.id
+            const oldSelectedId = this.$route.params.id;
 
+            //изменить выбранный цвет в фильтре
             this.colors.forEach(c => {
                 if (c.value !== value)
                     c.isSelected = false
                 else c.isSelected = true
             })
 
-            if (oldSelectedId !== id){
-                this.updateCard(id);
-                this.description.forEach(item => {
-                    const index = item.values.findIndex(el => {
-                        return el.id === id
-                    });
-                    if (index > -1){
-                        item.selectedValueIndex = index;
-                    };
-                })
-            }
+            //после выбора нового цвета нужно проверить есть ли выбранный диаметр в выбранном цвете
+            const podobByColor = this.productCardInfo.arPodobnie.color;
+            const podobByDiam = this.productCardInfo.arPodobnie.diametr;
+            const selectedDiametrValue = this.description[0].values[this.description[0].selectedValueIndex].value;
+
+            // console.log('selectedDiametrValue', selectedDiametrValue);
+            // console.log('value', value);
+            // console.log('podobByColor', podobByColor);
+            // console.log('podobByDiam', podobByDiam);
+
+            const allPodobWithSelectedColorValue = podobByColor.filter(item => String(item.prop_val).includes(value) );
+            const allPodobWithCurrentDiamValue =  podobByDiam.filter(item => item.prop_val === selectedDiametrValue);
+
+            // console.log('allPodobWithSelectedColorValue', allPodobWithSelectedColorValue);
+            // console.log('allPodobWithCurrentDiamValue', allPodobWithCurrentDiamValue);
+
+            const prodItemWithColorAndSelectedDiam = allPodobWithCurrentDiamValue.find(item => {
+                return allPodobWithSelectedColorValue.some(pr => pr.prod_id === item.prod_id);
+            });
+            
+            if (prodItemWithColorAndSelectedDiam){ //если нашли товар в уже выбранном диаметре с новым цветом, то переходим на него
+                if(oldSelectedId !== prodItemWithColorAndSelectedDiam.prod_code){
+                    this.updateCard(prodItemWithColorAndSelectedDiam.prod_code);
+                }
+            } else { //если нет такого товара, то выбираем другой диаметр
+                const newProdCode = this.colors.find(item => item.isSelected).id;
+                this.updateCard(newProdCode);
+
+                //обвновляем выбранный диаметр
+                const filterIndex = this.description[0].values.findIndex(item => item.id === newProdCode);
+                if (filterIndex !== -1){
+                    this.description[0].selectedValueIndex = filterIndex;
+                }
+            };
         },
         printDoc() {
             window.print()
@@ -316,18 +340,23 @@ export default {
             const elWithDlina = this.productCardInfo.arPodobnie?.dlina
 
             if (!!elWithColors) {
-                const currentColor = this.productCardInfo.arProps.TSVET.VALUE;
+                let currentColor = '';
+                if (this.productCardInfo && this.productCardInfo.arProps && this.productCardInfo.arProps.TSVET && this.productCardInfo.arProps.TSVET.VALUE){
+                    currentColor = this.productCardInfo.arProps.TSVET.VALUE;
+                }
                 this.colors.forEach(c => c.isSelected = false);
                 elWithColors.forEach(color => {
                     if (!this.colors.some(c => c.value === color.prop_val)) {
                         this.colors.push({ value: color.prop_val, isSelected: true, color: this.getColorHex(color.prop_val.trim()), id: color.prod_code})
                     }
                 })
-                this.colors.forEach(c => {
-                    if (c.value === currentColor){
-                        c.isSelected = true;
-                    }
-                });
+                if (currentColor){
+                    this.colors.forEach(c => {
+                        if (c.value === currentColor){
+                            c.isSelected = true;
+                        }
+                    });
+                }
             }
 
             if (!!elWithDiametr)
