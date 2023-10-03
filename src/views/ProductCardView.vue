@@ -205,7 +205,9 @@ export default {
             //после выбора нового цвета нужно проверить есть ли выбранный диаметр в выбранном цвете
             const podobByColor = this.productCardInfo.arPodobnie.color;
             const podobByDiam = this.productCardInfo.arPodobnie.diametr;
+            const podobByDlina = this.productCardInfo.arPodobnie?.dlina;
             const selectedDiametrValue = this.description[0].values[this.description[0].selectedValueIndex].value;
+            // const selectedDlinaValue = this.description[1].values.length ? this.description[1].values[this.description[1].selectedValueIndex].value : '-';
 
             // console.log('selectedDiametrValue', selectedDiametrValue);
             // console.log('value', value);
@@ -213,8 +215,18 @@ export default {
             // console.log('podobByDiam', podobByDiam);
 
             const allPodobWithSelectedColorValue = podobByColor.filter(item => String(item.prop_val).includes(value) );
-            const allPodobWithCurrentDiamValue =  podobByDiam.filter(item => item.prop_val === selectedDiametrValue);
+            const allPodobWithCurrentDiamValue = podobByDiam.filter(item => {
+                let searchVal = ''
+                if (item.prop_val_2){
+                    searchVal = String(item.prop_val).replace(/\D/g, "") + '/' + item.prop_val_2;
+                } else {
+                    searchVal = item.prop_val;
+                };
+                return searchVal === selectedDiametrValue;
+            });
+            // const allPodobWithCurrentDlinaValue = podobByDlina.filter(item => item.prop_val === selectedDlinaValue);
 
+            // console.log('allPodobWithCurrentDlinaValue', allPodobWithCurrentDlinaValue);
             // console.log('allPodobWithSelectedColorValue', allPodobWithSelectedColorValue);
             // console.log('allPodobWithCurrentDiamValue', allPodobWithCurrentDiamValue);
 
@@ -225,8 +237,19 @@ export default {
             if (prodItemWithColorAndSelectedDiam){ //если нашли товар в уже выбранном диаметре с новым цветом, то переходим на него
                 if(oldSelectedId !== prodItemWithColorAndSelectedDiam.prod_code){
                     this.updateCard(prodItemWithColorAndSelectedDiam.prod_code);
+                    //проверяем длину
+                    const newProd = podobByDlina.find(item => item.prod_code === prodItemWithColorAndSelectedDiam.prod_code);
+                    if (newProd){
+                        const newSelectedDlina = newProd.prop_val;
+                        if (newSelectedDlina){
+                            const filterIndex = this.description[1].values.findIndex(item => item.value === newSelectedDlina);
+                            if (filterIndex !== -1){
+                                this.description[1].selectedValueIndex = filterIndex;
+                            }
+                        }
+                    }
                 }
-            } else { //если нет такого товара, то выбираем другой диаметр
+            } else { //если нет такого товара, то выбираем другой диаметр и длину
                 const newProdCode = this.colors.find(item => item.isSelected).id;
                 this.updateCard(newProdCode);
 
@@ -234,6 +257,17 @@ export default {
                 const filterIndex = this.description[0].values.findIndex(item => item.id === newProdCode);
                 if (filterIndex !== -1){
                     this.description[0].selectedValueIndex = filterIndex;
+                }
+                //обновляем длину
+                const newProd = podobByDlina.find(item => item.prod_code === newProdCode);
+                if (newProd){
+                    const newSelectedDlina = newProd.prop_val;
+                    if (newSelectedDlina){
+                        const filterIndex = this.description[1].values.findIndex(item => item.value === newSelectedDlina);
+                        if (filterIndex !== -1){
+                            this.description[1].selectedValueIndex = filterIndex;
+                        }
+                    }
                 }
             };
         },
