@@ -347,7 +347,8 @@ export default {
             this.$router.replace({ params: { id: id } });
             this.toggleStopper(true)
 
-            this.productCardInfo = await this.getProductByCode(id)
+            this.productCardInfo = await this.getProductByCode(id);
+            console.log('productCardInfo', this.productCardInfo);
             this.productId = this.productCardInfo.arFields.ID
         
             if (this.$route.params.name === 'all') {
@@ -388,25 +389,51 @@ export default {
                     this.colors.forEach(c => {
                         if (c.value === currentColor){
                             c.isSelected = true;
+                        } else {
+                            c.isSelected = false
                         }
                     });
                 }
             }
 
-            if (!!elWithDiametr)
+            if (!!elWithDiametr) {
                 elWithDiametr.forEach(diam => {
                     const val = diam.prop_val_2 ? `${String(diam.prop_val).replace(/\D/g, "")}/${diam.prop_val_2}` : diam.prop_val
                     if (!this.description[0].values.some(c => c.value === val)) {
                         this.description[0].values.push({ value: val, id: diam.prod_code })
                     }
                 })
+                let selectedDiam = '';
+                if (this.productCardInfo.arPropsNoNull.TOLSHCHINA_STENKI && this.productCardInfo.arPropsNoNull.TOLSHCHINA_STENKI.VALUE){
+                    selectedDiam = String(this.productCardInfo.arPropsNoNull.DIAMETR.VALUE).replace(/\D/g, "") + '/' + this.productCardInfo.arPropsNoNull.TOLSHCHINA_STENKI.VALUE;
+                } else {
+                    selectedDiam = this.productCardInfo.arPropsNoNull.DIAMETR.VALUE;
+                };
+                if (selectedDiam){
+                    const filterIndex = this.description[0].values.findIndex(item => item.value === selectedDiam);
+                    if (filterIndex !== -1){
+                        this.description[0].selectedValueIndex = filterIndex;
+                    }
+                }
+            }
 
-            if (!!elWithDlina)
+            if (!!elWithDlina) {
                 elWithDlina.forEach(dlina => {
                     if (!this.description[1].values.some(c => c.value === dlina.prop_val)) {
                         this.description[1].values.push({ value: dlina.prop_val, id: dlina.prod_code })
                     }
                 })
+                if (this.productCardInfo.arPropsNoNull.DLINA && this.productCardInfo.arPropsNoNull.DLINA.VALUE) {
+                    const selectedDlina = this.productCardInfo.arPropsNoNull.DLINA.VALUE;
+                    console.log(selectedDlina);
+                    if (selectedDlina){
+                        const filterIndex = this.description[1].values.findIndex(item => item.value === selectedDlina);
+                        if (filterIndex !== -1){
+                            this.description[1].selectedValueIndex = filterIndex;
+                        }
+                    }
+                }
+            };
 
             setTimeout(() => {
                 this.toggleStopper(false)
